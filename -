@@ -1,0 +1,2 @@
+Created TensorFlow Lite XNNPACK delegate for CPU.
+[44299:44326:1005/141548.686999:ERROR:registration_request.cc(291)] Registration response error message: DEPRECATED_ENDPOINT
