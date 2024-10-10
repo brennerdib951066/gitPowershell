@@ -1,8 +1,4 @@
-HEAD
 #!/usr/bin/env pwsh
-
-#!/snap/bin/pwsh
->>>>>>> 117476234e46d0d04a338f9c12c1387113dbf292
 
 $arquivoRelatorio = "$HOME/Desktop/RELATORIO.txt"
 $diaAtual = Get-Date -UFormat %Y-%m-%d
