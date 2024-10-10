@@ -1,4 +1,8 @@
+HEAD
 #!/usr/bin/env pwsh
+
+#!/snap/bin/pwsh
+>>>>>>> 117476234e46d0d04a338f9c12c1387113dbf292
 
 $arquivoRelatorio = "$HOME/Desktop/RELATORIO.txt"
 $diaAtual = Get-Date -UFormat %Y-%m-%d
@@ -71,8 +75,13 @@ if ($agir -eq 'yes'){
         $valores = $valores.Toupper()
 
         while($true){
+<<<<<<< HEAD
              start-Sleep -Seconds 10
              $notificacaoLinux = notify-send -t 9000 -c critical -i 'iconeNotificacao.png' 'Cadastro de etiquetas' "Total: $totalDeVendas"
+=======
+            start-Sleep -Seconds 10
+             $notificacaoLinux = notify-send -t 7000 -c normal 'Cadastro de etiquetas' "Total: $totalDeVendas"
+>>>>>>> 117476234e46d0d04a338f9c12c1387113dbf292
              mpv "/home/brenner/$env:areaDeTrabalhoUsuario/notificacao/dione.wav"
              Start-Sleep -duration (New-TimeSpan -Minutes 30)
         }
