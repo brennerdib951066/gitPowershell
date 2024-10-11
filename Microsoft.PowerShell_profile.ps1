@@ -41,7 +41,7 @@ function gitHub(){
         $arquivoRepositorio
     )
 
-    if ($verificandoPlataforma) {
+    if (verificandoPlataforma) {
         Start-Process chrome -ArgumentList "--profile-directory=$profile", "https://github.com/brennerdib951066/$repositorio/blob/main/$arquivoRepositorio"
     } else {
         Start-Job -ScriptBlock {
