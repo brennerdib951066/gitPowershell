@@ -1,3 +1,13 @@
+function verificandoPlataforma(){
+		$plataforma = $PSEdition
+		if ($plataforma.Tolower() -eq 'desktop') {
+			Return $True
+		}
+		else {
+			Return $False
+		}
+}
+
 ################################Função de ações do sistema####################################################################################
 
 function reboot { 
@@ -24,6 +34,23 @@ function poweroff {
 
 
 ################################Função de google chrome###########################################################################################
+function gitHub(){
+    param(
+        $profile,
+        $repositorio,
+        $arquivoRepositorio
+    )
+
+    if ($verificandoPlataforma) {
+        Start-Process chrome -ArgumentList "--profile-directory=$profile", "https://github.com/brennerdib951066/$repositorio/blob/main/$arquivoRepositorio"
+    } else {
+        Start-Job -ScriptBlock {
+            param($profile, $repositorio, $arquivoRepositorio)
+            Start-Process google-chrome-stable -ArgumentList "--profile-directory=$profile", "https://github.com/brennerdib951066/$repositorio/blob/main/$arquivoRepositorio"
+        } -ArgumentList $profile, $repositorio, $arquivoRepositorio
+    }
+}
+
 
 function planilhaNotificacao {
 	param(
@@ -35,8 +62,11 @@ function planilhaNotificacao {
 	}
 	else {
 		Start-Job -ScriptBlock {
-			Start-Process google-chrome-stable -ArgumentList --profile-directory=Brenner,https://docs.google.com/spreadsheets/d/'1V5fF38klj31iScKXRML4hEdD0L_hO5gf0NU6Pb9tizc'
-		}
+			param(
+				$idSheet = '1V5fF38klj31iScKXRML4hEdD0L_hO5gf0NU6Pb9tizc'
+			)
+			Start-Process google-chrome-stable -ArgumentList --profile-directory=Brenner,https://docs.google.com/spreadsheets/d/$idSheet
+		} -ArgumentList $idSheet
 	}
 
 }
@@ -50,8 +80,11 @@ function telegram{
 	}
 	else {
 		Start-Job -ScriptBlock {
+			param(
+					$urlTelegram = 'https://web.telegram.org/k/'
+			)
 			Start-Process google-chrome-stable -ArgumentList --profile-directory=Brenner,'https://web.telegram.org/k/'
-		}
+		} -ArgumentList $urlTelegram
 	}
 }
 
@@ -113,7 +146,19 @@ function meuIp{
 	write-host $meuIp -foreground DarkCyan
 }
 function kprofile {
-	kate $PROFILE
+	if (-not (Test-Path "/usr/bin/kate")) {
+		if (verificandoPlataforma){
+			winget install kate
+		}
+		else {
+			write-host -foregroundcolor red 'O seu kate no linux,está desinstalado! Intalando agora...'; start-sleep -Seconds 2s
+			sudo apt install kate
+
+		}
+	}
+	else {
+		kate $PROFILE
+	}
 }
 function .profile{
 	. $PROFILE
@@ -238,12 +283,13 @@ $arquivoNotificacao='/usr/bin/dibScripts/shells/stable/bibliotecas/notificacao/n
 		} # IF plataforma criarShell
 		else {
 		Write-Host 'Entrou no ELSE' -foregroundcolor red
-@'
+@"
 #!/usr/bin/env bash
 arquivoLogin='/usr/bin/dibScripts/shells/stable/bibliotecas/credenciais/credencial.sh'
 arquivoCor='/usr/bin/dibScripts/shells/stable/bibliotecas/cor/cores.txt'
 arquivoNotificacao='/usr/bin/dibScripts/shells/stable/bibliotecas/notificacao/notificarWhatsApp.txt'
-'@ | Out-File -FilePath "$nomeArquivo" -Encoding UTF8 -Confirm
+"@ | Out-File -FilePath "$nomeArquivo" -Encoding UTF8 -Confirm
+sudo chmod +x "$nomeArquivo"
 		} # ELSE plataforma criarShell
 	} # FUNCAO CRIARSHELL
 
@@ -270,6 +316,7 @@ import webbrowser as web
 import requests as api
 import flet as ft
 '@ | Out-File -FilePath "$nomeArquivo" -Encoding UTF8
+sudo chmod +x "$nomeArquivo"
 		} # ELSE plataforma criarPython
 	} # FUNCAO CRIARPYTHON
 
@@ -307,6 +354,7 @@ END{
 
 }
 '@ | Out-File -FilePath "$nomeArquivo" -Encoding UTF8
+sudo chmod +x "$nomeArquivo"
 		} # ELSE plataforma criarAwk
 	} # FUNCAO CRIARAWK
 
