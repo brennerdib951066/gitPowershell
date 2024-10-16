@@ -134,8 +134,11 @@ function criarItem {
 }
 
 
-function catt{
-	cat -TotalCount $arquivo
+function cattail {
+	Get-Content -Tail $args[0] -Path $args[1] -Encoding utf8
+}
+function cathead {
+	Get-Content -TotalCount $args[0] -Path $args[1] -Encoding utf8
 }
 function envP {
 	$env:Path.split(';')
@@ -343,18 +346,24 @@ END{
 @'
 #!/usr/bin/env -S awk -f
 
-BEGIN{
-	FS=","
-}
+@include "criarSubscriber.awk"
+@include "enviarFluxos.awk"
+@include "funcaoNotificarWhatsApp.awk"
+
 # Aqui começa as funções
 function nomeFuncao(){
 
 }
+
+BEGIN{
+	FS=","
+}
+
 END{
 
 }
 '@ | Out-File -FilePath "$nomeArquivo" -Encoding UTF8
-sudo chmod +x "$nomeArquivo"
+chmod +x "$nomeArquivo"
 		} # ELSE plataforma criarAwk
 	} # FUNCAO CRIARAWK
 
@@ -462,9 +471,5 @@ $texto = @"
 
 	#}
 }
-
-
-
-
 
 
