@@ -41,16 +41,84 @@ function gitHub(){
         $arquivoRepositorio
     )
 
-    if (verificandoPlataforma) {
-        Start-Process chrome -ArgumentList "--profile-directory=$profile", "https://github.com/brennerdib951066/$repositorio/blob/main/$arquivoRepositorio"
-    } else {
-        Start-Job -ScriptBlock {
-            param($profile, $repositorio, $arquivoRepositorio)
-            Start-Process google-chrome-stable -ArgumentList "--profile-directory=$profile", "https://github.com/brennerdib951066/$repositorio/blob/main/$arquivoRepositorio"
-        } -ArgumentList $profile, $repositorio, $arquivoRepositorio
-    }
-}
+	if ($args.Length -gt 0){
 
+		if (verificandoPlataforma) {
+			Start-Process chrome -ArgumentList "--profile-directory=$profile", "https://github.com/brennerdib951066/$repositorio/blob/main/$arquivoRepositorio"
+		} else {
+			Start-Job -ScriptBlock {
+				param($profile, $repositorio, $arquivoRepositorio)
+				Start-Process google-chrome-stable -ArgumentList "--profile-directory=$profile", "https://github.com/brennerdib951066/$repositorio/blob/main/$arquivoRepositorio"
+			} -ArgumentList $profile, $repositorio, $arquivoRepositorio
+		} # IF PLATAFORMA
+	} # IF ARGS
+	else {
+
+		$listaMenu = @(
+			'awk',
+			'sh',
+			'powershell'
+		)
+		function menuGit {
+			$i = 1
+			foreach ($menu in $listaMenu){
+				Write-Host -foregroundcolor Yellow "$i) $menu"
+				$i++
+			} # FOR MENU
+			while($true){
+					$menuResposta = Read-Host -Prompt "Opcao".Toupper()
+					if ($menuResposta){
+						$menuResposta = [int]$menuResposta
+						Write-Host -foregroundcolor green "Você escolheu $menuResposta"
+						Start-Sleep -Seconds 5
+						Break
+					}
+
+			} # WHILE MENU RESPOSTA
+			return $menuResposta
+		} # FUNCAO MEU GIT
+		$menuEscolhido = menuGit
+		Switch ($menuEscolhido){
+			1 {
+
+				{ Write-Host -foregroundcolor green "Abrindo $($listaMenu[0])..."; Start-Sleep -Seconds 2 }
+				Start-Job -ScriptBlock {
+					param($repositorio = $($listaMenu[0]))
+					$arquivoGit = 'retirarAspas.awk'
+					Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+				} -ArgumentList $($listaMenu[0])  # START JOB
+				#Break
+			} # SWITCH CASE 1
+			2 {
+
+				{ Write-Host -foregroundcolor green "Abrindo $($listaMenu[0])..."; Start-Sleep -Seconds 2 }
+				Start-Job -ScriptBlock {
+					param($repositorio)
+					$arquivoGit = 'notificacaoPlanilha.sh'
+					Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+				} -ArgumentList 'shell' # START JOB
+				#Break
+			} # SWITCH CASE 2
+			3 {
+
+				{ Write-Host -foregroundcolor green "Abrindo $($listaMenu[0])..."; Start-Sleep -Seconds 2 }
+				Start-Job -ScriptBlock {
+					param($repositorio = $($listaMenu[2]))
+					$arquivoGit = 'buscandoAlias.ps1'
+					Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+				} -ArgumentList $($listaMenu[2]) # START JOB
+				#Break
+			} # SWITCH CASE 2
+			Default {
+				Write-Host -foregroundcolor green "Escolha uma resposta válida"
+				Write-Host -foregroundcolor green "$menuResposta"
+				Break
+			}
+		} # Switch RESPOSTA
+
+
+	} # ELSE ARGS
+}
 
 function planilhaNotificacao {
 	param(
