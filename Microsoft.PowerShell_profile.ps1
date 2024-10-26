@@ -261,9 +261,13 @@ function kprofile {
 			Write-Host -foregroundcolor red "O kate não existe vamos instala-lo para você"
 			Start-Sleep -Seconds 2
 			winget install kate
-			kate $PROFILE
+			Start-Job -ScriptBlock {
+				kate $args[0]
+			} -ArgumentList $PROFILE
 		} else {
-			kate $PROFILE
+			Start-Job -ScriptBlock {
+				kate $args[0]
+			} -ArgumentList $PROFILE
 		}
 	}
 	else {
@@ -271,10 +275,16 @@ function kprofile {
 			Write-Host -foregroundcolor red "Falta o seu kate instalado, vamos instala-lo para você"
 			Start-Sleep -Seconds 2
 			sudo apt install kate -y
-			kate $PROFILE
+			Start-Job -ScriptBlock {
+				kate $args[0]
+			} -ArgumentList $PROFILE
+
 		} # Verificando se existe o kate instalado no linux
 		else {
-			kate $PROFILE
+			Start-Job -ScriptBlock {
+				kate $args[0]
+			} -ArgumentList $PROFILE
+
 		}
 	}
 }
