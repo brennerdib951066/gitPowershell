@@ -85,7 +85,12 @@ function gitHub(){
 				Start-Job -ScriptBlock {
 					param($repositorio = $($listaMenu[0]))
 					$arquivoGit = 'retirarAspas.awk'
-					Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					if (verificandoPlataforma){
+						Start-Process chrome -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					} # IF DESKTOP
+					else {
+						Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					} # ELSE DESKTOP
 				} -ArgumentList $($listaMenu[0])  # START JOB
 				#Break
 			} # SWITCH CASE 1
@@ -95,7 +100,12 @@ function gitHub(){
 				Start-Job -ScriptBlock {
 					param($repositorio)
 					$arquivoGit = 'notificacaoPlanilha.sh'
-					Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					if (verificandoPlataforma){
+						Start-Process chrome -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					} # IF DESKTOP
+					else {
+						Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					} # ELSE DESKTOP
 				} -ArgumentList 'shell' # START JOB
 				#Break
 			} # SWITCH CASE 2
@@ -105,7 +115,12 @@ function gitHub(){
 				Start-Job -ScriptBlock {
 					param($repositorio = $($listaMenu[2]))
 					$arquivoGit = 'buscandoAlias.ps1'
-					Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					if (verificandoPlataforma){
+						Start-Process chrome -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					} # IF DESKTOP
+					else {
+						Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					} # ELSE DESKTOP
 				} -ArgumentList $($listaMenu[2]) # START JOB
 				#Break
 			} # SWITCH CASE 2
