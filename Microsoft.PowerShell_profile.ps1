@@ -12,7 +12,7 @@ function verificandoPlataforma(){
 
 ################################Função de ações do sistema####################################################################################
 
-function reboot { 
+function reboot {
 	$plataforma = $PSEdition
 	if ($plataforma.Tolower() -eq 'desktop'){
 		Restart-Computer -Force
@@ -22,7 +22,7 @@ function reboot {
 	}
 
 }
-function poweroff { 
+function poweroff {
 	$plataforma = $PSEdition
 	if ($plataforma.Tolower() -eq 'desktop'){
 		Stop-Computer -Force
@@ -236,7 +236,7 @@ function criarItem {
 		$tipoDeItem,
 		$path
 	)
- 	New-Item -Name $nomeItem -ItemType $tipoDeItem -Path $path 
+ 	New-Item -Name $nomeItem -ItemType $tipoDeItem -Path $path
 }
 
 
@@ -255,18 +255,27 @@ function meuIp{
 	write-host $meuIp -foreground DarkCyan
 }
 function kprofile {
-	if (-not (Test-Path "/usr/bin/kate")) {
-		if (verificandoPlataforma){
+	if (verificandoPlataforma){
+		Write-Host -foregroundcolor red "Você está no windows"
+		if (-not (Test-Path 'C:\Program Files\Kate\bin\')){
+			Write-Host -foregroundcolor red "O kate não existe vamos instala-lo para você"
+			Start-Sleep -Seconds 2
 			winget install kate
-		}
-		else {
-			write-host -foregroundcolor red 'O seu kate no linux,está desinstalado! Intalando agora...'; start-sleep -Seconds 2s
-			sudo apt install kate
-
+			kate $PROFILE
+		} else {
+			kate $PROFILE
 		}
 	}
 	else {
-		kate $PROFILE
+		if (-not (Test-Path '/usr/bin/kate')){
+			Write-Host -foregroundcolor red "Falta o seu kate instalado, vamos instala-lo para você"
+			Start-Sleep -Seconds 2
+			sudo apt install kate -y
+			kate $PROFILE
+		} # Verificando se existe o kate instalado no linux
+		else {
+			kate $PROFILE
+		}
 	}
 }
 function .profile{
