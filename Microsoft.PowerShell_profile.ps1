@@ -1,9 +1,11 @@
 function verificandoPlataforma(){
 		$plataforma = $PSEdition
 		if ($plataforma.Tolower() -eq 'desktop') {
+			Write-Host -foregroundcolor red "É WINDOWSSSS"
 			Return $True
 		}
 		else {
+			Write-Host -foregroundcolor red "É LINUXXXXXXXX"
 			Return $False
 		}
 }
@@ -70,7 +72,7 @@ function gitHub(){
 					if ($menuResposta){
 						$menuResposta = [int]$menuResposta
 						Write-Host -foregroundcolor green "Você escolheu $menuResposta"
-						Start-Sleep -Seconds 5
+						#Start-Sleep -Seconds 5
 						Break
 					}
 
@@ -80,48 +82,69 @@ function gitHub(){
 		$menuEscolhido = menuGit
 		Switch ($menuEscolhido){
 			1 {
-
-				{ Write-Host -foregroundcolor green "Abrindo $($listaMenu[0])..."; Start-Sleep -Seconds 2 }
-				Start-Job -ScriptBlock {
-					param($repositorio = $($listaMenu[0]))
-					$arquivoGit = 'retirarAspas.awk'
-					if (verificandoPlataforma){
+				if (verificandoPlataforma){
+					Write-Host "Você entrou no WINDOWS"
+					#Start-Sleep -Seconds 5
+					Start-Job -ScriptBlock {
+						param($repositorio = $($listaMenu[0]))
+						$arquivoGit = 'retirarAspas.awk'
 						Start-Process chrome -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
-					} # IF DESKTOP
-					else {
-						Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
-					} # ELSE DESKTOP
-				} -ArgumentList $($listaMenu[0])  # START JOB
+					} -ArgumentList $($listaMenu[0])  # START JOB
+				} # IF VERIFIACANDO PLATAFORMA
+				else {
+					Write-Host "Você entrou no LINUXXXX"
+					#Start-Sleep -Seconds 5
+					Start-Job -ScriptBlock {
+							param($repositorio = $($listaMenu[0]))
+							$arquivoGit = 'retirarAspas.awk'
+							Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					} -ArgumentList $($listaMenu[0])
+				} # ESLE VERIFIACANDO PLATAFORMA
+
 				#Break
 			} # SWITCH CASE 1
 			2 {
 
-				{ Write-Host -foregroundcolor green "Abrindo $($listaMenu[0])..."; Start-Sleep -Seconds 2 }
-				Start-Job -ScriptBlock {
-					param($repositorio)
-					$arquivoGit = 'notificacaoPlanilha.sh'
-					if (verificandoPlataforma){
+				if (verificandoPlataforma){
+					Write-Host "Você entrou no WINDOWS"
+					#Start-Sleep -Seconds 5
+					Start-Job -ScriptBlock {
+						param($repositorio)
+						$arquivoGit = '.bashrc'
 						Start-Process chrome -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
-					} # IF DESKTOP
-					else {
-						Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
-					} # ELSE DESKTOP
-				} -ArgumentList 'shell' # START JOB
+					} -ArgumentList 'shell'  # START JOB
+				} # IF VERIFIACANDO PLATAFORMA
+				else {
+					Write-Host "Você entrou no LINUXXXX"
+					#Start-Sleep -Seconds 5
+					Start-Job -ScriptBlock {
+							param($repositorio = $($listaMenu[1]))
+							$arquivoGit = '.bashrc'
+							Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					} -ArgumentList 'shell'
+				} # ESLE VERIFIACANDO PLATAFORMA
 				#Break
 			} # SWITCH CASE 2
 			3 {
 
-				{ Write-Host -foregroundcolor green "Abrindo $($listaMenu[0])..."; Start-Sleep -Seconds 2 }
-				Start-Job -ScriptBlock {
-					param($repositorio = $($listaMenu[2]))
-					$arquivoGit = 'buscandoAlias.ps1'
-					if (verificandoPlataforma){
+				if (verificandoPlataforma){
+					Write-Host "Você entrou no WINDOWS"
+					#Start-Sleep -Seconds 5
+					Start-Job -ScriptBlock {
+						param($repositorio = $($listaMenu[0]))
+						$arquivoGit = 'retirarAspas.awk'
 						Start-Process chrome -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
-					} # IF DESKTOP
-					else {
-						Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
-					} # ELSE DESKTOP
-				} -ArgumentList $($listaMenu[2]) # START JOB
+					} -ArgumentList $($listaMenu[0])  # START JOB
+				} # IF VERIFIACANDO PLATAFORMA
+				else {
+					Write-Host "Você entrou no LINUXXXX"
+					#Start-Sleep -Seconds 5
+					Start-Job -ScriptBlock {
+							param($repositorio = $($listaMenu[2]))
+							$arquivoGit = 'Microsoft.PowerShell_profile.ps1'
+							Start-Process google-chrome-stable -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
+					} -ArgumentList $($listaMenu[2])
+				} # ESLE VERIFIACANDO PLATAFORMA
 				#Break
 			} # SWITCH CASE 2
 			Default {
