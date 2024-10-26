@@ -131,10 +131,10 @@ function gitHub(){
 					Write-Host "Você entrou no WINDOWS"
 					#Start-Sleep -Seconds 5
 					Start-Job -ScriptBlock {
-						param($repositorio = $($listaMenu[0]))
-						$arquivoGit = 'retirarAspas.awk'
+						param($repositorio = $($listaMenu[2]))
+						$arquivoGit = 'Microsoft.PowerShell_profile.ps1'
 						Start-Process chrome -ArgumentList "--profile-directory=Brenner", "https://github.com/brennerdib951066/git$repositorio/blob/main/$arquivoGit"
-					} -ArgumentList $($listaMenu[0])  # START JOB
+					} -ArgumentList $($listaMenu[2])  # START JOB
 				} # IF VERIFIACANDO PLATAFORMA
 				else {
 					Write-Host "Você entrou no LINUXXXX"
