@@ -203,7 +203,7 @@ function cdd {
 		cd ~/Desktop
 	}
 	else{
-		cd ~/$env:areaDeTrabalhoUsuario # Aqui o konsole já irá para a Área de trabalho do usuário
+		cd ~/"Área de [tT]rabalho" # Aqui o konsole já irá para a Área de trabalho do usuário
 	}
 }
 
@@ -596,5 +596,32 @@ $texto = @"
 
 	#}
 }
+
+###### ALIAS #####################################################################################################################
+# Aqui vem o nome que você deseja que alias tenha
+$novoNomeAlias = @(
+	'nitem',
+	'cat',
+	'nsp'
+)
+# Aqui é o nome dos CMD LET
+$nomeCMDLet = @(
+	'New-Item',
+	'Get-Content',
+	'New-ScriptFileInfo'
+)
+
+for ($i=0;$i -le $novoNomeAlias.Length-1;$i++){
+	#Write-Host -foregroundcolor green "Configurando o nome de $($novoNomeAlias[$i]) para o CMD LET $($nomeCMDLet[$i])"
+
+	if ($i -ne 2){
+		New-Alias -Name $($novoNomeAlias[$i]) -Value $($nomeCMDLet[$i]) -ErrorAction Ignore
+		Continue
+	}
+	#Write-Host -Foregroundcolor red "Agora é o numero 2222222222"; Start-Sleep -Seconds 5
+	New-Alias -Name $($novoNomeAlias[$i]) -Value $($nomeCMDLet[$i]) -Description "Só teste mesmo" -ErrorAction Ignore
+}
+
+#################################################################################################################################
 
 
