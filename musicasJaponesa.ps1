@@ -1,6 +1,7 @@
 $listaDeArtistas = @(
     'hiro takahashi',
-    'akeboshi'
+    'akeboshi',
+    'nico touches the walls'
 )
 
 function tocar {
@@ -132,6 +133,42 @@ while ($true){
                         }
                     }
                 }
+                3 {
+                    Write-Host "Artista escolhido" $listaDeArtistas[2] -Foreground Blue
+                    $albunsNico = @(
+                        'nico albuns'
+                        #'kuchibiru ga hodo keinai'
+                    )
+                    $nb = 1
+                    Foreach ($album in $albunsNico){
+                        Write-Host $nb")" $album.ToUpper() -ForegroundColor Cyan
+                        $nb++
+                    }
+                    while ($true){
+                        $albumEscolhido = Read-Host -Prompt ':'
+                        if ($albumEscolhido){
+                            try {
+                                if ([int]$albumEscolhido -and [int]$albumEscolhido -le $albunsNico.count){
+                                    #. ../hiroTakahashi.ps1
+                                    . '/home/brenner/Área de Trabalho/powershell/bibliotecas/nico.ps1'
+                                    Switch ($albumEscolhido){
+                                        1 {
+                                            tocar $nico
+                                            Write-Host "CAIU NO 1" -ForegroundColor red
+                                            # Aqui você poderia chamar a função `tocar` com a lista de músicas do álbum 1
+                                        }
+                                    }
+                                }
+                                else {
+                                    Write-Host "Escolha uma opção correspondente" -ForegroundColor red
+                                }
+                            }
+                            catch {
+                                Write-Host "Escolha uma opção correspondente" -ForegroundColor red
+                            }
+                        }
+                    }
+                } # SWITCH 3
                 default {
                     Write-Host "Escolha um artista da lista" -Foreground Blue
                 }
