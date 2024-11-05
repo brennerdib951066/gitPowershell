@@ -63,28 +63,51 @@ $pastas = @(
     'vbs'
 )
 
+function verificarPlataforma {
+    Write-Host -ForegroundColor yellow "Parece que você deseja saber a plataforma"
+    Start-Sleep -Seconds 2
+    $plataforma = $PSEdition
+    if ($plataforma -match 'desktop') {
+        Write-Host -ForegroundColor red "Windows concerteza!"
+        Start-Sleep -Seconds 1
+        $areaDeTrabalhos = "$env:USERPROFILE/Desktop"
+        #$areaDeTrabalho
+        Return $areaDeTrabalhos
+    }
+    else {
+        Write-Host -ForegroundColor red "Linux é pai!"
+        Start-Sleep -Seconds 1
 
-. ./verificarPlataforma.ps1 # Verificando se é linux ou Windows
-if (verificarPlataforma){
-    $areaDetrabalho='Desktop'
+        $areaDeTrabalhos="$env:HOME/Área de Trabalho"
+        #set-location $areaDeTrabalho
+        #get-item -Path $areaDeTrabalho
+        #Start-Sleep -Seconds 5
+        #write-Host -ForegroundColor green $areaDeTrabalho
+        Return $areaDeTrabalhos
+    }
 }
-else {
-    $areaDetrabalho='Área de Trabalho'
-}
+
+$areaDeTrabalho = verificarPlataforma
+
+
 
 for ($i=0;$i -le $arquivos.Count-1;$i++){
 
-        if (-not (Test-Path $env:HOME/$areaDetrabalho/$($pastas[$i]))){
-            Write-Host "Sua pasta $($pastas[$i]), não existe vamos cria-los"
+        if (-not (Test-Path $areaDeTrabalho/$($pastas[$i]))){
+            Write-Host "Sua pasta $areaDeTrabalho/, não existe vamos cria-los"
             Start-Sleep -Seconds 5
-            New-Item $env:HOME/$areaDetrabalho/$($pastas[$i]) #-Confirm
+            New-Item $areaDeTrabalho/$($pastas[$i]) -Confirm
         }
         Write-Host -Foregroundcolor red "$($pastas[$i])"
 
         if ($($arquivos[$i]) -eq 'md'){
-            Move-Item  -Path $env:HOME/$areaDetrabalho/*.$($arquivos[$i]) -Destination $env:HOME/$areaDetrabalho/$($pastas[$i])/viverBem #-Confirm
+            write-Host -Foregroundcolor red 'Caiu no IFFFF'
+            #"$areaDeTrabalho"
+            Move-Item -Path $areaDeTrabalho/*.$($arquivos[$i]) -Destination $areaDeTrabalho/$($pastas[$i])/viverBem  -Force
         }
         else {
-            Move-Item  -Path $env:HOME/$areaDetrabalho/*.$($arquivos[$i]) -Destination $env:HOME/$areaDetrabalho/$($pastas[$i]) #-Confirm
+            write-Host -Foregroundcolor yellow 'Caiu no ELSE'
+            #"$areaDeTrabalho"
+            Move-Item -Path "$areaDeTrabalho/*.$($arquivos[$i])" -Destination "$areaDeTrabalho/$($pastas[$i])" -Force
         }
 }
