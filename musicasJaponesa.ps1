@@ -4,13 +4,40 @@ $listaDeArtistas = @(
     'nico touches the walls'
 )
 
+function verificarPlataforma {
+    Write-Host -ForegroundColor yellow "Parece que vocÃª deseja saber a plataforma"
+    Start-Sleep -Seconds 2
+    $plataforma = $PSEdition
+    if ($plataforma -match 'desktop') {
+        Write-Host -ForegroundColor red "Windows concerteza!"
+        Start-Sleep -Seconds 1
+        $areaDeTrabalhos = "$env:USERPROFILE/Desktop"
+        #$areaDeTrabalho
+        Return $areaDeTrabalhos
+    }
+    else {
+        Write-Host -ForegroundColor red "Linux Ã© pai!"
+        Start-Sleep -Seconds 1
+
+        $areaDeTrabalhos="$env:HOME/Área de Trabalho"
+        #set-location $areaDeTrabalho
+        #get-item -Path $areaDeTrabalho
+        #Start-Sleep -Seconds 5
+        #write-Host -ForegroundColor green $areaDeTrabalho
+        Return $areaDeTrabalhos
+    }
+}
+
+$areaDeTrabalho = verificarPlataforma
+
 function tocar {
     param(
+        $album,
         $musicas
     )
     Foreach ($musica in $musicas){
         if (($PSVersionTable.PsEdition).ToLower() -match 'desktop'){
-            Write-Host "Musica atual > $musica" -ForegroundColor red
+            Write-Host "Musica atual $album > $musica" -ForegroundColor red
             mpv https://www.youtube.com/watch?v=$musica
         }
         else {
@@ -50,26 +77,29 @@ while ($true){
                             try {
                                 if ([int]$albumEscolhido -and [int]$albumEscolhido -le $albunsHiroTakahashi.count){
                                     #. ../hiroTakahashi.ps1
-                                    . '/home/brenner/Área de Trabalho/powershell/bibliotecas/hiroTakahashi.ps1'
+                                    . $areaDeTrabalho/powershell/bibliotecas/hiroTakahashi.ps1
                                     Switch ($albumEscolhido){
                                         1 {
-                                            tocar $itsumojio
+                                            tocar $($albunsHiroTakahashi[0]).ToUpper() $itsumojio
                                             Write-Host "CAIU NO 1" -ForegroundColor red
-                                            # Aqui você poderia chamar a função `tocar` com a lista de músicas do álbum 1
+                                            # Aqui vocÃª poderia chamar a funÃ§Ã£o `tocar` com a lista de mÃºsicas do Ã¡lbum 1
                                         }
                                         2 {
-                                            tocar $kutibirugaHodoKenai
+                                            tocar $($albunsHiroTakahashi[1]).ToUpper() $kutibirugaHodoKenai
                                             Write-Host "CAIU NO 2" -ForegroundColor red
-                                            # Aqui você poderia chamar a função `tocar` com a lista de músicas do álbum 2
+                                            # Aqui vocÃª poderia chamar a funÃ§Ã£o `tocar` com a lista de mÃºsicas do Ã¡lbum 2
                                         }
+                                    }
+                                    Default {
+                                            write-Host -ForegroundColor yellow "Não sei o que deu"
                                     }
                                 }
                                 else {
-                                    Write-Host "Escolha uma opção correspondente" -ForegroundColor red
+                                    Write-Host "Escolha uma opÃ§Ã£o correspondente" -ForegroundColor red
                                 }
                             }
                             catch {
-                                Write-Host "Escolha uma opção correspondente" -ForegroundColor red
+                                Write-Host "Escolha uma opÃ§Ã£o correspondente" -ForegroundColor red
                             }
                         }
                     }
@@ -94,41 +124,44 @@ while ($true){
                             try {
                                 if ([int]$albumEscolhido -and [int]$albumEscolhido -le $albunsAkeboshi.count){
                                     #. ../hiroTakahashi.ps1
-                                    . '/home/brenner/Área de Trabalho/powershell/bibliotecas/akeboshi.ps1'
+                                    . $areaDeTrabalho/powershell/bibliotecas/akeboshi.ps1
                                     Switch ($albumEscolhido){
                                         1 {
-                                            tocar $roundabout
+                                            tocar $($albunsAkeboshi[0]).ToUpper() $roundabout
                                             Write-Host "CAIU NO 1" -ForegroundColor red
-                                            # Aqui você poderia chamar a função `tocar` com a lista de músicas do álbum 1
+                                            # Aqui vocÃª poderia chamar a funÃ§Ã£o `tocar` com a lista de mÃºsicas do Ã¡lbum 1
                                         }
                                         2 {
-                                            tocar $akeboshi
+                                            tocar $($albunsAkeboshi[1]).ToUpper() $akeboshi
                                             Write-Host "CAIU NO 2" -ForegroundColor red
-                                            # Aqui você poderia chamar a função `tocar` com a lista de músicas do álbum 2
+                                            # Aqui vocÃª poderia chamar a funÃ§Ã£o `tocar` com a lista de mÃºsicas do Ã¡lbum 2
                                         }
                                         3 {
-                                            tocar $aLittleBoy
+                                            tocar $($albunsAkeboshi[2]).ToUpper() $aLittleBoy
                                             Write-Host "CAIU NO 3" -ForegroundColor red
-                                            # Aqui você poderia chamar a função `tocar` com a lista de músicas do álbum 2
+                                            # Aqui vocÃª poderia chamar a funÃ§Ã£o `tocar` com a lista de mÃºsicas do Ã¡lbum 2
                                         }
                                         4 {
-                                            tocar $yellowMoon
+                                            tocar $($albunsAkeboshi[3]).ToUpper() $yellowMoon
                                             Write-Host "CAIU NO 4" -ForegroundColor red
-                                            # Aqui você poderia chamar a função `tocar` com a lista de músicas do álbum 2
+                                            # Aqui vocÃª poderia chamar a funÃ§Ã£o `tocar` com a lista de mÃºsicas do Ã¡lbum 2
                                         }
                                         5 {
-                                            tocar $rustyLance
+                                            tocar $($albunsAkeboshi[4]).ToUpper() $rustyLance
                                             Write-Host "CAIU NO 5" -ForegroundColor red
-                                            # Aqui você poderia chamar a função `tocar` com a lista de músicas do álbum 2
+                                            # Aqui vocÃª poderia chamar a funÃ§Ã£o `tocar` com a lista de mÃºsicas do Ã¡lbum 2
                                         }
+                                    }
+                                    Default {
+                                            write-Host -ForegroundColor yellow "Não sei o que deu"
                                     }
                                 }
                                 else {
-                                    Write-Host "Escolha uma opção correspondente" -ForegroundColor red
+                                    Write-Host "Escolha uma opÃ§Ã£o correspondente" -ForegroundColor red
                                 }
                             }
                             catch {
-                                Write-Host "Escolha uma opção correspondente" -ForegroundColor red
+                                Write-Host "Escolha uma opÃ§Ã£o correspondente" -ForegroundColor red
                             }
                         }
                     }
@@ -150,21 +183,24 @@ while ($true){
                             try {
                                 if ([int]$albumEscolhido -and [int]$albumEscolhido -le $albunsNico.count){
                                     #. ../hiroTakahashi.ps1
-                                    . '/home/brenner/Área de Trabalho/powershell/bibliotecas/nico.ps1'
+                                    . $areaDeTrabalho/powershell/bibliotecas/nico.ps1
                                     Switch ($albumEscolhido){
                                         1 {
                                             tocar $nico
                                             Write-Host "CAIU NO 1" -ForegroundColor red
-                                            # Aqui você poderia chamar a função `tocar` com a lista de músicas do álbum 1
+                                            # Aqui vocÃª poderia chamar a funÃ§Ã£o `tocar` com a lista de mÃºsicas do Ã¡lbum 1
                                         }
+                                    }
+                                    Default {
+                                            write-Host -ForegroundColor yellow "Não sei o que deu"
                                     }
                                 }
                                 else {
-                                    Write-Host "Escolha uma opção correspondente" -ForegroundColor red
+                                    Write-Host "Escolha uma opÃ§Ã£o correspondente" -ForegroundColor red
                                 }
                             }
                             catch {
-                                Write-Host "Escolha uma opção correspondente" -ForegroundColor red
+                                Write-Host "Escolha uma opÃ§Ã£o correspondente" -ForegroundColor red
                             }
                         }
                     }
@@ -173,10 +209,10 @@ while ($true){
                     Write-Host "Escolha um artista da lista" -Foreground Blue
                 }
             }
-            break  # Saia do loop após fazer a escolha
+            break  # Saia do loop apÃ³s fazer a escolha
         }
         else {
-            Write-Host 'Opção inválida' -Foreground red
+            Write-Host 'OpÃ§Ã£o invÃ¡lida' -Foreground red
         }
     }
     catch {
@@ -184,5 +220,5 @@ while ($true){
         exit
     }
     
-    $i = 1  # Reinicie o índice para a próxima iteração
+    $i = 1  # Reinicie o Ã­ndice para a prÃ³xima iteraÃ§Ã£o
 }
