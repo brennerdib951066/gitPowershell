@@ -1,7 +1,8 @@
 $listaDeArtistas = @(
     'hiro takahashi',
     'akeboshi',
-    'nico touches the walls'
+    'nico touches the walls',
+    'hiroko kasahara'
 )
 
 function verificarPlataforma {
@@ -55,15 +56,15 @@ while ($true){
         Write-Host $i')' $artista.ToUpper() -Foreground Cyan
         $i++
     }
-    
+
     $artistaEscolhido = Read-Host -Prompt ':'
     try {
         if (verificarPlataforma){ Write-Host -ForegroundColor red "Voce é windows"; $pastaBase = join-Path -Path ~ -ChildPath "Desktop/powershell/bibliotecas" } else { Write-Host -ForegroundColor red "Voce é LINUXXXX"; $pastaBase = join-Path -Path ~ -ChildPath "Área de Trabalho/powershell/bibliotecas"}
         #$pastaBase = join-Path -Path $areaDeTrabalho -ChildPath "Área de Trabalho/powershell/bibliotecas"
-        Get-Content $pastaBase/hiroTakahashi.ps1
+        #Get-Content $pastaBase/hiroTakahashi.ps1
         if ([int]$artistaEscolhido -and $artistaEscolhido -le $listaDeArtistas.count){
             Write-Host 'Tudo certo' -Foreground Cyan
-            
+
             Switch ($artistaEscolhido){
                 1 {
                     Write-Host "Artista escolhido" $listaDeArtistas[0] -Foreground Blue
@@ -221,6 +222,45 @@ while ($true){
                         }
                     }
                 } # SWITCH 3
+                4 {
+                    Write-Host "Artista escolhido" $listaDeArtistas[3] -Foreground Blue
+                    $albunsHiroKasahara = @(
+                        'hiroko albuns'
+                        #'kuchibiru ga hodo keinai'
+                    )
+                    $nb = 1
+                    Foreach ($album in $albunsHiroKasahara){
+                        Write-Host $nb")" $album.ToUpper() -ForegroundColor Cyan
+                        $nb++
+                    }
+                    while ($true){
+                        $albumEscolhido = Read-Host -Prompt ':'
+                        if ($albumEscolhido){
+                            try {
+                                if ([int]$albumEscolhido -and [int]$albumEscolhido -le $albunsHiroKasahara.count){
+                                    #. ../hiroTakahashi.ps1
+                                    . $pastaBase/hiroKasahara.ps1
+                                    Switch ($albumEscolhido){
+                                        1 {
+                                            tocar $($albunsHiroKasahara[0]).ToUpper() $renaiseiriron
+                                            Write-Host "CAIU NO 1" -ForegroundColor red
+                                            # Aqui vocÃª poderia chamar a funÃ§Ã£o `tocar` com a lista de mÃºsicas do Ã¡lbum 1
+                                        }
+                                    }
+                                    Default {
+                                            write-Host -ForegroundColor yellow "Não sei o que deu"
+                                    }
+                                }
+                                else {
+                                    Write-Host "Escolha uma opÃ§Ã£o correspondente" -ForegroundColor red
+                                }
+                            }
+                            catch {
+                                Write-Host "Escolha uma opÃ§Ã£o correspondente" -ForegroundColor red
+                            }
+                        }
+                    }
+                } # SWITCH 3
                 default {
                     Write-Host "Escolha um artista da lista" -Foreground Blue
                 }
@@ -235,6 +275,6 @@ while ($true){
         Write-Host 'Algo deu errado' -Foreground red
         exit
     }
-    
+
     $i = 1  # Reinicie o Ã­ndice para a prÃ³xima iteraÃ§Ã£o
 }
