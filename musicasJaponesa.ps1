@@ -11,9 +11,9 @@ function verificarPlataforma {
     if ($plataforma -match 'desktop') {
         Write-Host -ForegroundColor red "Windows concerteza!"
         #Start-Sleep -Seconds 1
-        $diretorios = "$env:USERPROFILE/Desktop"
+        #$diretorios = "$env:USERPROFILE/Desktop"
         #$areaDeTrabalho
-        Return $areaDeTrabalhos
+        Return $True
     }
     else {
         Write-Host -ForegroundColor red "Linux Ã© pai!"
@@ -24,11 +24,11 @@ function verificarPlataforma {
         #get-item -Path $areaDeTrabalho
         #Start-Sleep -Seconds 5
         #write-Host -ForegroundColor green $areaDeTrabalhos
-        Return $areaDeTrabalhoUsuario
+        Return $False
     }
 }
 
-$areaDeTrabalho = verificarPlataforma
+#$areaDeTrabalho = verificarPlataforma
 
 
 
@@ -58,7 +58,8 @@ while ($true){
     
     $artistaEscolhido = Read-Host -Prompt ':'
     try {
-        $pastaBase = join-Path -Path $areaDeTrabalho -ChildPath "Área de Trabalho/powershell/bibliotecas"
+        if (verificarPlataforma){ Write-Host -ForegroundColor red "Voce é windows"; $pastaBase = join-Path -Path ~ -ChildPath "Desktop/powershell/bibliotecas" } else { Write-Host -ForegroundColor red "Voce é LINUXXXX"; $pastaBase = join-Path -Path ~ -ChildPath "Área de Trabalho/powershell/bibliotecas"}
+        #$pastaBase = join-Path -Path $areaDeTrabalho -ChildPath "Área de Trabalho/powershell/bibliotecas"
         Get-Content $pastaBase/hiroTakahashi.ps1
         if ([int]$artistaEscolhido -and $artistaEscolhido -le $listaDeArtistas.count){
             Write-Host 'Tudo certo' -Foreground Cyan
