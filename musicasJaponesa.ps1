@@ -6,29 +6,31 @@ $listaDeArtistas = @(
 
 function verificarPlataforma {
     Write-Host -ForegroundColor yellow "Parece que vocÃª deseja saber a plataforma"
-    Start-Sleep -Seconds 2
+    #Start-Sleep -Seconds 2
     $plataforma = $PSEdition
     if ($plataforma -match 'desktop') {
         Write-Host -ForegroundColor red "Windows concerteza!"
-        Start-Sleep -Seconds 1
-        $areaDeTrabalhos = "$env:USERPROFILE/Desktop"
+        #Start-Sleep -Seconds 1
+        $diretorios = "$env:USERPROFILE/Desktop"
         #$areaDeTrabalho
         Return $areaDeTrabalhos
     }
     else {
         Write-Host -ForegroundColor red "Linux Ã© pai!"
-        Start-Sleep -Seconds 1
+        #Start-Sleep -Seconds 1
 
-        $areaDeTrabalhos="$env:HOME/Área de Trabalho"
+        $areaDeTrabalhoUsuario = "~"
         #set-location $areaDeTrabalho
         #get-item -Path $areaDeTrabalho
         #Start-Sleep -Seconds 5
-        #write-Host -ForegroundColor green $areaDeTrabalho
-        Return $areaDeTrabalhos
+        #write-Host -ForegroundColor green $areaDeTrabalhos
+        Return $areaDeTrabalhoUsuario
     }
 }
 
 $areaDeTrabalho = verificarPlataforma
+
+
 
 function tocar {
     param(
@@ -41,7 +43,7 @@ function tocar {
             mpv https://www.youtube.com/watch?v=$musica
         }
         else {
-            Write-Host "Musica atual > $musica" -ForegroundColor DarkBlue
+            Write-Host "Musica atual $album > $musica" -ForegroundColor DarkBlue
             mpv --window-minimized=yes https://www.youtube.com/watch?v=$musica
         }
     }
@@ -56,6 +58,8 @@ while ($true){
     
     $artistaEscolhido = Read-Host -Prompt ':'
     try {
+        $pastaBase = join-Path -Path $areaDeTrabalho -ChildPath "Área de Trabalho/powershell/bibliotecas"
+        Get-Content $pastaBase/hiroTakahashi.ps1
         if ([int]$artistaEscolhido -and $artistaEscolhido -le $listaDeArtistas.count){
             Write-Host 'Tudo certo' -Foreground Cyan
             
@@ -73,11 +77,15 @@ while ($true){
                     }
                     while ($true){
                         $albumEscolhido = Read-Host -Prompt ':'
+
                         if ($albumEscolhido){
+
+                        Start-Sleep -Seconds 5
                             try {
                                 if ([int]$albumEscolhido -and [int]$albumEscolhido -le $albunsHiroTakahashi.count){
                                     #. ../hiroTakahashi.ps1
-                                    . $areaDeTrabalho/powershell/bibliotecas/hiroTakahashi.ps1
+                                    . $pastaBase/hiroTakahashi.ps1
+
                                     Switch ($albumEscolhido){
                                         1 {
                                             tocar $($albunsHiroTakahashi[0]).ToUpper() $itsumojio
@@ -89,17 +97,23 @@ while ($true){
                                             Write-Host "CAIU NO 2" -ForegroundColor red
                                             # Aqui vocÃª poderia chamar a funÃ§Ã£o `tocar` com a lista de mÃºsicas do Ã¡lbum 2
                                         }
-                                    }
                                     Default {
                                             write-Host -ForegroundColor yellow "Não sei o que deu"
                                     }
+
+                                    }
+
+
                                 }
                                 else {
-                                    Write-Host "Escolha uma opÃ§Ã£o correspondente" -ForegroundColor red
+                                    Write-Host "Escolha uma opcao correspondente $areaDeTrabalho" -ForegroundColor red
                                 }
                             }
                             catch {
-                                Write-Host "Escolha uma opÃ§Ã£o correspondente" -ForegroundColor red
+                                Write-Host "Escolha uma opcao correspondente $areaDeTrabalho" -ForegroundColor red
+                                #set-location $areaDeTrabalho
+                                #get-location
+                                Start-Sleep -Seconds 5
                             }
                         }
                     }
@@ -124,7 +138,8 @@ while ($true){
                             try {
                                 if ([int]$albumEscolhido -and [int]$albumEscolhido -le $albunsAkeboshi.count){
                                     #. ../hiroTakahashi.ps1
-                                    . $areaDeTrabalho/powershell/bibliotecas/akeboshi.ps1
+
+                                    . $pastaBase/akeboshi.ps1
                                     Switch ($albumEscolhido){
                                         1 {
                                             tocar $($albunsAkeboshi[0]).ToUpper() $roundabout
@@ -183,10 +198,10 @@ while ($true){
                             try {
                                 if ([int]$albumEscolhido -and [int]$albumEscolhido -le $albunsNico.count){
                                     #. ../hiroTakahashi.ps1
-                                    . $areaDeTrabalho/powershell/bibliotecas/nico.ps1
+                                    . $pastaBase/nico.ps1
                                     Switch ($albumEscolhido){
                                         1 {
-                                            tocar $nico
+                                            tocar $($albunsNico[0]).ToUpper() $nico
                                             Write-Host "CAIU NO 1" -ForegroundColor red
                                             # Aqui vocÃª poderia chamar a funÃ§Ã£o `tocar` com a lista de mÃºsicas do Ã¡lbum 1
                                         }
