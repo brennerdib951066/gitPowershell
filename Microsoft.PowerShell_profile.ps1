@@ -361,10 +361,10 @@ function urlGoogleChrome {
 	)
 	write-host  'Voce chamou' $macroChamado.toupper() -foregroundcolor red,green
 	if(verificandoPlataforma){
-		start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador -RedirectStandardError /dev/null
+		start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador -RedirectStandardOutput /dev/null
 	}
 	else {
-		start-process google-chrome-stable -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador -RedirectStandardError /dev/null
+		Start-Job -ScriptBlock { Start-Process google-chrome-stable -ArgumentList --start-maximized,--profile-directory=$($args[0]),$($args[1]);exit } -ArgumentList $userProfile,$urlNavegador
 	}
 }
 Set-PSReadLineKeyHandler -Chord Ctrl+w -ScriptBlock {urlGoogleChrome 'DIB' 'https://web.whatsapp.com/' 'whatsApp'}
