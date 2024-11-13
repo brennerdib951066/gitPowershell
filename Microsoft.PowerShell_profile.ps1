@@ -666,3 +666,28 @@ else {
 	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
 }
 
+if (verificandoPlataforma){
+	# Adicionando diretorios no PATH do sistema
+	Write-Host -Foregroundcolor blue "Adicionando seus path"
+	Start-Sleep -Seconds 1
+	$diretoriosPath = @(
+	"$env:USERPROFILE\Desktop",
+	"$env:USERPROFILE\Desktop\powershell",
+	"$env:USERPROFILE\Desktop\py"
+	)
+
+	foreach ($diretorio in $diretoriosPath){
+		Write-Host -Foregroundcolor green "$diretorio"
+		if ($env:PATH -split ';' | Where-Object { $_ -eq $diretorio }) {
+			#Write-Output "O $diretorio já está no PATH."
+			Continue
+		} else {
+			[System.Environment]::SetEnvironmentVariable("Path", "$env:Path;$diretorio", [System.EnvironmentVariableTarget]::User)
+		}
+
+	}
+}
+
+
+
+
