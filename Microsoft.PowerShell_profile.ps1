@@ -673,7 +673,13 @@ if (verificandoPlataforma){
 	$diretoriosPath = @(
 	"$env:USERPROFILE\Desktop",
 	"$env:USERPROFILE\Desktop\powershell",
-	"$env:USERPROFILE\Desktop\py"
+	"$env:USERPROFILE\Desktop\py",
+	"C:\Program Files\Kate\bin",
+	"C:\Program Files\Flameshot\bin",
+	"C:\Program Files\REAPER (x64)",
+	"C:\Program Files\Google\Chrome\Application\",
+	"C:\Program Files\Typora",
+	"C:\Program Files\obs-studio\bin\64bit"
 	)
 
 	foreach ($diretorio in $diretoriosPath){
@@ -682,6 +688,7 @@ if (verificandoPlataforma){
 			#Write-Output "O $diretorio já está no PATH."
 			Continue
 		} else {
+			Write-Host -ForegroundColor red "Falatava esse diretorio $diretorio"
 			[System.Environment]::SetEnvironmentVariable("Path", "$env:Path;$diretorio", [System.EnvironmentVariableTarget]::User)
 		}
 
