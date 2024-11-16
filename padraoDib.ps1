@@ -35,10 +35,12 @@ For ($a = 0;$a -le $nomeArquivoMarkdown.Length;$a++) {
     For ($d = 1; $d -le $dias.Length;$d++){
     $nomeMarkdown = $nomeArquivoMarkdown[$a].Replace(' ','_')
     Write-Host "Seu arquivo agora é $nomeMarkdown"
-    Start-Sleep -Seconds 2
+    $cabecalhoAtual = ($($nomeArquivoMarkdown[$a])).ToUpper()
+    #Start-Sleep -Seconds 2
+    if ($d -eq 1) {
 @"
-##($($nomeArquivoMarkdown[$a])).ToUpper() $(Get-Date -UFormat +%d-%m-%Y)
-# ${d}-$(Get-Date -UFormat +%m-%Y)
+## ${cabecalhoAtual} $(Get-Date -UFormat +%B)
+#### ${d}-$(Get-Date -UFormat +%m-%Y)
 - [ ] Exemplo 1
 - [ ] Exemplo 2
 - [ ] Exemplo 3
@@ -48,10 +50,28 @@ For ($a = 0;$a -le $nomeArquivoMarkdown.Length;$a++) {
 - [ ] Exemplo 7
 - [ ] Exemplo 8
 - [ ] Exemplo 9
-"@ |  Out-File "${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -Encoding utf8
+"@ |  Out-File "${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md".ToLower() -Encoding utf8 -Append
+    } # IF para verificar se o cabeçalho é 1
+    else {
+@"
+#### ${d}-$(Get-Date -UFormat +%m-%Y)
+- [ ] Exemplo 1
+- [ ] Exemplo 2
+- [ ] Exemplo 3
+- [ ] Exemplo 4
+- [ ] Exemplo 5
+- [ ] Exemplo 6
+- [ ] Exemplo 7
+- [ ] Exemplo 8
+- [ ] Exemplo 9
+"@ |  Out-File "${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md".ToLower() -Encoding utf8 -Append
+    } # ELSE para verificar se o valor da $d for maior que 1
+
     } # FOR $D
+    Start-Process Typora  "${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
 } # For criando os arquivos de markdown
-Typora  "listaDeTarefasAFazer_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md"
+
+
 
 }
 
@@ -94,6 +114,7 @@ $plataforma = verificarPlataforma
 if ($plataforma -match 'windows') {
     Write-Host -ForegroundColor red "Seu sistema é $plataforma"
     Start-Sleep -Seconds 2
+    # Verificando se exsite o typora
     Try {
         Get-Package -Name typora -ErrorAction Stop | Out-Null # Mandando a saida padrão para o além
     }
@@ -137,9 +158,12 @@ catch {
     Write-Host -ForegroundColor yellow "$meses"
     Set-Location $diretorioHomeNextcloud # Entrando no diretorio apos criado
     For ($i = 1;$i -le $meses.Length;$i++){
-        New-Item -Type Directory -Path "0${i}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y)" | Out-Null
-        Write-Host -ForegroundColor yellow "0${i}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y)"
-        Start-Sleep -Seconds 2
+
+        if (-not(Test-Path "0${i}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y)")){
+            New-Item -Type Directory -Path "0${i}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y)" | Out-Null
+            Write-Host -ForegroundColor yellow "0${i}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y)"
+            Start-Sleep -Seconds 2
+        }
 
     }
     criarMarkdown # Chamndo a função que criará os arquivos em markdown
