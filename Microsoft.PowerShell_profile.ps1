@@ -666,7 +666,7 @@ else {
 	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
 }
 
-if (verificandoPlataforma){
+<# if (verificandoPlataforma){
 	# Adicionando diretorios no PATH do sistema
 	Write-Host -Foregroundcolor blue "Adicionando seus path"
 	Start-Sleep -Seconds 1
@@ -694,7 +694,9 @@ if (verificandoPlataforma){
 
 	}
 }
+#>
 
+Set-PSReadlineKeyHandler -Chord Ctrl+o -ScriptBlock {peek}
 
 
 
