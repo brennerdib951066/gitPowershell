@@ -97,8 +97,8 @@ For ($a = 0;$a -le $nomeArquivoMarkdown.Length-1;$a++) {
 else {
     for ($m = 0;$m -le $nomeArquivoMarkdown.Length-1;$m++){
         $nomeMarkdown = $nomeArquivoMarkdown[$m].Replace(' ','_')
-        #$nomeMarkdown
-        Start-Process typora  "$diretorioHomeNextcloud/${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
+        "${diretorioHomeNextcloud}/${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md"
+        Start-Process typora  "${diretorioHomeNextcloud}/${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
     }
 
 }
