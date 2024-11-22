@@ -21,17 +21,40 @@ Criar arquivos e pastas para deixar no home com um padrão
 
 $diretorioHomeNextcloud = "~/Nextcloud/tudoDoMundoTechLinuxPc/viverBem/cofreAnotacoesViverBem/$(Get-Date -UFormat +%Y)"
 
+# Função para criar os diretorios dos meses
+Function criarDiretoriosMeses {
+    # Criando os meses na varivael escalar
+    $meses = 1..12
+    Write-Host -ForegroundColor yellow "$meses"
+    Set-Location $diretorioHomeNextcloud # Entrando no diretorio apos criado
+    For ($i = 1;$i -le $meses.Length;$i++){
+
+        if (-not(Test-Path "0${i}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y)")){
+            New-Item -Type Directory -Path "0${i}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y)" | Out-Null
+            Write-Host -ForegroundColor yellow "0${i}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y)"
+            Start-Sleep -Seconds 2
+        }
+
+    }
+    criarMarkdown # Chamndo a função que criará os arquivos em markdown
+}
+
 # Função para criar os arquivos markdowns
 
 Function criarMarkdown {
 
+param(
+    $acao
+)
+Write-Host "Sua ACAO $acao"
+Start-Sleep -Seconds 2
 $nomeArquivoMarkdown = @(
     'Lista de tarefas a fazer',
     'Lista de tarefas feitas'
 )
 $dias = 1..31
-
-For ($a = 0;$a -le $nomeArquivoMarkdown.Length;$a++) {
+if (-not($acao -match 'abrir markdown')){
+For ($a = 0;$a -le $nomeArquivoMarkdown.Length-1;$a++) {
     For ($d = 1; $d -le $dias.Length;$d++){
     $nomeMarkdown = $nomeArquivoMarkdown[$a].Replace(' ','_')
     Write-Host "Seu arquivo agora é $nomeMarkdown"
@@ -70,8 +93,15 @@ For ($a = 0;$a -le $nomeArquivoMarkdown.Length;$a++) {
     } # FOR $D
     Start-Process Typora  "${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
 } # For criando os arquivos de markdown
+} # IF de verificar se o parametro contem abrir markdown
+else {
+    for ($m = 0;$m -le $nomeArquivoMarkdown.Length-1;$m++){
+        $nomeMarkdown = $nomeArquivoMarkdown[$m].Replace(' ','_')
+        #$nomeMarkdown
+        Start-Process Typora  "${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
+    }
 
-
+}
 
 }
 
@@ -138,33 +168,18 @@ else {
 
 # Verificando se existe o diretorio com o valor da variavél $DIRETORIOHOMENEXTCLAUD
 # Se Naõ existir criará o diretorio no bloco CATCH
-try {
-    Set-Location $diretorioHomeNextcloud -ErrorAction Stop | Out-Null
-}
-catch {
-    Write-Host -ForegroundColor green "Não encontramos o diretorio, vamos cria-lo "$diretorioHomeNextcloud
-    Start-Sleep -Seconds 1
-
-    Try {
+#try {
+    if (-not(Test-Path $diretorioHomeNextcloud)){
         New-Item -Type Directory -Path $diretorioHomeNextcloud | Out-Null
         Write-Host "Diretorio criado com sucesso!"
+        criarDiretoriosMeses
     }
-    Catch {
-        Write-Host -ForegroundColor Red "Erro ao criar sua pasta"
+    else {
+        Write-Host -ForegroundColor red "Já existe os seus diretorios, acessando o seu arquivo de lista"
+        Write-Host "$diretorioHomeNextcloud/${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md"
+        Start-Sleep -Seconds 2
+        criarMarkdown 'abrir markdown'
+        #Start-Process Typora  "$diretorioHomeNextcloud/${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
     }
+#}# TRY
 
-    # Criando os meses na varivael escalar
-    $meses = 1..12
-    Write-Host -ForegroundColor yellow "$meses"
-    Set-Location $diretorioHomeNextcloud # Entrando no diretorio apos criado
-    For ($i = 1;$i -le $meses.Length;$i++){
-
-        if (-not(Test-Path "0${i}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y)")){
-            New-Item -Type Directory -Path "0${i}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y)" | Out-Null
-            Write-Host -ForegroundColor yellow "0${i}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y)"
-            Start-Sleep -Seconds 2
-        }
-
-    }
-    criarMarkdown # Chamndo a função que criará os arquivos em markdown
-}
