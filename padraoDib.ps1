@@ -98,7 +98,7 @@ else {
     for ($m = 0;$m -le $nomeArquivoMarkdown.Length-1;$m++){
         $nomeMarkdown = $nomeArquivoMarkdown[$m].Replace(' ','_')
         #$nomeMarkdown
-        Start-Process Typora  "${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
+        Start-Process typora  "${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
     }
 
 }
