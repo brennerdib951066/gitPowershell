@@ -91,14 +91,14 @@ For ($a = 0;$a -le $nomeArquivoMarkdown.Length-1;$a++) {
     } # ELSE para verificar se o valor da $d for maior que 1
 
     } # FOR $D
-    Start-Process typora  "${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
+    Start-Process typora  "$diretorioHomeNextcloud/${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
 } # For criando os arquivos de markdown
 } # IF de verificar se o parametro contem abrir markdown
 else {
     for ($m = 0;$m -le $nomeArquivoMarkdown.Length-1;$m++){
         $nomeMarkdown = $nomeArquivoMarkdown[$m].Replace(' ','_')
         #$nomeMarkdown
-        Start-Process typora  "${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
+        Start-Process typora  "$diretorioHomeNextcloud/${nomeMarkdown}_$(Get-Date -UFormat +%B)_$(Get-Date -UFormat +%Y).md" -ErrorAction Ignore
     }
 
 }
