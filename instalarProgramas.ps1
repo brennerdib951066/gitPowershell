@@ -52,6 +52,7 @@ $plataforma = $PSEdition
 ForEach ($programaAtual in $listaDeProgramas){
     if (-not($plataforma -match 'desktop')){
         sudo apt install $programaAtual
+        continue
     }
     winget install $programaAtual
 }
