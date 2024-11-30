@@ -56,7 +56,7 @@ $listaDeProgramasWindows = @(
     'libreoffice',
     'Valve.Stean',                  # STEAN
     'kate',
-    'visual'                        # VISUAL STUDIO
+    'visual',                       # VISUAL STUDIO
     'asio4all'                      # ASIO REPAER
 )
 $plataforma = $PSEdition
