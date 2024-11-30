@@ -35,26 +35,38 @@
 .DESCRIPTION 
  instalar programas via winget ou via apt do linux
 
-#> 
-$listaDeProgramas = @(
-    'typora',                 # TYPORA
+#>
+$listaDeProgramasLinux = @(
+    'typora',
     'flameshot',
-    'reaper',                 # Reaper
+    'google-chrome-stable'
+    'obs-studio',
+    'kate',
+    'code'
+)
+
+$listaDeProgramasWindows = @(
+    'typora',                       # TYPORA
+    'flameshot',
+    'reaper',                       # Reaper
     'XP8BV7F2CT4LDK',               # GOOGLE CHROME
     'XPFFH613W8V6LV',               # OBS STUDIO
     'XP8CD3D3Q50MS2',               # PEEK
     'AnyDeskSoftwareGmbH.AnyDesk',  # ANYDESK
     'libreoffice',
-    'Valve.Stean'
+    'Valve.Stean',                  # STEAN
+    'kate',
+    'visual'                        # VISUAL STUDIO
 )
 $plataforma = $PSEdition
 
-ForEach ($programaAtual in $listaDeProgramas){
-    if (-not($plataforma -match 'desktop')){
+if (-not($plataforma -match 'desktop')){
+    ForEach ($programaAtual in $listaDeProgramasLinux){
         sudo apt install $programaAtual
-        continue
     }
-    winget install $programaAtual
-}
-
-
+} # IF $PLATAFORMA
+else {
+    ForEach ($programaAtual in $listaDeProgramasWindows){
+        winget install $programaAtual
+    }
+} # ELSE $PLATAFORMA
