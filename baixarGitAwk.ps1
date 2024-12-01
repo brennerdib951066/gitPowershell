@@ -24,19 +24,20 @@ $nomeArquivoLog = 'logGitAwk.txt'
 $plataforma = $PSEdition
 
 if ($plataforma -match 'desktop'){
-    $diretorioPadrao = 'desktop'
+    $diretorioPadrao = Join-Path -Path $env:$HOMEPROFILE -ChildPath 'Desktop'
 }
 else {
-    $diretorioPadrao = 'Área de Trabalho'
+    $diretorioPadrao = Join-Path -Path $env:$HOME -ChildPath 'Área de Trabalho'
 }
-$notificacao = "~/$diretorioPadrao/powershell/notificarWhatsApp.ps1"
-Remove-Item -Path "~/$diretorioPadrao/$nomeArquivoLog"
+$notificacao = "$diretorioPadrao/powershell/notificarWhatsApp.ps1"
+Remove-Item -Path "$diretorioPadrao/$nomeArquivoLog" -ErrorAction Ignore
 ForEach ($arquivo in $arquivosGit){
     Write-Host -ForegroundColor red $arquivo
     #Start-Sleep -Seconds 5
     Try {
-        Wget -O ~/$diretorioPadrao/powershell/$arquivo "https://raw.githubusercontent.com/brennerdib951066/gitAwk/refs/heads/main/$arquivo"  -ErrorAction Stop
-        Write-Output "$arquivo $(Get-Date -UFormat +%d-%m-%Y)" | Out-File -Append -Encoding utf8 ~/$diretorioPadrao/$nomeArquivoLog
+        wget -O "$diretorioPadrao/awk/$arquivo" "https://raw.githubusercontent.com/brennerdib951066/gitAwk/refs/heads/main/$arquivo"  -ErrorAction Stop
+        #Start-Sleep -Seconds 5
+        Write-Output "$arquivo $(Get-Date -UFormat +%d-%m-%Y)" | Out-File -Append -Encoding utf8 "$diretorioPadrao/$nomeArquivoLog"
     }
     Catch {
         Write-Host -ForegroundColor red "ERRO"
@@ -50,4 +51,4 @@ ForEach ($arquivo in $arquivosGit){
 # Enviando notificação para o celuar caso tenha sido sucesso
 . $notificacao
 notificarWhatsApp "*O backup dos seus arquivos, feitos via ScheduledTaskTrigger do windows AWK foram efeituados com sucesso*".Toupper() '385910829'
-Start-Sleep -Seconds 2
+#Start-Sleep -Seconds 2
