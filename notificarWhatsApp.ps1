@@ -6,7 +6,7 @@ Function notificarWhatsApp {
     )
     $cabecalho = @{
         "Content-Type" = "application/json"
-        "API-KEY" = "374ed645-c62f-4d21-8f18-d85448be68ac"
+        "API-KEY" = "c7e572f0-c17b-4304-9478-b68641234d6c"
     }
 
     $corpo = @{
