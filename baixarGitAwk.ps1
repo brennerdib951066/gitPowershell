@@ -20,7 +20,7 @@ $arquivosGit = @(
     'subscriber.awk',
     'tratarDados.awk'
 )
-
+$nomeArquivoLog = 'logGitAwk.txt'
 $plataforma = $PSEdition
 
 if ($plataforma -match 'desktop'){
@@ -30,12 +30,13 @@ else {
     $diretorioPadrao = 'Área de Trabalho'
 }
 $notificacao = "~/$diretorioPadrao/powershell/notificarWhatsApp.ps1"
+Remove-Item -Path "~/$diretorioPadrao/$nomeArquivoLog"
 ForEach ($arquivo in $arquivosGit){
     Write-Host -ForegroundColor red $arquivo
     #Start-Sleep -Seconds 5
     Try {
         Wget -O ~/$diretorioPadrao/powershell/$arquivo "https://raw.githubusercontent.com/brennerdib951066/gitAwk/refs/heads/main/$arquivo"  -ErrorAction Stop
-        Write-Output "$arquivo $(Get-Date -UFormat +%d-%m-%Y)" | Out-File -Encoding utf8 ~/$diretorioPadrao/logGitAwk.txt
+        Write-Output "$arquivo $(Get-Date -UFormat +%d-%m-%Y)" | Out-File -Append -Encoding utf8 ~/$diretorioPadrao/$nomeArquivoLog
     }
     Catch {
         Write-Host -ForegroundColor red "ERRO"
@@ -48,5 +49,5 @@ ForEach ($arquivo in $arquivosGit){
 #Write-Host -ForegroundColor red "Você está na ultima linha"
 # Enviando notificação para o celuar caso tenha sido sucesso
 . $notificacao
-notificarWhatsApp "*O backup dos seus arquivos, feitos via ScheduledTaskTrigger efeituados com sucesso*".Toupper() '385910829'
+notificarWhatsApp "*O backup dos seus arquivos, feitos via ScheduledTaskTrigger do windows AWK foram efeituados com sucesso*".Toupper() '385910829'
 Start-Sleep -Seconds 2
