@@ -34,8 +34,8 @@ $arquivoSh = @(
     'notificacaoPlanilha.sh'
 )
 $diretorios = @(
-    'testeAwk',
-    'testeSh'
+    'awk',
+    'sh'
 )
 $listaCompleto = @(
     $arquivosAwk,
@@ -91,6 +91,20 @@ ForEach ($repositorio in $listaCompleto){
                             exit
                     }
                 } # "SHHHHH"
+                '*.bashrc' {
+                    Try {
+                        Write-Host -ForegroundColor Red "SH $arquivoAtual"
+                        Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[1])"
+                        wget -O "$diretorioPadrao/$($diretorios[1])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitShell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                        break
+                    } # TRY BAHRC
+                    Catch {
+                            # Notificando via botConversa se der erro
+
+                            notificarWhatsApp "error no ai buscar seus arquivos em shell no $sistemaOperacional".Tolower() '385910829'
+                            exit
+                    }
+                } # "BAHRCCCCC"
             } # SWITCH
         } # FOR ARQUIVO ATUAL
 } # FOR ARQUIVO REPOESIOTORIO
