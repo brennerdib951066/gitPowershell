@@ -1,4 +1,4 @@
-$arquivosGit = @(
+$arquivosAwk = @(
     'arquivo.awk',
     'buscandoEmAwk.awk',
     'buscandoFiltrosViverBem.awk',
@@ -20,35 +20,80 @@ $arquivosGit = @(
     'subscriber.awk',
     'tratarDados.awk'
 )
+$arquivoSh = @(
+    '.bashrc',
+    'apiBubble.sh',
+    'buscandoFeedsYoutube.sh',
+    'criarPerfilgoofle.sh',
+    'descompactar.sh',
+    'googleChromeDefault.sh',
+    'inputDevice.sh',
+    'instalador.sh',
+    'moverArquivo.sh',
+    'mudancaLocale.sh',
+    'notificacaoPlanilha.sh'
+)
+$diretorios = @(
+    'testeAwk',
+    'testeSh'
+)
+$listaCompleto = @(
+    $arquivosAwk,
+    $arquivoSh
+)
+
 $nomeArquivoLog = 'logGitAwk.txt'
 $plataforma = $PSEdition
 
 if ($plataforma -match 'desktop'){
-    $diretorioPadrao = Join-Path -Path $env:$HOMEPROFILE -ChildPath 'Desktop'
+    $diretorioPadrao = Join-Path -Path $env:HOMEPATH -ChildPath 'Desktop'
+    $sistemaOperacional = "windows"
+    $sistemaJob = "SCHEDULEDTASKTRIGGER"
 }
 else {
-    $diretorioPadrao = Join-Path -Path $env:$HOME -ChildPath 'Área de Trabalho'
+    $diretorioPadrao = Join-Path -Path $env:HOME -ChildPath 'Área de Trabalho'
+    $sistemaOperacional = "linux"
+    $sistemaJob = "CRONTAB"
 }
 $notificacao = "$diretorioPadrao/powershell/notificarWhatsApp.ps1"
-Remove-Item -Path "$diretorioPadrao/$nomeArquivoLog" -ErrorAction Ignore
-ForEach ($arquivo in $arquivosGit){
-    Write-Host -ForegroundColor red $arquivo
-    #Start-Sleep -Seconds 5
-    Try {
-        wget -O "$diretorioPadrao/awk/$arquivo" "https://raw.githubusercontent.com/brennerdib951066/gitAwk/refs/heads/main/$arquivo"  -ErrorAction Stop
-        #Start-Sleep -Seconds 5
-        Write-Output "$arquivo $(Get-Date -UFormat +%d-%m-%Y)" | Out-File -Append -Encoding utf8 "$diretorioPadrao/$nomeArquivoLog"
-    }
-    Catch {
-        Write-Host -ForegroundColor red "ERRO"
-      . $notificacao
-      notificarWhatsApp "*Erro ao executar o salvamento do git $arquivo no windows*".Tolower() '385910829'
-      exit
-    }
-} # FOREACH
-
-#Write-Host -ForegroundColor red "Você está na ultima linha"
-# Enviando notificação para o celuar caso tenha sido sucesso
 . $notificacao
-notificarWhatsApp "*O backup dos seus arquivos, feitos via ScheduledTaskTrigger do windows AWK foram efeituados com sucesso*".Toupper() '385910829'
-#Start-Sleep -Seconds 2
+#Remove-Item -Path "$diretorioPadrao/$nomeArquivoLog" -ErrorAction Ignore
+ForEach ($repositorio in $listaCompleto){
+        #Write-Host ForegroudColor Red $repositorio
+        ForEach ($arquivoAtual in $repositorio.split(" ")) {
+            Switch -Wildcard ($arquivoAtual){
+                '*.awk' {
+                    Write-Host -ForegroundColor Red "AWK $arquivoAtual"
+                    Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[0])"
+                    #Start-Sleep -Seconds 5
+                        Try {
+                            wget -O "$diretorioPadrao/$($diretorios[0])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitAwk/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                            break
+                        } # TRY AWK
+                        Catch {
+                            # Notificando via botConversa se der erro
+                            notificarWhatsApp "error no ai buscar seus arquivos em awk no $sistemaOperacional".Tolower() '385910829'
+                            exit
+                        } # CATCH AWK
+
+                } # "AWK"
+                '*.sh' {
+                    Try {
+                        Write-Host -ForegroundColor Red "SH $arquivoAtual"
+                        Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[1])"
+                        wget -O "$diretorioPadrao/$($diretorios[1])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitShell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                        break
+                    } # TRY SH
+                    Catch {
+                            # Notificando via botConversa se der erro
+
+                            notificarWhatsApp "error no ai buscar seus arquivos em shell no $sistemaOperacional".Tolower() '385910829'
+                            exit
+                    }
+                } # "SHHHHH"
+            } # SWITCH
+        } # FOR ARQUIVO ATUAL
+} # FOR ARQUIVO REPOESIOTORIO
+# NOTIFICAR VIA BOTCONVERSA SE FOR UM SUCESSO TODOS AS REQUISIÇÕES
+
+notificarWhatsApp "*O backup de seus arquivos foi realizado com sucesso no $sistemaOperacional pelo $sistemaJob*".ToUpper() '385910829'
