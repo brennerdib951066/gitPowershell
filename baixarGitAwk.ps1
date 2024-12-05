@@ -58,15 +58,26 @@ $arquivoPowerhsell = @(
     'relatorioDiarioLinux.ps1',
     'verificarPlataforma.ps1'
 )
+$arquivoVbs = @(
+    'bubble.vbs',
+    'flameshot.vbs',
+    'gitAwk.vbs',
+    'moverArquivosAreaDeTrabalho.vbs',
+    'powershell.vbs',
+    'profile.vbs',
+    'relatorioDiarioViverBem.vbs'
+)
 $diretorios = @(
     'awk',
     'sh',
-    'powershell'
+    'powershell',
+    'vbs'
 )
 $listaCompleto = @(
     $arquivosAwk,
     $arquivoSh,
-    $arquivoPowerhsell
+    $arquivoPowerhsell,
+    $arquivoVbs
 )
 
 $nomeArquivoLog = 'logGitAwk.txt'
@@ -85,6 +96,8 @@ else {
 $notificacao = "$diretorioPadrao/powershell/notificarWhatsApp.ps1"
 . $notificacao
 
+notificarWhatsApp "*O backup de seus arquivos foi realizado com sucesso no $sistemaOperacional pelo $sistemaJob*".ToUpper() '385910829'
+exit
 # Verificando se existe a pasta ou diretorio na área de trabalho do usuário
 ForEach ($diretorioAtual in $diretorios){
     if (-not(Test-Path "$diretorioPadrao/$diretorioAtual")){
@@ -158,6 +171,20 @@ ForEach ($repositorio in $listaCompleto){
                             exit
                     } # CACTH PS1
                 } # "PS1"
+                '*.vbs' {
+                    Try {
+                        Write-Host -ForegroundColor Red "VBS $arquivoAtual"
+                        Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[3])"
+                        wget -O "$diretorioPadrao/$($diretorios[3])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                        break
+                    } # TRY VBS
+                    Catch {
+                            # Notificando via botConversa se der erro
+
+                            notificarWhatsApp "error no ai buscar seus arquivos em shell no $sistemaOperacional".Tolower() '385910829'
+                            exit
+                    } # CACTH VBS
+                } # "VBS"
             } # SWITCH
         } # FOR ARQUIVO ATUAL
 } # FOR ARQUIVO REPOESIOTORIO
