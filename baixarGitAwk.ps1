@@ -148,7 +148,7 @@ ForEach ($repositorio in $listaCompleto){
                     Try {
                         Write-Host -ForegroundColor Red "PS1 $arquivoAtual"
                         Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[2])"
-                        wget -O "$diretorioPadrao/$($diretorios[2])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitShell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                        wget -O "$diretorioPadrao/$($diretorios[2])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
                         break
                     } # TRY PS1
                     Catch {
