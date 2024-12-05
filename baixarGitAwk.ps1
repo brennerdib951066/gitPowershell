@@ -81,6 +81,7 @@ $listaCompleto = @(
 )
 
 $nomeArquivoLog = 'logGitAwk.txt'
+$versao = '1.0.1'
 $plataforma = $PSEdition
 
 if ($plataforma -match 'desktop'){
@@ -190,4 +191,4 @@ ForEach ($repositorio in $listaCompleto){
 } # FOR ARQUIVO REPOESIOTORIO
 # NOTIFICAR VIA BOTCONVERSA SE FOR UM SUCESSO TODOS AS REQUISIÇÕES
 
-notificarWhatsApp "*O backup de seus arquivos foi realizado com sucesso no $sistemaOperacional pelo $sistemaJob*".ToUpper() '385910829'
+notificarWhatsApp "*O backup de seus arquivos foi realizado com sucesso no $sistemaOperacional pelo $sistemaJob\n$versao*".Tolower() '385910829'
