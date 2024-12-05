@@ -14,7 +14,13 @@ Function notificarWhatsApp {
         "value" = "$mensagem"
     }
     $corpo = $corpo | ConvertTo-Json
-    (Invoke-WebRequest -Uri https://backend.botconversa.com.br/api/v1/webhook/subscriber/$idSubcriber/send_message/ -Method Post -Headers $cabecalho -Body $corpo).content
+
+    Try {
+        (Invoke-WebRequest -Uri https://backend.botconversa.com.br/api/v1/webhook/subscriber/$idSubcriber/send_message/ -Method Post -Headers $cabecalho -Body $corpo -ErrorAction Stop).content
+    }
+    Catch {
+        Write-Host -ForegroundColor red "erro fatal".ToUpper()
+    }
 }
 
 #notificarWhatsApp 'aqui é um teste com powershell no DEBIAN'.Tolower() '379274836'
