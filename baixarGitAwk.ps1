@@ -33,13 +33,40 @@ $arquivoSh = @(
     'mudancaLocale.sh',
     'notificacaoPlanilha.sh'
 )
+$arquivoPowerhsell = @(
+    'Microsoft.PowerShell_profile.ps1',
+    'abriBubble.ps1',
+    'abriFlameshot.ps1',
+    'abrirProfileUser.ps1',
+    'baixarGitAwk.ps1',
+    'buscandoAlias.ps1',
+    'criarDesktopPadrao.ps1',
+    'criarPath.ps1',
+    'filtrosBubble.ps1',
+    'hiroKasahara.ps1',
+    'instalarProgramas.ps1',
+    'mandarAvisoBubble.ps1',
+    'moverArquivos.ps1',
+    'moverItens.ps1',
+    'musicasJaponesa.ps1',
+    'notificarNtfy.ps1',
+    'notificarTelegram.ps1',
+    'notificarWhatsApp.ps1',
+    'padraoDib.ps1',
+    'permissaoAdministrativo.ps1',
+    'relatorioDiario.ps1',
+    'relatorioDiarioLinux.ps1',
+    'verificarPlataforma.ps1'
+)
 $diretorios = @(
     'awk',
-    'sh'
+    'sh',
+    'powershell'
 )
 $listaCompleto = @(
     $arquivosAwk,
-    $arquivoSh
+    $arquivoSh,
+    $arquivoPowerhsell
 )
 
 $nomeArquivoLog = 'logGitAwk.txt'
@@ -117,6 +144,20 @@ ForEach ($repositorio in $listaCompleto){
                             exit
                     }
                 } # "BAHRCCCCC"
+                '*.ps1' {
+                    Try {
+                        Write-Host -ForegroundColor Red "PS1 $arquivoAtual"
+                        Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[2])"
+                        wget -O "$diretorioPadrao/$($diretorios[2])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitShell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                        break
+                    } # TRY PS1
+                    Catch {
+                            # Notificando via botConversa se der erro
+
+                            notificarWhatsApp "error no ai buscar seus arquivos em shell no $sistemaOperacional".Tolower() '385910829'
+                            exit
+                    } # CACTH PS1
+                } # "PS1"
             } # SWITCH
         } # FOR ARQUIVO ATUAL
 } # FOR ARQUIVO REPOESIOTORIO
