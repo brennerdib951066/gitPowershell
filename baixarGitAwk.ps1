@@ -175,7 +175,7 @@ ForEach ($repositorio in $listaCompleto){
                     Try {
                         Write-Host -ForegroundColor Red "VBS $arquivoAtual"
                         Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[3])"
-                        wget -O "$diretorioPadrao/$($diretorios[3])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                        wget -O "$diretorioPadrao/$($diretorios[3])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitVbs/refs/heads/main/$arquivoAtual" -ErrorAction Stop
                         break
                     } # TRY VBS
                     Catch {
