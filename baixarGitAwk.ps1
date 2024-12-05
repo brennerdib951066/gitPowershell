@@ -96,8 +96,8 @@ else {
 $notificacao = "$diretorioPadrao/powershell/notificarWhatsApp.ps1"
 . $notificacao
 
-notificarWhatsApp "*O backup de seus arquivos foi realizado com sucesso no $sistemaOperacional pelo $sistemaJob*".ToUpper() '385910829'
-exit
+#notificarWhatsApp "*O backup de seus arquivos foi realizado com sucesso no $sistemaOperacional pelo $sistemaJob*".ToUpper() '385910829'
+#exit
 # Verificando se existe a pasta ou diretorio na área de trabalho do usuário
 ForEach ($diretorioAtual in $diretorios){
     if (-not(Test-Path "$diretorioPadrao/$diretorioAtual")){
