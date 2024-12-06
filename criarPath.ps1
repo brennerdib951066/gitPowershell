@@ -44,7 +44,9 @@ $programas = @(
     'C:\Program Files\obs-studio\bin\64bit\',
     "$env:USERPROFILE\AppData\Local\Programs\Peek\",
     'C:\Program Files\LibreOffice\program\',
-    "$env:USERPROFILE\Desktop\powershell"
+    "$env:USERPROFILE\Desktop\powershell",
+    "C:\Program Files (x86)\AnyDesk",
+    "C:\Program Files\REAPER (x64)\"
 )
 
 ForEach ($programa in $programas){
