@@ -630,8 +630,8 @@ $texto = @"
 # Aqui vem o nome que você deseja que alias tenha
 $novoNomeAlias = @(
 	'nitem',
-	'cat',
-	'nsp'
+	'cat'
+	#'nsp'
 )
 # Aqui é o nome dos CMD LET
 $nomeCMDLet = @(
@@ -698,5 +698,23 @@ else {
 
 Set-PSReadlineKeyHandler -Chord Ctrl+o -ScriptBlock {peek}
 
+# Função para criar arquivos em ps1
+
+Function nsp {
+	Try {
+		New-ScriptFileInfo -Path $($args[0]) -Description $($args[1]) -ErrorAction Stop
+		kate $($args[0])
+		Write-Host -ForegroundColor green $($args[0]) $($args[1])
+	}
+	Catch {
+		Write-Host -ForegroundColor red "Já existe o seu script" $($args[0]).ToUpper()
+		kate $($args[0])
+	}
+}
+
+Function meuIpv6 {
+	Write-Host "Seu IPV6 é:" (((ipconfig) | Select-Object -Index 8).Split( ) | Select-Object -Index 16) -ForegroundColor red
+	Write-Host "Seu IPV4" (((ipconfig) | Select-Object -Index 12).Split( ) | Select-Object -Index 21 ) -Foregroundcolor blue
+}
 
 
