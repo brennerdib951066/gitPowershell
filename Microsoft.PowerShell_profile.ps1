@@ -1,6 +1,6 @@
 function verificandoPlataforma(){
-		$plataforma = $PSEdition
-		if ($plataforma.Tolower() -eq 'desktop') {
+		$plataforma = $PSVersionTable.Platform
+		if ($plataforma.Tolower() -eq 'Win32NT') {
 			Write-Host -foregroundcolor red "É WINDOWSSSS"
 			Return $True
 		}
@@ -198,8 +198,8 @@ function telegram{
 
 
 function cdd {
-	$plataforma = $PSEdition
-	if ($plataforma.Tolower() -eq 'desktop') {
+	$plataforma = $PSVersionTable.Platform
+	if ($plataforma.Tolower() -eq 'Win32NT') {
 		cd ~/Desktop
 	}
 	else{
@@ -361,7 +361,7 @@ function urlGoogleChrome {
 	)
 	write-host  'Voce chamou' $macroChamado.toupper() -foregroundcolor red,green
 	if(verificandoPlataforma){
-		start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador -RedirectStandardOutput /dev/null
+		start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador | Out-Null
 	}
 	else {
 		Start-Job -ScriptBlock { Start-Process google-chrome-stable -ArgumentList --start-maximized,--profile-directory=$($args[0]),$($args[1]);exit } -ArgumentList $userProfile,$urlNavegador
@@ -630,14 +630,16 @@ $texto = @"
 # Aqui vem o nome que você deseja que alias tenha
 $novoNomeAlias = @(
 	'nitem',
-	'cat'
+	'cat',
+	'wget'
 	#'nsp'
 )
 # Aqui é o nome dos CMD LET
 $nomeCMDLet = @(
 	'New-Item',
 	'Get-Content',
-	'New-ScriptFileInfo'
+	'New-ScriptFileInfo',
+	'Invoke-WebRequest'
 )
 
 for ($i=0;$i -le $novoNomeAlias.Length-1;$i++){
@@ -657,7 +659,7 @@ for ($i=0;$i -le $novoNomeAlias.Length-1;$i++){
 if (verificandoPlataforma){
 
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
-	wget "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -O "$HOME/Desktop/powershell/$arquivoPs1"
+	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$HOME/Desktop/powershell/$arquivoPs1"
 }
 else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
