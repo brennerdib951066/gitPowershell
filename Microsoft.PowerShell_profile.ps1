@@ -631,15 +631,17 @@ $texto = @"
 $novoNomeAlias = @(
 	'nitem',
 	'cat',
-	'wget'
-	#'nsp'
+	'nsp',
+	'wget',
+	'win'
 )
 # Aqui é o nome dos CMD LET
 $nomeCMDLet = @(
 	'New-Item',
 	'Get-Content',
 	'New-ScriptFileInfo',
-	'Invoke-WebRequest'
+	'Invoke-WebRequest',
+	'winget'
 )
 
 for ($i=0;$i -le $novoNomeAlias.Length-1;$i++){
