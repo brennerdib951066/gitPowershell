@@ -120,7 +120,7 @@ ForEach ($repositorio in $listaCompleto){
                     Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[0])"
                     #Start-Sleep -Seconds 5
                         Try {
-                            wget -O "$diretorioPadrao/$($diretorios[0])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitAwk/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                            wget -OutFile "$diretorioPadrao/$($diretorios[0])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitAwk/refs/heads/main/$arquivoAtual" -ErrorAction Stop
                             break
                         } # TRY AWK
                         Catch {
@@ -134,7 +134,7 @@ ForEach ($repositorio in $listaCompleto){
                     Try {
                         Write-Host -ForegroundColor Red "SH $arquivoAtual"
                         Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[1])"
-                        wget -O "$diretorioPadrao/$($diretorios[1])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitShell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                        wget -OutFile "$diretorioPadrao/$($diretorios[1])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitShell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
                         break
                     } # TRY SH
                     Catch {
@@ -148,7 +148,7 @@ ForEach ($repositorio in $listaCompleto){
                     Try {
                         Write-Host -ForegroundColor Red "SH $arquivoAtual"
                         Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[1])"
-                        wget -O "$diretorioPadrao/$($diretorios[1])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitShell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                        wget -OutFile "$diretorioPadrao/$($diretorios[1])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitShell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
                         break
                     } # TRY BAHRC
                     Catch {
@@ -162,7 +162,7 @@ ForEach ($repositorio in $listaCompleto){
                     Try {
                         Write-Host -ForegroundColor Red "PS1 $arquivoAtual"
                         Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[2])"
-                        wget -O "$diretorioPadrao/$($diretorios[2])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                        wget -OutFile "$diretorioPadrao/$($diretorios[2])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoAtual" -ErrorAction Stop
                         break
                     } # TRY PS1
                     Catch {
@@ -176,7 +176,7 @@ ForEach ($repositorio in $listaCompleto){
                     Try {
                         Write-Host -ForegroundColor Red "VBS $arquivoAtual"
                         Write-Host -ForegroundColor green "$diretorioPadrao/$($diretorios[3])"
-                        wget -O "$diretorioPadrao/$($diretorios[3])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitVbs/refs/heads/main/$arquivoAtual" -ErrorAction Stop
+                        wget -OutFile "$diretorioPadrao/$($diretorios[3])/$arquivoAtual" "https://raw.githubusercontent.com/brennerdib951066/gitVbs/refs/heads/main/$arquivoAtual" -ErrorAction Stop
                         break
                     } # TRY VBS
                     Catch {
