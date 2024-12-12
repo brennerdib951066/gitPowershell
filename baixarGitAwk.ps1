@@ -56,7 +56,8 @@ $arquivoPowerhsell = @(
     'permissaoAdministrativo.ps1',
     'relatorioDiario.ps1',
     'relatorioDiarioLinux.ps1',
-    'verificarPlataforma.ps1'
+    'verificarPlataforma.ps1',
+    'scheduledTask'
 )
 $arquivoVbs = @(
     'bubble.vbs',
