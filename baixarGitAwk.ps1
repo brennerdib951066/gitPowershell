@@ -192,3 +192,4 @@ ForEach ($repositorio in $listaCompleto){
 # NOTIFICAR VIA BOTCONVERSA SE FOR UM SUCESSO TODOS AS REQUISIÇÕES
 
 notificarWhatsApp "*O backup de seus arquivos foi realizado com sucesso no $sistemaOperacional pelo $sistemaJob\n\n$versao*".Tolower() '385910829'
+# TESTE PRA VER SE FOI PARA LINUX VIA WGET SÓ ESTÁ NO WINDOWS
