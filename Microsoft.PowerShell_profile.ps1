@@ -1,11 +1,11 @@
 function verificandoPlataforma(){
-		$plataforma = $PSEdition
-		if ($plataforma.Tolower() -eq 'desktop') {
-			Write-Host -foregroundcolor red "É WINDOWSSSS"
+		##$plataforma = $PSEdition
+		if ($isWindows) {
+			#Write-Host -foregroundcolor red "É WINDOWSSSS"
 			Return $True
 		}
 		else {
-			Write-Host -foregroundcolor red "É LINUXXXXXXXX"
+			#Write-Host -foregroundcolor red "É LINUXXXXXXXX"
 			Return $False
 		}
 }
@@ -13,8 +13,8 @@ function verificandoPlataforma(){
 ################################Função de ações do sistema####################################################################################
 
 function reboot {
-	$plataforma = $PSEdition
-	if ($plataforma.Tolower() -eq 'desktop'){
+	#$plataforma = $PSEdition
+	if ($IsWindows){
 		Restart-Computer -Force
 	}
 	else {
@@ -23,8 +23,8 @@ function reboot {
 
 }
 function poweroff {
-	$plataforma = $PSEdition
-	if ($plataforma.Tolower() -eq 'desktop'){
+	#$plataforma = $PSEdition
+	if ($IsWindows){
 		Stop-Computer -Force
 	}
 	else {
@@ -162,8 +162,8 @@ function planilhaNotificacao {
 	param(
 		$idSheet = '1V5fF38klj31iScKXRML4hEdD0L_hO5gf0NU6Pb9tizc'
 	)
-	$plataforma = $PSEdition
-	if ($plataforma.Tolower() -eq 'desktop'){
+	#$plataforma = $PSEdition
+	if ($IsWindows){
 		Start-Process chrome -ArgumentList --profile-directory=Brenner,https://docs.google.com/spreadsheets/d/$idSheet
 	}
 	else {
@@ -180,8 +180,8 @@ function telegram{
 	param(
 		$urlTelegram = 'https://web.telegram.org/k/'
 	)
-	$plataforma = $PSEdition
-	if ($plataforma.Tolower() -eq 'desktop'){
+	#$plataforma = $PSEdition
+	if ($IsWindows){
 		Start-Process chrome -ArgumentList --profile-directory=Brenner,$urlTelegram
 	}
 	else {
@@ -198,8 +198,8 @@ function telegram{
 
 
 function cdd {
-	$plataforma = $PSEdition
-	if ($plataforma.Tolower() -eq 'desktop') {
+	#$plataforma = $PSEdition
+	if (verificandoPlataforma) {
 		cd ~/Desktop
 	}
 	else{
@@ -411,8 +411,8 @@ Function escrever(){
 }
 
 set-PSReadLineKeyHandler -Chord Ctrl+d -ScriptBlock {
-	$plataforma = $PSEdition
-	if ($plataforma.Tolower() -eq 'desktop') {
+	#$plataforma = $PSEdition
+	if ($IsWindows) {
 		exit
 	}
 
@@ -423,7 +423,7 @@ Function arquivo(){
 	param(
 		$criarArquivo
 	)
-	$plataforma = $PSEdition
+	#$plataforma = $PSEdition
 
 	# Função de criação de arquivos SHELL
 	Function criarShell(){
@@ -431,7 +431,7 @@ Function arquivo(){
 			$nomeArquivo
 		)
 		$plataforma
-		if ($plataforma.Tolower() -eq 'desktop'){
+		if ($IsWindows){
 @'
 $arquivoLogin='/usr/bin/dibScripts/shells/stable/bibliotecas/credenciais/credencial.sh'
 $arquivoCor='/usr/bin/dibScripts/shells/stable/bibliotecas/cor/cores.txt'
@@ -455,7 +455,7 @@ sudo chmod +x "$nomeArquivo"
 		param(
 			$nomeArquivo
 		)
-		if ($plataforma.Tolower() -eq 'desktop'){
+		if ($IsWindows){
 @'
 import pyautogui as bot
 from time import sleep as s
@@ -482,7 +482,7 @@ sudo chmod +x "$nomeArquivo"
 		param(
 			$nomeArquivo
 		)
-		if ($plataforma.Tolower() -eq 'desktop'){
+		if ($IsWindows){
 @'
 BEGIN{
 	FS=","
@@ -528,7 +528,7 @@ chmod +x "$nomeArquivo"
 		)
 $dataAtualMd = $(dataAtual br) + '.md'
 $dataAtual = $(dataAtual br)
-		if ($plataforma.Tolower() -eq 'desktop'){
+		if ($IsWindows){
 
 
 $texto = @"
@@ -600,18 +600,34 @@ Function criarPs1 {
 		$diretorioPadrao = Join-Path -Path $env:HOMEPATH -ChildPath "Desktop"
 		Write-Host "$diretorioPadrao"
 		@"
-$notificar = Join-Path -Path "$diretorioPadrao" -ChildPath notificarWhatsApp.ps1
-"@ | Out-File -FilePath $diretorioPadrao/$criarArquivo -Encoding Utf8
+notificar = Join-Path -Path "$diretorioPadrao" -ChildPath notificarWhatsApp.ps1
+"@ | Out-File -FilePath "$diretorioPadrao/$criarArquivo" -Encoding Utf8
+Start-Process kate "$diretorioPadrao/$criarArquivo"
 	}
 	else {
-		$diretorioPadrao = Join-Path -Path $env:HOME -ChildPath "Área de Trabalho"
-		Write-Host -Foregroundcolor DarkGreen "LINUX"
-		Write-Host $diretorioPadrao
-		@"
+		# Definindo o diretório da área de trabalho
+$diretorioPadrao = Join-Path -Path $env:HOME -ChildPath 'Área de Trabalho'
+Write-Host -ForegroundColor DarkGreen "LINUX"
+Write-Host "$diretorioPadrao"
+
+# Nome do arquivo a ser criado
+$criarArquivo = $criarArquivo
+
+# Caminho completo do arquivo
+$arquivoCaminho = Join-Path -Path $diretorioPadrao -ChildPath $criarArquivo
+
+# Criar o conteúdo e salvar no arquivo
+@"
 notificar = Join-Path -Path "$diretorioPadrao" -ChildPath notificarWhatsApp.ps1
-"@ | Out-File -FilePath $diretorioPadrao/$criarArquivo -Encoding Utf8
+"@ | Out-File -FilePath $arquivoCaminho -Encoding Utf8
+
+# Abrir o arquivo com o Kate, garantindo que o caminho com espaços seja tratado corretamente
+sudo chmod +x "$arquivoCaminho"
+Start-Process "kate" -ArgumentList "`"$arquivoCaminho`""
+
+
 	}
-}
+} # FUNCAO CRIARPS1
 
 
 	if ($criarArquivo){
@@ -630,7 +646,7 @@ notificar = Join-Path -Path "$diretorioPadrao" -ChildPath notificarWhatsApp.ps1
 			} # Opção 3 awk
 			"*.md"{
 					Write-Host 'Seua arquivo é MARKDOWN'
-					criarMarkdown $criarArquivo # chamando a função de criar arquivos em markdown
+					criarMarkdown $criarArquivo # chamando a função de criar arquivos em awk
 			}
 			"*.ps1"{
 					Write-Host 'Seua arquivo é PS1'
@@ -652,8 +668,8 @@ notificar = Join-Path -Path "$diretorioPadrao" -ChildPath notificarWhatsApp.ps1
 # Aqui vem o nome que você deseja que alias tenha
 $novoNomeAlias = @(
 	'nitem',
-	'cat',
-	'nsp'
+	'cat'
+	#'nsp'
 )
 # Aqui é o nome dos CMD LET
 $nomeCMDLet = @(
@@ -679,21 +695,16 @@ for ($i=0;$i -le $novoNomeAlias.Length-1;$i++){
 if (verificandoPlataforma){
 
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
-	wget "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -O "$HOME/Desktop/powershell/$arquivoPs1"
+	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$HOME/Desktop/powershell/$arquivoPs1"
 }
 else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
 	# Configurando para que o powershell ignorar o case dos diretorios
 	$pastaDestino = (Get-ChildItem "$HOME" -Filter "Área de Trabalho" -Directory | Where-Object { $_.Name -ieq "Área de Trabalho" }).FullName
-	Try {
-		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
-	}
-	Catch {
-		Write-Host -ForegroundColor DarkGray "Você está sem internet ou erro fatal!!!!".ToUpper()
-	}
+	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
 }
 
-if (verificandoPlataforma){
+<# if (verificandoPlataforma){
 	# Adicionando diretorios no PATH do sistema
 	Write-Host -Foregroundcolor blue "Adicionando seus path"
 	Start-Sleep -Seconds 1
@@ -721,7 +732,23 @@ if (verificandoPlataforma){
 
 	}
 }
+#>
 
+Set-PSReadlineKeyHandler -Chord Ctrl+o -ScriptBlock {peek}
+
+# Função para criar arquivos em ps1
+
+Function nsp {
+	Try {
+		New-ScriptFileInfo -Path $($args[0]) -Description $($args[1]) -ErrorAction Stop
+		kate $($args[0])
+		Write-Host -ForegroundColor green $($args[0]) $($args[1])
+	}
+	Catch {
+		Write-Host -ForegroundColor red "Já existe o seu script" $($args[0]).ToUpper()
+		kate $($args[0])
+	}
+}
 
 
 
