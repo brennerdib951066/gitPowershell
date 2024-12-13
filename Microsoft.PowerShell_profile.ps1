@@ -1,6 +1,6 @@
 function verificandoPlataforma(){
-		$plataforma = $PSVersionTable.Platform
-		if ($plataforma.Tolower() -eq 'Win32NT') {
+		$plataforma = $PSEdition
+		if ($plataforma.Tolower() -eq 'desktop') {
 			Write-Host -foregroundcolor red "É WINDOWSSSS"
 			Return $True
 		}
@@ -198,8 +198,8 @@ function telegram{
 
 
 function cdd {
-	$plataforma = $PSVersionTable.Platform
-	if ($plataforma.Tolower() -eq 'Win32NT') {
+	$plataforma = $PSEdition
+	if ($plataforma.Tolower() -eq 'desktop') {
 		cd ~/Desktop
 	}
 	else{
@@ -361,7 +361,7 @@ function urlGoogleChrome {
 	)
 	write-host  'Voce chamou' $macroChamado.toupper() -foregroundcolor red,green
 	if(verificandoPlataforma){
-		start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador | Out-Null
+		start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador -RedirectStandardOutput /dev/null
 	}
 	else {
 		Start-Job -ScriptBlock { Start-Process google-chrome-stable -ArgumentList --start-maximized,--profile-directory=$($args[0]),$($args[1]);exit } -ArgumentList $userProfile,$urlNavegador
@@ -593,7 +593,25 @@ $texto = @"
 "@ | Out-File -FilePath $dataAtualMd -Encoding UTF8
 		} # ELSE plataforma criaMarkdown
 	} # FUNCAO CRIARMARKDOWN
-
+Function criarPs1 {
+	Write-Host -ForegroundColor red $criarArquivo
+	if ($IsWindows){
+		Write-Host -ForegroundColor red "ESTA NO WINDOWS"
+		$diretorioPadrao = Join-Path -Path $env:HOMEPATH -ChildPath "Desktop"
+		Write-Host "$diretorioPadrao"
+		@"
+$notificar = Join-Path -Path "$diretorioPadrao" -ChildPath notificarWhatsApp.ps1
+"@ | Out-File -FilePath $diretorioPadrao/$criarArquivo -Encoding Utf8
+	}
+	else {
+		$diretorioPadrao = Join-Path -Path $env:HOME -ChildPath "Área de Trabalho"
+		Write-Host -Foregroundcolor DarkGreen "LINUX"
+		Write-Host $diretorioPadrao
+		@"
+notificar = Join-Path -Path "$diretorioPadrao" -ChildPath notificarWhatsApp.ps1
+"@ | Out-File -FilePath $diretorioPadrao/$criarArquivo -Encoding Utf8
+	}
+}
 
 
 	if ($criarArquivo){
@@ -612,7 +630,11 @@ $texto = @"
 			} # Opção 3 awk
 			"*.md"{
 					Write-Host 'Seua arquivo é MARKDOWN'
-					criarMarkdown $criarArquivo # chamando a função de criar arquivos em awk
+					criarMarkdown $criarArquivo # chamando a função de criar arquivos em markdown
+			}
+			"*.ps1"{
+					Write-Host 'Seua arquivo é PS1'
+					criarPs1 $criarArquivo # chamando a função de criar arquivos em ps1
 			}
 			Default {
 					Write-Host 'Encontrei nada aqui'
@@ -631,17 +653,13 @@ $texto = @"
 $novoNomeAlias = @(
 	'nitem',
 	'cat',
-	'nsp',
-	'wget',
-	'win'
+	'nsp'
 )
 # Aqui é o nome dos CMD LET
 $nomeCMDLet = @(
 	'New-Item',
 	'Get-Content',
-	'New-ScriptFileInfo',
-	'Invoke-WebRequest',
-	'winget'
+	'New-ScriptFileInfo'
 )
 
 for ($i=0;$i -le $novoNomeAlias.Length-1;$i++){
@@ -661,16 +679,21 @@ for ($i=0;$i -le $novoNomeAlias.Length-1;$i++){
 if (verificandoPlataforma){
 
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
-	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$HOME/Desktop/powershell/$arquivoPs1"
+	wget "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -O "$HOME/Desktop/powershell/$arquivoPs1"
 }
 else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
 	# Configurando para que o powershell ignorar o case dos diretorios
 	$pastaDestino = (Get-ChildItem "$HOME" -Filter "Área de Trabalho" -Directory | Where-Object { $_.Name -ieq "Área de Trabalho" }).FullName
-	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
+	Try {
+		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
+	}
+	Catch {
+		Write-Host -ForegroundColor DarkGray "Você está sem internet ou erro fatal!!!!".ToUpper()
+	}
 }
 
-<# if (verificandoPlataforma){
+if (verificandoPlataforma){
 	# Adicionando diretorios no PATH do sistema
 	Write-Host -Foregroundcolor blue "Adicionando seus path"
 	Start-Sleep -Seconds 1
@@ -698,27 +721,7 @@ else {
 
 	}
 }
-#>
 
-Set-PSReadlineKeyHandler -Chord Ctrl+o -ScriptBlock {peek}
 
-# Função para criar arquivos em ps1
-
-Function nsp {
-	Try {
-		New-ScriptFileInfo -Path $($args[0]) -Description $($args[1]) -ErrorAction Stop
-		kate $($args[0])
-		Write-Host -ForegroundColor green $($args[0]) $($args[1])
-	}
-	Catch {
-		Write-Host -ForegroundColor red "Já existe o seu script" $($args[0]).ToUpper()
-		kate $($args[0])
-	}
-}
-
-Function meuIpv6 {
-	Write-Host "Seu IPV6 é:" (((ipconfig) | Select-Object -Index 8).Split( ) | Select-Object -Index 16) -ForegroundColor red
-	Write-Host "Seu IPV4" (((ipconfig) | Select-Object -Index 12).Split( ) | Select-Object -Index 21 ) -Foregroundcolor blue
-}
 
 
