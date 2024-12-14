@@ -37,22 +37,47 @@ function poweroff {
 
 ################################Função de google chrome###########################################################################################
 function gitHub(){
-    param(
+    <#param(
         $profile,
         $repositorio,
         $arquivoRepositorio
-    )
-
-	if ($args.Length -gt 0){
+    )#>
+    $profile = 'Brenner'
+	#Write-Host $args.Length
+	if ($args[0].Length -gt 0){
 
 		if (verificandoPlataforma) {
-			Start-Process chrome -ArgumentList "--profile-directory=$profile", "https://github.com/brennerdib951066/$repositorio/blob/main/$arquivoRepositorio"
-		} else {
-			Start-Job -ScriptBlock {
-				param($profile, $repositorio, $arquivoRepositorio)
-				Start-Process google-chrome-stable -ArgumentList "--profile-directory=$profile", "https://github.com/brennerdib951066/$repositorio/blob/main/$arquivoRepositorio"
-			} -ArgumentList $profile, $repositorio, $arquivoRepositorio
+			Switch ($args[0]){
+				1 {
+					Start-Process chrome "--profile-directory=$profile",'https://github.com/brennerdib951066/gitawk/blob/main/retirarAspas.awk'
+				} # SWITCH CASE 1
+				2 {
+					Start-Process chrome "--profile-directory=$profile",'https://github.com/brennerdib951066/gitshell/blob/main/.bashrc'
+				} # SWITCH CASE 2
+				3 {
+					Start-Process chrome "--profile-directory=$profile",'https://github.com/brennerdib951066/gitpowershell/blob/main/Microsoft.PowerShell_profile.ps1'
+				} # SWITCH CASE 3
+				Default {
+					Write-Host -ForegroundColor DarkRed 'Não encontrei a opção correspondente'.ToUpper()
+				}
+			} # SWICTH CASE
 		} # IF PLATAFORMA
+		else {
+			Switch ($args[0]){
+				1 {
+					Start-Process google-chrome-stable "--profile-directory=$profile",'https://github.com/brennerdib951066/gitawk/blob/main/retirarAspas.awk'
+				} # SWITCH CASE 1
+				2 {
+					Start-Process google-chrome-stable "--profile-directory=$profile",'https://github.com/brennerdib951066/gitshell/blob/main/.bashrc'
+				} # SWITCH CASE 2
+				3 {
+					Start-Process google-chrome-stable "--profile-directory=$profile",'https://github.com/brennerdib951066/gitpowershell/blob/main/Microsoft.PowerShell_profile.ps1'
+				} # SWITCH CASE 3
+				Default {
+					Write-Host -ForegroundColor DarkRed 'Não encontrei a opção correspondente'.ToUpper()
+				}
+			} # SWICTH CASE
+		}
 	} # IF ARGS
 	else {
 
@@ -361,7 +386,7 @@ function urlGoogleChrome {
 	)
 	write-host  'Voce chamou' $macroChamado.toupper() -foregroundcolor red,green
 	if(verificandoPlataforma){
-		start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador -RedirectStandardOutput /dev/null
+		start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador  | Out-Null
 	}
 	else {
 		Start-Job -ScriptBlock { Start-Process google-chrome-stable -ArgumentList --start-maximized,--profile-directory=$($args[0]),$($args[1]);exit } -ArgumentList $userProfile,$urlNavegador
