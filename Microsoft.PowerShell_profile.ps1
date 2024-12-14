@@ -65,13 +65,13 @@ function gitHub(){
 		else {
 			Switch ($args[0]){
 				1 {
-					Start-Process google-chrome-stable "--profile-directory=$profile",'https://github.com/brennerdib951066/gitawk/blob/main/retirarAspas.awk' | Out-Null
+					Start-Process google-chrome-stable "--profile-directory=$profile",'https://github.com/brennerdib951066/gitawk/blob/main/retirarAspas.awk' -RedirectStandardOutput 'saidaPadrao.txt'
 				} # SWITCH CASE 1
 				2 {
-					Start-Process google-chrome-stable "--profile-directory=$profile",'https://github.com/brennerdib951066/gitshell/blob/main/.bashrc' | Out-Null
+					Start-Process google-chrome-stable "--profile-directory=$profile",'https://github.com/brennerdib951066/gitshell/blob/main/.bashrc' -RedirectStandardOutput 'saidaPadrao.txt'
 				} # SWITCH CASE 2
 				3 {
-					Start-Process google-chrome-stable "--profile-directory=$profile",'https://github.com/brennerdib951066/gitpowershell/blob/main/Microsoft.PowerShell_profile.ps1' | Out-Null
+					Start-Process google-chrome-stable "--profile-directory=$profile",'https://github.com/brennerdib951066/gitpowershell/blob/main/Microsoft.PowerShell_profile.ps1' -RedirectStandardOutput 'saidaPadrao.txt'
 				} # SWITCH CASE 3
 				Default {
 					Write-Host -ForegroundColor DarkRed 'Não encontrei a opção correspondente'.ToUpper()
@@ -775,5 +775,5 @@ Function nsp {
 	}
 }
 
-# TESTE API GITHUB WINDOWS
+
 
