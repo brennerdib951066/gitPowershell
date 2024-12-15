@@ -1,4 +1,4 @@
-$versao = '1.0.0.0'
+$versao = '1.0.0.1'
 
 function verificandoPlataforma(){
 		##$plataforma = $PSEdition
@@ -274,7 +274,19 @@ function cathead {
 	Get-Content -TotalCount $args[0] -Path $args[1] -Encoding utf8
 }
 function envP {
-	$env:Path.split(';')
+	if (verificandoPlataforma){
+		Write-Host -Foregroundcolor DarkRed 'PATH Windowns'
+		Write-host -Foregroundcolor DarkGray '------------------------------------'
+		$env:Path.split(';')
+		Write-host -Foregroundcolor DarkGray '------------------------------------'
+		Write-Host -ForegroundColor DarkGray 'total:'.ToUpper() "$env:path".split(':').Length
+		Return
+	}
+	Write-Host -Foregroundcolor DarkGreen 'PATH linux'
+	Write-host -Foregroundcolor DarkGray '------------------------------------'
+	$env:PATH.Split(':')
+	Write-host -Foregroundcolor DarkGray '------------------------------------'
+	Write-Host -ForegroundColor DarkGray 'total:'.ToUpper() "$env:PATH".split(':').Length
 }
 
 function meuIp{
