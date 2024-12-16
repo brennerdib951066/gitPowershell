@@ -38,6 +38,7 @@
  Verificar os jobs ou crontab e ativar ou desativar o mesmo 
 
 #> 
+$versao = '1.0.0.1'
 
 Function erroParamentro {
     Write-Host -ForegroundColor DarkRed "Não encontrei o parametro $($args[0]) específicado"
@@ -115,4 +116,9 @@ Switch ($($args[0])){
     } # DEFAULT CASE
 }# SWITCH CASE
 
+<# AQUI E UM PROTOTICO PARA RECEBER A DATA TRIGGER DO JOBS HABILITADOS
+
+foreach ($valor in (Get-ScheduledTask -TaskPath \).Triggers) { $valor = [datetime]$valor.StartBoundary ; Write-Host $valor.ToString("HH:mm:ss") }
+
+#>
 
