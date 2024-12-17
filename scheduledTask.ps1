@@ -38,7 +38,7 @@
  Verificar os jobs ou crontab e ativar ou desativar o mesmo 
 
 #> 
-$versao = '1.0.0.1'
+$versao = '1.0.0.2' # Adicionando a hora em os jobs estão programados para iniciar
 
 Function erroParamentro {
     Write-Host -ForegroundColor DarkRed "Não encontrei o parametro $($args[0]) específicado"
@@ -86,10 +86,30 @@ Switch ($($args[0])){
         $scheduledTaskDesabilitado
     } # DESABILITADO CASE
     {$_ -eq "habilitado" -or $_ -eq "-h"} {
+        $scheduledTaskHabilitado = (Get-scheduledTask -TaskPath \ | Where  -Property State -Match "ready")
         Write-Host -ForegroundColor DarkGreen "Buscando seus jobs habilitado"#.ToUpper()
         Start-Sleep -Seconds 1
-        $scheduledTaskHabilitado = (Get-scheduledTask -TaskPath \ | Where  -Property State -Match "ready")
-        foreach ($valor in $scheduledTaskHabilitado.TaskName) { Start-Sleep -Seconds 2 ; Write-Host "$valor"}
+        cls
+        foreach ($valor in $scheduledTaskHabilitado) {
+     # Verifica se StartBoundary está presente e não é nulo ou vazio
+     if ($valor.Triggers -and $valor.Triggers.StartBoundary) {
+         $data = $valor.Triggers.StartBoundary
+
+         # Tenta converter a data para DateTime
+         try {
+             $startDate = [datetime]::Parse($data)
+             # Exibe a data convertida no formato brasileiro
+             $startDateBrazil = $startDate.ToString("HH:mm:ss")
+             Write-Host $valor.TaskName "|" $startDateBrazil "|"
+         }
+         catch {
+             Write-Error "Erro ao converter a data: $data"
+         }
+     }
+     else {
+         Write-Error "StartBoundary não encontrado ou está vazio para o valor atual." -ErrorAction Ignore
+     }
+} # FOR HABILITADO #>
     } # HABILITADO CASE
     {$_ -eq "ativar" -or $_ -eq "-a"} {
         Try {
@@ -118,7 +138,26 @@ Switch ($($args[0])){
 
 <# AQUI E UM PROTOTICO PARA RECEBER A DATA TRIGGER DO JOBS HABILITADOS
 
-foreach ($valor in (Get-ScheduledTask -TaskPath \).Triggers) { $valor = [datetime]$valor.StartBoundary ; Write-Host $valor.ToString("HH:mm:ss") }
+foreach ($valor in $scheduledTaskHabilitado) {
+     # Verifica se StartBoundary está presente e não é nulo ou vazio
+     if ($valor.Triggers -and $valor.Triggers.StartBoundary) {
+         $data = $valor.Triggers.StartBoundary
+
+         # Tenta converter a data para DateTime
+         try {
+             $startDate = [datetime]::Parse($data)
+             # Exibe a data convertida no formato brasileiro
+             $startDateBrazil = $startDate.ToString("dd/MM/yyyy HH:mm:ss")
+             Write-Output $valor.TaskName #$startDateBrazil
+         }
+         catch {
+             Write-Error "Erro ao converter a data: $data"
+         }
+     }
+     else {
+         Write-Error "StartBoundary não encontrado ou está vazio para o valor atual." -ErrorAction Ignore
+     }
+}
 
 #>
 
