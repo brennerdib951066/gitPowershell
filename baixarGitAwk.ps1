@@ -82,7 +82,7 @@ $listaCompleto = @(
 )
 
 $nomeArquivoLog = 'logGitAwk.txt'
-$versao = '1.0.1'
+$versao = '1.0.2'
 $plataforma = $PSEdition
 
 if ($IsWindows){
@@ -96,6 +96,8 @@ else {
     $sistemaJob = "CRONTAB"
 }
 $notificacao = "$diretorioPadrao/powershell/notificarWhatsApp.ps1"
+$verHorario = Join-Path -Path "/home/brenner/Área` de` Trabalho/sh" -ChildPath ver2.sh
+$horarioProgramadoCrontab = . $verHorario
 . $notificacao
 
 #notificarWhatsApp "*O backup de seus arquivos foi realizado com sucesso no $sistemaOperacional pelo $sistemaJob*".ToUpper() '385910829'
@@ -103,7 +105,7 @@ $notificacao = "$diretorioPadrao/powershell/notificarWhatsApp.ps1"
 # Verificando se existe a pasta ou diretorio na área de trabalho do usuário
 ForEach ($diretorioAtual in $diretorios){
     if (-not(Test-Path "$diretorioPadrao/$diretorioAtual")){
-        New-Item -Type Directory -Path "$diretorioPadrao/$diretorioAtual"
+        New-Item -Tyoe Directory -Path "$diretorioPadrao/$diretorioAtual"
         continue
     }
     Write-Host -ForegroundColor blue "já existe o diretorio $diretorioAtual"
@@ -192,5 +194,4 @@ ForEach ($repositorio in $listaCompleto){
 } # FOR ARQUIVO REPOESIOTORIO
 # NOTIFICAR VIA BOTCONVERSA SE FOR UM SUCESSO TODOS AS REQUISIÇÕES
 
-notificarWhatsApp "*O backup de seus arquivos foi realizado com sucesso no $sistemaOperacional pelo $sistemaJob\n\n$versao*".Tolower() '385910829'
-# TESTE PRA VER SE FOI PARA LINUX VIA WGET SÓ ESTÁ NO WINDOWS
+notificarWhatsApp "*O backup de seus arquivos foi realizado com sucesso no $sistemaOperacional pelo $sistemaJob\n\n$versao Programado para $horarioProgramadoCrontab*".Tolower() '385910829'
