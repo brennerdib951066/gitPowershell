@@ -103,7 +103,7 @@ $notificacao = "$diretorioPadrao/powershell/notificarWhatsApp.ps1"
 # Verificando se existe a pasta ou diretorio na área de trabalho do usuário
 ForEach ($diretorioAtual in $diretorios){
     if (-not(Test-Path "$diretorioPadrao/$diretorioAtual")){
-        New-Item -Tyoe Directory -Path "$diretorioPadrao/$diretorioAtual"
+        New-Item -Type Directory -Path "$diretorioPadrao/$diretorioAtual"
         continue
     }
     Write-Host -ForegroundColor blue "já existe o diretorio $diretorioAtual"
