@@ -47,13 +47,28 @@ function Test-Admin {
     $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
     return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
 }
-
-# Se não estiver rodando como administrador, reinicia o script como administrador
-if (-not (Test-Admin)) {
-    Write-Host "Não está executando como administrador. Por favor abra o powershell como administrador"
-    Start-Sleep -Seconds 3
-    exit
+# Se for linux verificar se é root
+Function Test-AdminLinuz {
+    $usuarioAtual = $env:USER
+    return $usuarioAtual
 }
+
+if ($IsWindows) {
+    # Se não estiver rodando como administrador, reinicia o script como administrador
+    if (-not (Test-Admin)) {
+        Write-Host "Não está executando como administrador. Por favor abra o powershell como administrador"
+        Start-Sleep -Seconds 3
+        exit
+    }
+} # IF WINDOWS
+else {
+    if (-not(Test-AdminLinuz)){
+        Write-Host -ForegroundColor yellow "Por favor $env:USER acesse o programa como root"
+        Start-Sleep -Seconds 3
+        Exit
+    }
+    Exit
+} # ELSE LINUX
 
 Function avisoSucesso {
     Write-Host -ForegroundColor DarkGreen $args[0]
