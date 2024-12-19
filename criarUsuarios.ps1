@@ -47,11 +47,6 @@ function Test-Admin {
     $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
     return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
 }
-# Se for linux verificar se é root
-Function Test-AdminLinuz {
-    $usuarioAtual = $env:USER
-    return $usuarioAtual
-}
 
 if ($IsWindows) {
     # Se não estiver rodando como administrador, reinicia o script como administrador
@@ -62,12 +57,33 @@ if ($IsWindows) {
     }
 } # IF WINDOWS
 else {
-    if (-not(Test-AdminLinuz)){
+    if (-not($Env:USER -match 'root')){
         Write-Host -ForegroundColor yellow "Por favor $env:USER acesse o programa como root"
         Start-Sleep -Seconds 3
         Exit
     }
+    Write-Host -ForegroundColor green 'Caiu no linux ELSE'
+    Write-Host $usuarioAtual
+    Start-Sleep -Seconds 5
+    #Exit
+    While ($True){
+        Write-Host -ForegroundColor blue 'nome:'.ToUpper()
+        $nomeUsuarioLinux = Read-Host
+        if (-not($nomeUsuarioLinux)){
+            Continue
+        }
+        <#Write-Host -ForegroundColor blue 'senha:'.ToUpper()
+        $senhaUsuarioLinux = Read-Host
+        if (-not($senhaUsuarioLinux)){
+            Continue
+        }#>
+        Break
+    } # WHILE LINUX
+
+    useradd -m -c "$nomeUsuarioLinux".Tolower() -s /bin/zsh "$nomeUsuarioLinux".Tolower()
+    passwd "$nomeUsuarioLinux".Tolower()
     Exit
+
 } # ELSE LINUX
 
 Function avisoSucesso {
