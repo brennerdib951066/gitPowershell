@@ -732,9 +732,13 @@ for ($i=0;$i -le $novoNomeAlias.Length-1;$i++){
 
 
 if (verificandoPlataforma){
-
-	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
-	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$HOME/Desktop/powershell/$arquivoPs1"
+	Try {
+		$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
+		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$HOME/Desktop/powershell/$arquivoPs1" -ErrorAction Stop
+	}
+	Catch {
+		Write-Host ""
+	}
 }
 else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
@@ -788,5 +792,4 @@ Function nsp {
 		kate $($args[0])
 	}
 }
-
 
