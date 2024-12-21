@@ -1,4 +1,12 @@
 $versao = '1.0.0.1'
+$versaoPowershell = $PSVersionTable.PSVersion
+
+
+if (-not ($versaoPowershell -match 7)) {
+	Write-Error "use a versão 7 do powershell".ToUpper()
+	Exit
+}
+
 
 function verificandoPlataforma(){
 		##$plataforma = $PSEdition
@@ -327,6 +335,25 @@ function kprofile {
 		}
 	}
 }
+Function kssh {
+	$arquivoSsh = 'C:\ProgramData\ssh\sshd_config'
+	if (-not(verificandoPlataforma)) {
+		$arquivoSsh = '/etc/ssh/sshd_config'
+	} # IF
+		Try {
+			(Get-Command -Name kate -ErrorAction Stop).Source
+			Start-Process kate "$arquivoSsh"
+		}
+		Catch {
+			Write-Host Darkgray "Parece que não existe o kate instalado nesse pc. Instale para usa-lo"
+			Write-Host -ForegroundColor red "Abrindo com notepad"
+			Start-Sleep -Seconds 2
+			Start-Process Notepad.exe "$arquivoSsh"
+		}
+
+
+}
+
 function .profile{
 	. $PROFILE
 }
