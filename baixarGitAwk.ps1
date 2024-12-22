@@ -86,7 +86,7 @@ $nomeArquivoLog = 'logGitAwk.txt'
 $versao = '1.0.3'
 $plataforma = $PSEdition
 
-if ($IsWindows){
+if ($env:OS -like "*windows*"){
     $diretorioPadrao = Join-Path -Path $env:HOMEPATH -ChildPath 'Desktop'
     $sistemaOperacional = "windows"
     $sistemaJob = "SCHEDULEDTASKTRIGGER"
