@@ -1,6 +1,7 @@
-$versao = '1.0.0.1'
+$versao = '1.0.0.2'
 $versaoPowershell = $PSVersionTable.PSVersion
 
+Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
 
 if (-not ($versaoPowershell -match 7)) {
 	Write-Error "use a versão 7 do powershell".ToUpper()
@@ -819,4 +820,3 @@ Function nsp {
 		kate $($args[0])
 	}
 }
-
