@@ -820,3 +820,13 @@ Function nsp {
 		kate $($args[0])
 	}
 }
+
+Set-PSReadLineKeyHandler -Chord Ctrl+i -ScriptBlock {
+	Try {
+		Start-Process "C:\Program Files (x86)\Microsoft\Edge\Application\msedge_proxy.exe"  -ArgumentList --profile-directory=Default,--app-id=khiogjgiicnghciboipemonlmgelhblf,--app-url=https://copilot.microsoft.com/?dpwa=1,--app-launch-source=4 -ErrorAction Stop
+
+	}
+	Catch {
+			Write-Host -ForegroundColor DarkRed 'Erro ao inicializar o copilot'
+	}
+}
