@@ -38,7 +38,7 @@
  criar com zenity interface grafica para poder visualizar exemplos de comandos
 
 #>
-$versao = '1.0.0.0.1'
+$versao = '1.0.0.0.2'
 $programa = 'zenity'.Tolower()
 $textoInstalacao = 'deseja instalar? [S/n]'
 $pathPrograma = (Get-Command -Name $programa -ErrorAction ignore).Source
@@ -87,6 +87,79 @@ Function mostrarArquivo {
     }
 }
 
+Function menu {
+    # Criando um menu para mostra a usuário
+
+    For ($i=0;$i -le $menuPrincipal.Length - 1;$i++){
+        if ($i -eq 0) {
+                Write-Output  "menu principal".ToUpper() "--------------------"
+        }
+        Write-Host -ForegroundColor DarkGray $i")" "$($menuPrincipal[$i])".ToUpper()
+        if ($i -eq $menuPrincipal.Count - 1){
+                Write-Host -ForegroundColor Gray "--------------------"
+                #Continue
+        }
+
+
+    }
+    $n = 0
+    While ($True){
+        $opcao = Read-Host -Prompt "($n/3) Opção"
+        if ($opcao){
+            Try {
+                [int]$opcao = $opcao
+                Break
+            }
+            Catch {
+            if ($n -eq 3) {
+                Write-Host -ForegroundColor DarkYellow "Você atingiu a quantidade de tentativas disponíveis!"
+                Exit
+            }
+                Write-Host -ForegroundColor Red "Aceito apenas numero"
+            $n += 1
+            }
+        }
+        else {
+            if ($n -eq 3) {
+                Write-Host -ForegroundColor DarkYellow "Você atingiu a quantidade de tentativas disponíveis!"
+                Exit
+            }
+            $n += 1
+            Write-Host -ForegroundColor DarkRed "Sua resposta está vazio"
+
+        }
+    }
+
+    Switch ($opcao){
+        0 {
+            mostrarArquivo '/usr/bin/dibScripts/shells/comandos/useradd.txt' "$($menuPrincipal[0]).txt".ToUpper()
+            #clear
+            menu
+        } # CASE 0
+        1 {
+            mostrarArquivo  '/usr/bin/dibScripts/shells/comandos/userdel.txt' "$($menuPrincipal[1]).txt".ToUpper()
+            #clear
+            menu
+        } # CASE 1
+        2 {
+            mostrarArquivo '/usr/bin/dibScripts/shells/comandos/usermod.txt' "$($menuPrincipal[2]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 2
+        3 {
+            mostrarArquivo '/usr/bin/dibScripts/shells/comandos/split.txt' "$($menuPrincipal[3]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 3
+        Default {
+            Write-Host -ForegroundColor Yellow "$opcao não é opção válida!"
+            Start-Sleep -Seconds 2
+            clear
+            menu
+        }
+    } # SWICTH CASE $OPCAO
+}
+
 if ($IsWindows) {
  Write-Host -ForegroundColor red 'Você está no windows, por isso não poderá usar a interface zenity'
  Exit
@@ -97,48 +170,9 @@ if (-not(Test-Path "$pathPrograma")){
 
 } # CAHMANDO A FUNÇÃO DE INSTALAR O ZENITY
 
-# Criando um menu para mostra a usuário
-
-For ($i=0;$i -le $menuPrincipal.Length - 1;$i++){
-
-    Write-Host -ForegroundColor DarkGray $i")" "$($menuPrincipal[$i])".ToUpper()
-    if ($i -eq $menuPrincipal.Count - 1){
-            Write-Host -ForegroundColor Gray "--------------------"
-            #Continue
-    }
-
-}
-While ($True){
-    $opcao = Read-Host -Prompt "Opção"
-    if ($opcao){
-        Try {
-            [int]$opcao = $opcao
-            Break
-        }
-        Catch {
-            Write-Host -ForegroundColor Red "Aceito apenas numero"
-        }
-    }
-    else {
-        Write-Host -ForegroundColor DarkRed "Sua resposta está vazio"
-    }
-}
-
-Switch ($opcao){
-    0 {
-        mostrarArquivo '/usr/bin/dibScripts/shells/comandos/useradd.txt' "$($menuPrincipal[0]).txt".ToUpper()
-    } # CASE 0
-    1 {
-        mostrarArquivo  '/usr/bin/dibScripts/shells/comandos/userdel.txt' "$($menuPrincipal[1]).txt".ToUpper()
-    } # CASE 1
-    2 {
-        mostrarArquivo '/usr/bin/dibScripts/shells/comandos/usermod.txt' "$($menuPrincipal[2]).txt".ToUpper()
-    }# CASE 2
-    3 {
-        mostrarArquivo '/usr/bin/dibScripts/shells/comandos/split.txt' "$($menuPrincipal[3]).txt".ToUpper()
-    }# CASE 3
-}
+menu
 
 <# Se ja estiver instalado vai cair aqui
 zenity --text='zinity' --title='zenity' --info
 #>
+
