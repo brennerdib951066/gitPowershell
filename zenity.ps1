@@ -42,6 +42,8 @@ $versao = '1.0.0.0.2'
 $programa = 'zenity'.Tolower()
 $textoInstalacao = 'deseja instalar? [S/n]'
 $pathPrograma = (Get-Command -Name $programa -ErrorAction ignore).Source
+# Aplique aqui seus arquivos de comandos de exemplos do shell gnu-linux
+
 $menuPrincipal = @(
     'useradd',
     'userdel',
