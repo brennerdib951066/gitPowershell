@@ -1,4 +1,4 @@
-$versao = '1.0.0.3'
+$versao = '1.0.0.4'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
@@ -640,7 +640,7 @@ $pathTypora = '/usr/bin/typora'
 ##### 10
 "@ | Out-File -FilePath $dataAtualMd -Encoding UTF8
 Try {
-	(Get-Command -Name typora -ErrorAction Stop).Definition
+	(Get-Command -Name typora -ErrorAction Stop | Out-Null).Definition
 	typora "$dataAtualMd"
 	Write-Host "Voce tem o typora no path"
 	#Exit
