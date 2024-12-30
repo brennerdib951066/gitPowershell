@@ -596,68 +596,59 @@ chmod +x "$nomeArquivo"
 $dataAtualMd = $(dataAtual br) + '.md'
 $dataAtual = $(dataAtual br)
 		if ($IsWindows){
-
+$pathTypora = 'C:\Users\brenner\AppData\Local\Programs\Typora'
 
 $texto = @"
 # O que foi criado hoje? $dataAtual
-#### SETORES
-1. Comercial
-!["IMAGEM"]()
-####  Backends
-- [ ] ###### Exemplo1
-- [ ] ###### Exemplo2
-- [ ] ###### Exemplo3
-- [ ] ###### Exemplo4
-- [ ] Testado?
-2. Administrativo
-!["IMAGEM"]()
-####  Backends
-- [ ] ###### Exemplo1
-- [ ] ###### Exemplo2
-- [ ] ###### Exemplo3
-- [ ] ###### Exemplo4
- [ ] Testado?
-2. Financeiro
-!["IMAGEM"]()
-####  Backends
-- [ ] ###### Exemplo1
-- [ ] ###### Exemplo2
-- [ ] ###### Exemplo3
-- [ ] ###### Exemplo4
-- [ ] Testado?
+##### 1
+##### 2
+##### 3
+##### 4
+##### 5
+##### 6
+##### 7
+##### 8
+##### 9
+##### 10
 
 "@ | Out-File -FilePath $dataAtualMd -Encoding UTF8
+Try {
+	$env:PATH.Split(';').Contains("$pathTypora")
+	typora "$dataAtualMd"
+	Write-Host "Voce tem o typora no path"
+	#Exit
+}
+Catch	{
+	Start-Process "$pathTypora" "$dataAtualMd"
+}
+#typora "$dataAtualMd"
 		} # IF plataforma criaMarkdown
 		else {
+$pathTypora = '/usr/bin/typora'
 @"
 # VocÊ está no linux
 # O que foi criado hoje? $dataAtual
-#### SETORES
-1. Comercial
-!["IMAGEM"]()
-####  Backends
-- [ ] ###### Exemplo1
-- [ ] ###### Exemplo2
-- [ ] ###### Exemplo3
-- [ ] ###### Exemplo4
-- [ ] Testado?
-2. Administrativo
-!["IMAGEM"]()
-####  Backends
-- [ ] ###### Exemplo1
-- [ ] ###### Exemplo2
-- [ ] ###### Exemplo3
-- [ ] ###### Exemplo4
- [ ] Testado?
-2. Financeiro
-!["IMAGEM"]()
-####  Backends
-- [ ] ###### Exemplo1
-- [ ] ###### Exemplo2
-- [ ] ###### Exemplo3
-- [ ] ###### Exemplo4
-- [ ] Testado?
+##### 1
+##### 2
+##### 3
+##### 4
+##### 5
+##### 6
+##### 7
+##### 8
+##### 9
+##### 10
 "@ | Out-File -FilePath $dataAtualMd -Encoding UTF8
+Try {
+	(Get-Command -Name typora -ErrorAction Stop).Definition
+	typora "$dataAtualMd"
+	Write-Host "Voce tem o typora no path"
+	#Exit
+}
+Catch	{
+	Start-Process "$pathTypora" "$dataAtualMd"
+}
+
 		} # ELSE plataforma criaMarkdown
 	} # FUNCAO CRIARMARKDOWN
 Function criarPs1 {
