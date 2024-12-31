@@ -40,7 +40,7 @@
 #>
 
 # VARIAVEIS
-$versao = '1.0.0.2'
+$versao = '1.0.0.3'
 $versaoPowershell = ($PSVersionTable).PSVersion
 function Test-Admin {
     $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
@@ -81,7 +81,8 @@ else {
             # Se o args[1] não for vazia caira aqui
             $args[1] = $($args[1]).ToLower()
             Try {
-                userdel -r "$($args[1])"
+                userdel -r "$($args[1])" -f
+                Exit
             } # TRY
             Catch {
                 Write-Host -ForegroundColor Red "Usuario $($args[1]) não encontrado"
