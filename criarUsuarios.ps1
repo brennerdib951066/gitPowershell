@@ -19,7 +19,7 @@
 
 .ICONURI
 
-.EXTERNALMODULEDEPENDENCIES 
+.EXTERNALMODULEDEPENDENCIES
 
 .REQUIREDSCRIPTS
 
@@ -32,12 +32,12 @@
 
 #>
 
-<# 
+<#
 
-.DESCRIPTION 
+.DESCRIPTION
     OBJETIVO DE CRIAR USUARIOS NO WINDOWS COM POWERSHELL
 
-#> 
+#>
 
 # VARIAVEIS
 $versao = '1.0.0.0'
@@ -46,7 +46,7 @@ function Test-Admin {
     $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
     return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
-}
+} # TEST-ADMIN
 
 if ($IsWindows) {
     # Se não estiver rodando como administrador, reinicia o script como administrador
@@ -62,6 +62,22 @@ else {
         Start-Sleep -Seconds 3
         Exit
     }
+    Switch ($args[0]){
+        {$_ -eq '-r' -or $_ -eq '-R'} {
+            if (-not($args[1])) {
+                Write-Host -ForegroundColor Red "Escolha um nome de usuário".ToUpper()
+                Exit
+            }
+            # Se o args[1] não for vazia caira aqui
+            $args[1] = $($args[1]).ToLower()
+            Try {
+                userdel -r "$($args[1])"
+            } # TRY
+            Catch {
+                Write-Host -ForegroundColor Red "Usuario $($args[1]) não encontrado"
+            }
+        }
+    } # SWITCH
     Write-Host -ForegroundColor green 'Caiu no linux ELSE'
     Write-Host $usuarioAtual
     Start-Sleep -Seconds 5
@@ -88,12 +104,32 @@ else {
 
 Function avisoSucesso {
     Write-Host -ForegroundColor DarkGreen $args[0]
-}
+} # AVISOSUCESSO
 
 Function deslogarPc {
     Write-Host -ForegroundColor DarkGreen $args[0]
     Start-Sleep -Seconds 2
     shutdown $args[1]
+} # DESLOGAR
+
+#Write-Host "ARGS" $args[1]
+Switch ($args[0]){
+    {$_ -eq '-r' -or $_ -eq '-R'} {
+        if (-not($args[1])) {
+            Write-Host -ForegroundColor DarkGray "Por favor escolha o nome que deseja remover".ToUpper()
+            Exit
+        }
+        # Se o args[1] não for vazia caira aqui
+        $args[1] = $($args[1]).ToLower()
+        Try {
+            Remove-LocalUser -Name "$($args[1])"
+            Write-Host -ForegroundColor DarkGreen "$($args[1])".ToUpper() "removido com sucesso"
+            Exit
+        } # TRY
+        Catch {
+            Write-Host "Usuário não encontrado!"
+        } # CATCH
+    }
 }
 
 While($True) {
@@ -115,6 +151,7 @@ $nomeUsuario = $nomeUsuario.ToLower()
 
 # Convertendo a senha para SecureString
 #$senhaUsuario = ConvertTo-SecureString -AsPlainText -Force -String $senhaUsuario
+
 
 # Tentativa de criação do usuário
 Try {
@@ -142,7 +179,3 @@ Catch {
 avisoSucesso "o Usuario $nomeUsuario foi cadastrado com sucesso".ToUpper()
 # Chamando a função deslogarPc para ver se o usuário já está na lista de login
 deslogarPc "Deslogando para fazer o login com novo usuário" "/l"
-
-
-
-
