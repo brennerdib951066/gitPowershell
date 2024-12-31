@@ -40,13 +40,18 @@
 #>
 
 # VARIAVEIS
-$versao = '1.0.0.0'
+$versao = '1.0.0.1'
 
 function Test-Admin {
     $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
     return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
 } # TEST-ADMIN
+
+Function ajuda {
+    Write-Output "ajuda".ToUpper() "__________________________________________________________" "" "-H|-h|help : Use essa opção para pedir ajuda" "" "-r|-R : Use essa opção para remover algum usuário [ $($args[0]) $($args[1])]" "" "__________________________________________________________"
+    #Write-Host "BRENNER"
+}
 
 if ($IsWindows) {
     # Se não estiver rodando como administrador, reinicia o script como administrador
@@ -65,9 +70,9 @@ else {
     Switch ($args[0]){
         {$_ -eq '-r' -or $_ -eq '-R'} {
             if (-not($args[1])) {
-                Write-Host -ForegroundColor Red "Escolha um nome de usuário".ToUpper()
+                Write-Host -ForegroundColor Red "Escolha um nome de usuário para remover".ToUpper()
                 Exit
-            }
+            } # IF
             # Se o args[1] não for vazia caira aqui
             $args[1] = $($args[1]).ToLower()
             Try {
@@ -75,13 +80,18 @@ else {
             } # TRY
             Catch {
                 Write-Host -ForegroundColor Red "Usuario $($args[1]) não encontrado"
-            }
-        }
+            } # CATCH
+        } # CASE STRING
+        {$_ -eq '-h' -Or  $_ -eq '-H' -Or $_ -eq 'help'} {
+            #Write-Host "kkk"
+            ajuda '-r' 'nomeUsuario'
+            Exit
+        } # CASE STRING HELP
     } # SWITCH
-    Write-Host -ForegroundColor green 'Caiu no linux ELSE'
+    <# Write-Host -ForegroundColor green 'Caiu no linux ELSE'
     Write-Host $usuarioAtual
     Start-Sleep -Seconds 5
-    #Exit
+    Exit #>
     While ($True){
         Write-Host -ForegroundColor blue 'nome:'.ToUpper()
         $nomeUsuarioLinux = Read-Host
