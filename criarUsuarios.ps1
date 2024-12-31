@@ -40,8 +40,8 @@
 #>
 
 # VARIAVEIS
-$versao = '1.0.0.1'
-
+$versao = '1.0.0.2'
+$versaoPowershell = ($PSVersionTable).PSVersion
 function Test-Admin {
     $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
@@ -51,6 +51,11 @@ function Test-Admin {
 Function ajuda {
     Write-Output "ajuda".ToUpper() "__________________________________________________________" "" "-H|-h|help : Use essa opção para pedir ajuda" "" "-r|-R : Use essa opção para remover algum usuário [ $($args[0]) $($args[1])]" "" "__________________________________________________________"
     #Write-Host "BRENNER"
+}
+# Verificando se a versão do powershell está com a versão 7
+if (-not($versaoPowershell -match '7')) {
+    Write-Host -ForegroundColor DarkRed "Use o powershell com versão 7".ToUpper()
+    Exit
 }
 
 if ($IsWindows) {
