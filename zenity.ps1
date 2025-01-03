@@ -103,6 +103,8 @@ Function menu {
     For ($i=0;$i -le $menuPrincipal.Length - 1;$i++){
         if ($i -eq 0) {
                 Write-Output  "menu principal".ToUpper() "--------------------"
+                Write-Host -ForegroundColor DarkYellow "Versão $versao"
+                Write-Host ""
         }
         Write-Host -ForegroundColor DarkGray $i")" "$($menuPrincipal[$i])".ToUpper()
         if ($i -eq $menuPrincipal.Count - 1){
