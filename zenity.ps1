@@ -38,7 +38,7 @@
  criar com zenity interface grafica para poder visualizar exemplos de comandos
 
 #>
-$versao = '1.0.0.0.2'
+$versao = '1.0.0.0.3'
 $programa = 'zenity'.Tolower()
 $textoInstalacao = 'deseja instalar? [S/n]'
 $pathPrograma = (Get-Command -Name $programa -ErrorAction ignore).Source
@@ -48,7 +48,15 @@ $menuPrincipal = @(
     'useradd',
     'userdel',
     'usermod',
-    'split'
+    'split',
+    'fusoHorario',
+    'inputrc',
+    'kdeglobal',
+    'mapFile',
+    'passwd',
+    'tail',
+    'uniq',
+    'xdotool'
 )
 Function instalarZenity {
     #$textoInstalacao = 'deseja instalar? [S/n]'
@@ -134,25 +142,65 @@ Function menu {
 
     Switch ($opcao){
         0 {
-            mostrarArquivo '/usr/bin/dibScripts/shells/comandos/useradd.txt' "$($menuPrincipal[0]).txt".ToUpper()
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[0]).txt" "$($menuPrincipal[0]).txt".ToUpper()
             #clear
             menu
         } # CASE 0
         1 {
-            mostrarArquivo  '/usr/bin/dibScripts/shells/comandos/userdel.txt' "$($menuPrincipal[1]).txt".ToUpper()
+            mostrarArquivo  "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[1]).txt" "$($menuPrincipal[1]).txt".ToUpper()
             #clear
             menu
         } # CASE 1
         2 {
-            mostrarArquivo '/usr/bin/dibScripts/shells/comandos/usermod.txt' "$($menuPrincipal[2]).txt".ToUpper()
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[2]).txt" "$($menuPrincipal[2]).txt".ToUpper()
             #clear
             menu
         }# CASE 2
         3 {
-            mostrarArquivo '/usr/bin/dibScripts/shells/comandos/split.txt' "$($menuPrincipal[3]).txt".ToUpper()
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[3]).txt" "$($menuPrincipal[3]).txt".ToUpper()
             #clear
             menu
         }# CASE 3
+        4 {
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[4]).txt" "$($menuPrincipal[4]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 4
+        5 {
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[5]).txt" "$($menuPrincipal[5]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 5
+        6 {
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[6]).txt" "$($menuPrincipal[6]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 6
+        7 {
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[7]).txt" "$($menuPrincipal[7]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 7
+        8 {
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[8]).txt" "$($menuPrincipal[8]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 8
+        9 {
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[9]).txt" "$($menuPrincipal[9]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 9
+        10 {
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[10]).txt" "$($menuPrincipal[10]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 10
+        11 {
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[11]).txt" "$($menuPrincipal[11]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 11
         Default {
             Write-Host -ForegroundColor Yellow "$opcao não é opção válida!"
             Start-Sleep -Seconds 2
