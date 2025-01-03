@@ -38,7 +38,7 @@
  criar com zenity interface grafica para poder visualizar exemplos de comandos
 
 #>
-$versao = '1.0.0.0.3'
+$versao = '1.0.0.0.4'
 $programa = 'zenity'.Tolower()
 $textoInstalacao = 'deseja instalar? [S/n]'
 $pathPrograma = (Get-Command -Name $programa -ErrorAction ignore).Source
@@ -56,7 +56,10 @@ $menuPrincipal = @(
     'passwd',
     'tail',
     'uniq',
-    'xdotool'
+    'xdotool',
+    'grep',
+    'head'
+    'sair'
 )
 Function instalarZenity {
     #$textoInstalacao = 'deseja instalar? [S/n]'
@@ -203,6 +206,23 @@ Function menu {
             #clear
             menu
         }# CASE 11
+        12 {
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[12]).txt" "$($menuPrincipal[12]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 12
+        13 {
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[13]).txt" "$($menuPrincipal[13]).txt".ToUpper()
+            #clear
+            menu
+        }# CASE 13
+        14 {
+            mostrarArquivo "/usr/bin/dibScripts/shells/comandos/$($menuPrincipal[14]).txt" "$($menuPrincipal[14]).txt".ToUpper()
+            clear
+            Write-Host -ForegroundColor Red "Saindo..."
+            Start-Sleep -Seconds 2
+            Exit
+        }# CASE 14 SAIR
         Default {
             Write-Host -ForegroundColor Yellow "$opcao não é opção válida!"
             Start-Sleep -Seconds 2
