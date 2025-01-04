@@ -1,4 +1,4 @@
-$versao = '1.0.0.4'
+$versao = '1.0.0.5'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
@@ -820,4 +820,10 @@ Set-PSReadLineKeyHandler -Chord Ctrl+i -ScriptBlock {
 	Catch {
 			Write-Host -ForegroundColor DarkRed 'Erro ao inicializar o copilot'
 	}
+}
+
+Function sshb {
+	$usuarioSsh = 'brennersshb'
+	$ipSsh = '31.220.88.74'
+	ssh $usuarioSsh@$ipSsh
 }
