@@ -8,8 +8,8 @@ $listaDeArtistas = @(
 function verificarPlataforma {
     Write-Host -ForegroundColor yellow "Parece que vocÃª deseja saber a plataforma"
     #Start-Sleep -Seconds 2
-    $plataforma = $PSEdition
-    if ($plataforma -match 'desktop') {
+    #$plataforma = $PSEdition
+    if ($IsWindows) {
         Write-Host -ForegroundColor red "Windows concerteza!"
         #Start-Sleep -Seconds 1
         #$diretorios = "$env:USERPROFILE/Desktop"
