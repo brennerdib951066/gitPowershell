@@ -1,44 +1,35 @@
-# lista de programas a serem instalados
-$listaDeProgramas = @(
-    'Google.Chrome',
-    'obs.studio',
-    'cockos.reaper',
-    'flameshot'
-    'Valve.Steam',
-    'anydesk',
-    'python3',
-    'sublime',
-    'mpv',
-    'KDE.Kate',
-    'wsl',
-    'libreoffice',
-    'appmakes.Typora',
-    'vscode'
-)
-$plataforma = $PSEdition
+$notificar = Join-Path -Path "$Env:USERPROFILE\Desktop" -ChildPath "powershell"
+# Diretório da área de trabalho do usuário atual
+$DesktopPath = [Environment]::GetFolderPath("Desktop")
 
-#Write-Host ($listaDeProgramas).Langht
-# for para percorrer  a lista de instlar os programas
-foreach ($programa in $listaDeProgramas){
-    if( $programa -match 'sublime' ){
-        write-Host Instalndo o $programa.ToUpper() via WGET -ForegroundColor red
-        Start-Sleep -Seconds 2
-        if ($plataforma.Tolower() -eq 'desktop') {
-            wget 'https://download.sublimetext.com/Sublime%20Text%20Build%203211%20x64%20Setup.exe'  -O $HOME/Desktop/sublime.exe
-            Start-Process $HOME/Desktop/sublime.exe
-        }
-        else{
-            sudo apt install sublime-text
-        }
+# Mapear extensões para pastas
+$DestinationPaths = @{
+    "awk" = "$DesktopPath\awk"
+    "sh"  = "$DesktopPath\sh"
+    "ps1" = "$DesktopPath\powershell"
+    "txt" = "$DesktopPath\txt"
+    "csv" = "$DesktopPath\csv"
+    "md"  = "$DesktopPath\markdown"
+}
+
+# Garantir que as pastas existam
+foreach ($path in $DestinationPaths.Values) {
+    if (-not (Test-Path -Path $path)) {
+        New-Item -ItemType Directory -Path $path | Out-Null
     }
-    #Write-Host "$programa" -ForegroundColor Cyan
-    if ($programa -eq 'wsl'){ wsl --install --distribution Debian }
-    try {
-        Start-Process winget.exe -ArgumentList 'install',$programa -NoNewWindow -wait
-        Write-Host "$programa instalado ou atualizado com sucesso" -ForegroundColor Cyan
-        Start-Sleep -Seconds 1
-    }
-    catch{
-        Write-Host "Erro fatal" -ForegroundColor Cyan
+}
+
+# Mover os arquivos
+foreach ($ext in $DestinationPaths.Keys) {
+    $sourceFiles = Get-ChildItem -Path $DesktopPath -Filter *.$ext -File
+    foreach ($file in $sourceFiles) {
+        $destination = $DestinationPaths[$ext]
+        Try {
+            Move-Item -Path $file.FullName -Destination $destination -Force -ErrorAction Stop
+        }
+        Catch {
+            . $notificar
+            notificarWhatsApp "Erro ao mover os arquivos $file para o diretorio $destination".Tolower() '379274836'
+        }
     }
 }
