@@ -1,4 +1,4 @@
-$versao = '1.0.0.6'
+$versao = '1.0.0.5'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
@@ -825,8 +825,5 @@ Set-PSReadLineKeyHandler -Chord Ctrl+i -ScriptBlock {
 Function sshb {
 	$usuarioSsh = 'brennersshb'
 	$ipSsh = '31.220.88.74'
-	if (-not ($env:USER -eq 'brenner')) {
-		$usuarioSsh = 'denner'
-	}
-		ssh $usuarioSsh@$ipSsh
+	ssh $usuarioSsh@$ipSsh
 }
