@@ -1,4 +1,4 @@
-$versao = '1.0.0.5'
+$versao = '1.0.0.6'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
@@ -426,7 +426,7 @@ function urlGoogleChrome {
 		$urlNavegador,
 		$macroChamado
 	)
-	write-host  'Voce chamou' $macroChamado.toupper() -foregroundcolor red,green
+	#write-host  'Voce chamou' $macroChamado.toupper() -foregroundcolor red,green
 	if(verificandoPlataforma){
 		start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador  | Out-Null
 	}
@@ -825,5 +825,8 @@ Set-PSReadLineKeyHandler -Chord Ctrl+i -ScriptBlock {
 Function sshb {
 	$usuarioSsh = 'brennersshb'
 	$ipSsh = '31.220.88.74'
-	ssh $usuarioSsh@$ipSsh
+	if (-not ($env:USER -eq 'brenner')) {
+		$usuarioSsh = 'denner'
+	}
+		ssh $usuarioSsh@$ipSsh
 }
