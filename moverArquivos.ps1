@@ -1,4 +1,5 @@
 $notificar = Join-Path -Path "$Env:USERPROFILE\Desktop" -ChildPath "powershell"
+$versao = '1.0.0.1'
 # Diretório da área de trabalho do usuário atual
 $DesktopPath = [Environment]::GetFolderPath("Desktop")
 
@@ -10,6 +11,8 @@ $DestinationPaths = @{
     "txt" = "$DesktopPath\txt"
     "csv" = "$DesktopPath\csv"
     "md"  = "$DesktopPath\markdown"
+    "rpp" = "$DesktopPath\projetosReaper"
+    "mp3" = "$DesktopPath\mp3"
 }
 
 # Garantir que as pastas existam
