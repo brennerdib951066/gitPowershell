@@ -1,4 +1,9 @@
-$versao = '1.0.0.5'
+<# Na versão '1.0.0.7' foram adicionados
+	A função de executar o BASH para o linux, caso o linux tenha o bash instalado
+	Função chamada de B
+#>
+
+$versao = '1.0.0.7'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
@@ -825,5 +830,23 @@ Set-PSReadLineKeyHandler -Chord Ctrl+i -ScriptBlock {
 Function sshb {
 	$usuarioSsh = 'brennersshb'
 	$ipSsh = '31.220.88.74'
-	ssh $usuarioSsh@$ipSsh
+	if (-not ($env:USER -eq 'brenner')) {
+		$usuarioSsh = 'denner'
+	}
+		ssh $usuarioSsh@$ipSsh
+}
+
+Function b {
+	$shell = 'bash'
+	if (-not(verificandoPlataforma)){
+		Try {
+			(Get-Command -Type Application -Name $shell -ErrorAction Stop).Source | Out-Null
+			exec $shell
+		}
+		Catch {
+			Write-Host -ForegroundColor DarkRed "erro ao executar o $shell".ToUpper()
+			#Exit
+		}
+
+	}
 }
