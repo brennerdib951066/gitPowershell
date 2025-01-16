@@ -1,9 +1,9 @@
-<# Na versão '1.0.0.7' foram adicionados
-	A função de executar o BASH para o linux, caso o linux tenha o bash instalado
-	Função chamada de B
+<# Na versão '1.0.0.8' foram adicionados
+	Melhorias na função peek, ela agora só será chamada se o sistema for windows
+	E Caso ele não esteja instalado no pc, ele será instalado
 #>
 
-$versao = '1.0.0.7'
+$versao = '1.0.0.8'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
@@ -801,7 +801,38 @@ else {
 }
 #>
 
-Set-PSReadlineKeyHandler -Chord Ctrl+o -ScriptBlock {peek}
+Set-PSReadlineKeyHandler -Chord Ctrl+o -ScriptBlock {
+		$programaPeek = (Get-Command -Type Application -Name peek)
+		Try {
+			(Get-Command -Type Application -Name peek).source
+			if (verificandoPlataforma) {
+				peek
+				exit
+			} # IF
+		} # TRY
+		Catch {
+			Write-Host -ForegroundColor DarkRed "Parece que o peek não está instalado no pc, deseja instalar? [S/n]:"
+			While ($True) {
+				$opcao = Read-Host ""
+				if ($opcao) {
+					$opcao = $opcao.ToLower()
+					if ($opcao -match 's' -or $opcao -match 'sim') {
+						Break
+					}
+					ElseIf ($opcao -match 'n' -or $opcao -match 'nao') {
+						Exit
+					}
+					Else {
+						Write-Host "Escolha entre s ou n"
+					}
+				}
+			}
+			Winget install peek
+		} # CATCH
+
+
+
+}
 
 # Função para criar arquivos em ps1
 
