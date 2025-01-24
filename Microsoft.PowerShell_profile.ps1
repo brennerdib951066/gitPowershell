@@ -1,9 +1,8 @@
-<# Na versão '1.0.0.8' foram adicionados
-	Melhorias na função peek, ela agora só será chamada se o sistema for windows
-	E Caso ele não esteja instalado no pc, ele será instalado
+<# Na versão '1.0.0.9' foram adicionados
+	A função de fcrontab para filtrar linhas no arquivo do crontab
 #>
 
-$versao = '1.0.0.8'
+$versao = '1.0.0.9'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
@@ -252,7 +251,7 @@ function mpvm {
 	param(
 		$url
 	)
-	mpv --window-minimized=yes $url
+	mpv --window-maximized=yes $url
 }
 
 function np {
@@ -414,11 +413,13 @@ Set-PSReadLineKeyHandler -Chord Ctrl+g -ScriptBlock {
 #Set-PSReadLineKeyHandler -Chord Ctrl+t -ScriptBlock {telegram}
 # abri bubble
 Set-PSReadLineKeyHandler -Chord Ctrl+b -ScriptBlock {
+	$arquivoError = Join-Path -Path $env:HOME/Área` de` Trabalho -ChildPath 'googleError.txt'
+	$arquivoSaidaPadrao = Join-Path -Path $env:HOME/Área` de` Trabalho -ChildPath 'googleSaidaPadrao.txt'
 	if (verificandoPlataforma){
-		start-process chrome -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-1&name=escolhaLocomocao&type=custom', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-3&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados', 'https://www.sistemaviverbemseguros.com/version-test'
+		Start-Process chrome -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-1&name=escolhaLocomocao&type=custom&version=41h0i', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-3&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=41h0i', 'https://www.sistemaviverbemseguros.com/version-41h0i'
 	}
 	else {
-			start-process google-chrome-stable -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-1&name=escolhaLocomocao&type=custom', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-3&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados', 'https://www.sistemaviverbemseguros.com/version-test'
+			start-process google-chrome-stable -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-1&name=escolhaLocomocao&type=custom&version=41h0i', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-3&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=41h0i', 'https://www.sistemaviverbemseguros.com/version-41h0i' -RedirectStandardError $arquivoError -RedirectStandardOutput $arquivoSaidaPadrao
 	}
 
 }
@@ -801,38 +802,7 @@ else {
 }
 #>
 
-Set-PSReadlineKeyHandler -Chord Ctrl+o -ScriptBlock {
-		$programaPeek = (Get-Command -Type Application -Name peek)
-		Try {
-			(Get-Command -Type Application -Name peek).source
-			if (verificandoPlataforma) {
-				peek
-				exit
-			} # IF
-		} # TRY
-		Catch {
-			Write-Host -ForegroundColor DarkRed "Parece que o peek não está instalado no pc, deseja instalar? [S/n]:"
-			While ($True) {
-				$opcao = Read-Host ""
-				if ($opcao) {
-					$opcao = $opcao.ToLower()
-					if ($opcao -match 's' -or $opcao -match 'sim') {
-						Break
-					}
-					ElseIf ($opcao -match 'n' -or $opcao -match 'nao') {
-						Exit
-					}
-					Else {
-						Write-Host "Escolha entre s ou n"
-					}
-				}
-			}
-			Winget install peek
-		} # CATCH
-
-
-
-}
+Set-PSReadlineKeyHandler -Chord Ctrl+o -ScriptBlock {peek}
 
 # Função para criar arquivos em ps1
 
@@ -861,9 +831,18 @@ Set-PSReadLineKeyHandler -Chord Ctrl+i -ScriptBlock {
 Function sshb {
 	$usuarioSsh = 'brennersshb'
 	$ipSsh = '31.220.88.74'
-	if (-not ($env:USER -eq 'brenner')) {
-		$usuarioSsh = 'denner'
+
+	if (-not($ISWindows)) {
+		if (-not ($env:USER -eq 'brenner')) {
+			$usuarioSsh = 'denner'
+		}
 	}
+	else {
+		if (-not($Env:USERNAME -eq 'brenner')){
+			$usuarioSsh = 'denner'
+		}
+	}
+
 		ssh $usuarioSsh@$ipSsh
 }
 
@@ -880,4 +859,32 @@ Function b {
 		}
 
 	}
+}
+
+Function chatgpt {
+		$url = 'https://chatgpt.com/'
+		$profile = 'Brenner'
+		$arquivoError = Join-Path -Path $env:HOME/Área` de` Trabalho -ChildPath 'googleError.txt'
+		$arquivoSaidaPadrao = Join-Path -Path $env:HOME/Área` de` Trabalho -ChildPath 'googleSaidaPadrao.txt'
+
+		if (-not(verificandoPlataforma)) {
+			Start-Process google-chrome-stable -ArgumentList --profile-directory=$profile,"$url" -RedirectStandardError "$arquivoError" -RedirectStandardOutput "$arquivoSaidaPadrao"
+			#Exit
+		}
+		else {
+			# Caso seja windows cairá aqui
+			chrome --profile-directory=$profile "$url"
+		}
+}
+
+Function fcrontab {
+	if (-not(verificandoPlataforma)){
+		if ($args[0]) {
+		$filtro = (grep -i "$($args[0])".ToLower() /etc/crontab)
+		Write-Host -ForegroundColor DarkGreen "$filtro"
+		} else {
+				Write-Host -ForegroundColor Red 'Mande um padrão para buscar no crontab'
+		}
+	} # IF VERIFICANDOPLATAFORMA
+
 }
