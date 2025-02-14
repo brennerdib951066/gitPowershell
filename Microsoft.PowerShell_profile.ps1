@@ -1,4 +1,5 @@
-<# Na versão '1.0.0.9' foram adicionados
+<#
+	 a versão '1.0.0.9' foram adicionados
 	A função de fcrontab para filtrar linhas no arquivo do crontab
 #>
 
@@ -303,8 +304,13 @@ function envP {
 }
 
 function meuIp{
-	$meuIp = (.\ipconfig.exe | Where-Object {$_ -match 'IPv4'} | ForEach-Object { $_ -replace '.*: ', '' })
-	write-host $meuIp -foreground DarkCyan
+	if (-not(verificandoPlataforma)){
+		ifconfig
+	}
+	else {
+		$meuIp = (ipconfig.exe | Where-Object {$_ -match 'IPv4'} | ForEach-Object { $_ -replace '.*: ', '' })
+		write-host $meuIp -foreground DarkCyan
+	}
 }
 function kprofile {
 	if (verificandoPlataforma){
@@ -831,6 +837,24 @@ Set-PSReadLineKeyHandler -Chord Ctrl+i -ScriptBlock {
 Function sshb {
 	$usuarioSsh = 'brennersshb'
 	$ipSsh = '31.220.88.74'
+
+	if (-not($ISWindows)) {
+		if (-not ($env:USER -eq 'brenner')) {
+			$usuarioSsh = 'denner'
+		}
+	}
+	else {
+		if (-not($Env:USERNAME -eq 'brenner')){
+			$usuarioSsh = 'denner'
+		}
+	}
+
+		ssh $usuarioSsh@$ipSsh
+}
+
+Function sshbw {
+	$usuarioSsh = 'brenner'
+	$ipSsh = '192.168.0.2'
 
 	if (-not($ISWindows)) {
 		if (-not ($env:USER -eq 'brenner')) {
