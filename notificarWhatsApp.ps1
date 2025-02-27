@@ -1,3 +1,14 @@
+<#  IDS Usuarios botConversa
+    Brenner = '385910829'
+    Denner  = '193741501'
+    Daniele = '193744989'
+#>
+<#
+    Na versão '1.0.0.1', foi adicionado nova forma de enviar notificações
+    Agora poderá enviar notificação por linha de comando
+    SINTAXE > args[0](notificarWhatsApp) args[1]('Mensagem a enviar') 'IdBotConversa'
+#>
+$versao = '1.0.0.1'
 Function notificarWhatsApp {
 
     param(
@@ -23,4 +34,12 @@ Function notificarWhatsApp {
     }
 }
 
-#notificarWhatsApp 'aqui é um teste com powershell no DEBIAN'.Tolower() '379274836'
+if ($args[0]){
+    if ($args[0] -eq 'notificarWhatsApp') {
+        Write-Host "Seu argumento é $($args[0])".ToUpper()
+        notificarWhatsApp "$($args[1])" "$($args[2])"
+        Exit
+    }
+    Write-Host -ForegroundColor Yellow "Você tem esse argumento $($args[0])"
+}
+#notificarWhatsApp 'aqui é um teste com powershell no DEBIAN'.Tolower() '385910829'
