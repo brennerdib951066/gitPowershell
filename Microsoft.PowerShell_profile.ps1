@@ -1,9 +1,9 @@
 <#
-	 a versão '1.0.0.9' foram adicionados
-	A função de fcrontab para filtrar linhas no arquivo do crontab
+	 a versão '1.0.0.10' foram adicionados
+	Na função do mpvm adicionando a parametro --fs para o programa mpv abrir já tela cheia
 #>
 
-$versao = '1.0.0.9'
+$versao = '1.0.0.10'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
@@ -252,7 +252,7 @@ function mpvm {
 	param(
 		$url
 	)
-	mpv --window-maximized=yes $url
+	mpv --fs $url
 }
 
 function np {
