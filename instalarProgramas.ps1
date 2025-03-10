@@ -46,10 +46,10 @@ $listaDeProgramasLinux = @(
 )
 
 $listaDeProgramasWindows = @(
-    'typora',                       # TYPORA
+    'appmakes.Typora',                       # TYPORA
     'flameshot',
     'reaper',                       # Reaper
-    'XP8BV7F2CT4LDK',               # GOOGLE CHROME
+    'Google.Chrome',               # GOOGLE CHROME
     'XPFFH613W8V6LV',               # OBS STUDIO
     'XP8CD3D3Q50MS2',               # PEEK
     'AnyDeskSoftwareGmbH.AnyDesk',  # ANYDESK
@@ -58,17 +58,22 @@ $listaDeProgramasWindows = @(
     'kate',
     'visual',                       # VISUAL STUDIO
     'asio4all',                      # ASIO REPAER
-    'peek'
+    'peek',
+    'anydesk',
+    'DebaucheeOpenSourceGroup.Barrier' # Barrier
 )
 $plataforma = $PSEdition
 
-if (-not($plataforma -match 'desktop')){
-    ForEach ($programaAtual in $listaDeProgramasLinux){
-        sudo apt install $programaAtual
-    }
-} # IF $PLATAFORMA
-else {
-    ForEach ($programaAtual in $listaDeProgramasWindows){
-        winget install $programaAtual
-    }
-} # ELSE $PLATAFORMA
+if ($PSVersionTable.PSVersion -notmatch 7) {
+    Write-Host -ForegroundColor red "Preciso da versão 7 do powershell para continuar"
+    Exit
+}
+
+ForEach ($programaAtual in $listaDeProgramasWindows){
+        if (-not($ISWindows)) {
+            sudo apt install $programaAtual
+            Continue
+        }
+        Winget install "$programaAtual"
+ }
+
