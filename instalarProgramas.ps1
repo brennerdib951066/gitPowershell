@@ -7,32 +7,32 @@
 
 .AUTHOR brenner
 
-.COMPANYNAME 
+.COMPANYNAME
 
-.COPYRIGHT 
+.COPYRIGHT
 
-.TAGS 
+.TAGS
 
-.LICENSEURI 
+.LICENSEURI
 
-.PROJECTURI 
+.PROJECTURI
 
-.ICONURI 
+.ICONURI
 
-.EXTERNALMODULEDEPENDENCIES 
+.EXTERNALMODULEDEPENDENCIES
 
-.REQUIREDSCRIPTS 
+.REQUIREDSCRIPTS
 
-.EXTERNALSCRIPTDEPENDENCIES 
+.EXTERNALSCRIPTDEPENDENCIES
 
 .RELEASENOTES
 
 
 #>
 
-<# 
+<#
 
-.DESCRIPTION 
+.DESCRIPTION
  instalar programas via winget ou via apt do linux
 
 #>
@@ -64,16 +64,21 @@ $listaDeProgramasWindows = @(
 )
 $plataforma = $PSEdition
 
-if ($PSVersionTable.PSVersion -notmatch 7) {
+if ($PSVersionTable.PSVersion.Major -le 6) {
     Write-Host -ForegroundColor red "Preciso da versão 7 do powershell para continuar"
     Exit
 }
 
 ForEach ($programaAtual in $listaDeProgramasWindows){
         if (-not($ISWindows)) {
-            sudo apt install $programaAtual
-            Continue
-        }
+            Try {
+                Get-Command "$programaAtual" -ErrorAction Stop
+            }
+            Catch {
+                sudo apt install $programaAtual
+                Continue
+            }
+
+        } # IF $ISWINDOWS
         Winget install "$programaAtual"
  }
-
