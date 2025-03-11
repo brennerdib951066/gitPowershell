@@ -79,16 +79,16 @@ ForEach ($programaAtual in $listaDeProgramasWindows){
                     Start-Sleep -Seconds 2
                     Continue
 
-                }
+                } # TRY
                 Catch {
                     sudo apt install $programaAtual
                     Continue
 
-                }
+                } # CATCH
                 Break
             } # FOR LINUX
             Exit
         } # IF $ISWINDOWS
         Write-Host "CAIU WINDOWS"
         Winget install "$programaAtual"
- }
+ } # FOREACH WINDOWS
