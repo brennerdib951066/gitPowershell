@@ -46,21 +46,21 @@ $listaDeProgramasLinux = @(
 )
 
 $listaDeProgramasWindows = @(
-    'appmakes.Typora',                       # TYPORA
+    'appmakes.Typora',                  # TYPORA
     'flameshot',
-    'reaper',                       # Reaper
-    'Google.Chrome',               # GOOGLE CHROME
-    'XPFFH613W8V6LV',               # OBS STUDIO
-    'XP8CD3D3Q50MS2',               # PEEK
-    'AnyDeskSoftwareGmbH.AnyDesk',  # ANYDESK
+    'reaper',                           # Reaper
+    'Google.Chrome',                    # GOOGLE CHROME
+    'XPFFH613W8V6LV',                   # OBS STUDIO
+    'XP8CD3D3Q50MS2',                   # PEEK
+    'AnyDeskSoftwareGmbH.AnyDesk',      # ANYDESK
     'libreoffice',
-    'Valve.Stean',                  # STEAN
+    'Valve.Stean',                      # STEAN
     'kate',
-    'visual',                       # VISUAL STUDIO
-    'asio4all',                      # ASIO REPAER
+    'visual',                           # VISUAL STUDIO
+    'asio4all',                         # ASIO REPAER
     'peek',
     'anydesk',
-    'DebaucheeOpenSourceGroup.Barrier' # Barrier
+    'DebaucheeOpenSourceGroup.Barrier'  # Barrier
 )
 $plataforma = $PSEdition
 
@@ -70,15 +70,25 @@ if ($PSVersionTable.PSVersion.Major -le 6) {
 }
 
 ForEach ($programaAtual in $listaDeProgramasWindows){
-        if (-not($ISWindows)) {
-            Try {
-                Get-Command "$programaAtual" -ErrorAction Stop
-            }
-            Catch {
-                sudo apt install $programaAtual
-                Continue
-            }
 
+        if (-not($ISWindows)) {
+            ForEach ($programaAtual in $listaDeProgramasLinux) {
+                Write-Host "CAIU NO LINUX"
+                Try {
+                    Get-Command "$programaAtual" -ErrorAction Stop
+                    Start-Sleep -Seconds 2
+                    Continue
+
+                }
+                Catch {
+                    sudo apt install $programaAtual
+                    Continue
+
+                }
+                Break
+            } # FOR LINUX
+            Exit
         } # IF $ISWINDOWS
+        Write-Host "CAIU WINDOWS"
         Winget install "$programaAtual"
  }
