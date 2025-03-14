@@ -1,9 +1,10 @@
 <#
-	 a versão '1.0.0.10' foram adicionados
-	Na função do mpvm adicionando a parametro --fs para o programa mpv abrir já tela cheia
+	 a versão '1.0.0.12' foram adicionados
+	Agora ao teclar ctrl+a no terminal será aberto no chrome o atende chat do pedrinho da nasa no perfil DIB
+
 #>
 
-$versao = '1.0.0.10'
+$versao = '1.0.0.12'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
@@ -910,5 +911,49 @@ Function fcrontab {
 				Write-Host -ForegroundColor Red 'Mande um padrão para buscar no crontab'
 		}
 	} # IF VERIFICANDOPLATAFORMA
+
+}
+
+# No terminal se for teclado 1, ele irá setar o tema windows para tema CLARO
+Set-PSReadLineKeyHandler -Chord 1 -ScriptBlock {
+	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "SystemUsesLightTheme" /t REG_DWORD /d 1 /f
+	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d 1 /f
+}
+# No terminal se for teclado 1, ele irá setar o tema windows para tema ESCURO
+Set-PSReadLineKeyHandler -Chord 0 -ScriptBlock {
+	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "SystemUsesLightTheme" /t REG_DWORD /d 0 /f
+	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d 0 /f
+}
+#
+
+# No terminal teclar ctrl+A abrir o atende chat pedrinho da nasa
+Set-PSReadLineKeyHandler -Chord ctrl+a -ScriptBlock {
+	$diretorioChrome = 'C:\Program Files\Google\Chrome\Application'
+	$carecter = ";"
+	$nomePath = 'path'.Toupper()
+	if (-not(verificandoPlataforma)){
+		$diretorioChrome = '/usr/bin'
+		$carecter = ":"
+	}
+	if ($env:PATH.Split("$carecter") -contains "$diretorioChrome") {
+		#Write-Host -ForegroundColor green 'Existe sim seu chrome no PATH windows'
+		if (verificandoPlataforma){
+			chrome --profile-directory='DIB' 'https://centraldechat.sistemaviverbemseguros.com/#/atendimento/contatos'
+		}
+		else {
+			google-chrome-stable --profile-directory='DIB' 'https://centraldechat.sistemaviverbemseguros.com/#/atendimento/contatos'
+		}
+
+	}
+	else {
+		Write-Host -ForegroundColor red 'Adicione seu chrome no path'
+		if (verificandoPlataforma){
+			Start-Process "$diretorioChrome\chrome.exe" -ArgumentList --profile-directory='DIB','https://centraldechat.sistemaviverbemseguros.com/#/atendimento/contatos'
+		}
+		else {
+			google-chrome-stable --profile-directory='DIB' 'https://centraldechat.sistemaviverbemseguros.com/#/atendimento/contatos'
+		}
+
+	}
 
 }
