@@ -463,21 +463,24 @@ function acoesDoSistema {
 	shutdown.exe $opcao
 }
 # Desligando o pc
-Set-PSReadLineKeyHandler -Chord Ctrl+0 -ScriptBlock {
+if (verificandoPlataforma){
+	Set-PSReadLineKeyHandler -Chord Ctrl+0 -ScriptBlock {
 	 acoesDoSistema '/p'
-}
-# reiniciar o pc
-Set-PSReadLineKeyHandler -Chord Ctrl+1 -ScriptBlock {
-	 acoesDoSistema '/r' '/t' 1
-}
-# Deslogando o uuário atual
-Set-PSReadLineKeyHandler -Chord Ctrl+2 -ScriptBlock {
-	 acoesDoSistema '/l'
-}
-# hibernar o uuário atual
-Set-PSReadLineKeyHandler -Chord Ctrl+3 -ScriptBlock {
-	 acoesDoSistema '/hybrid'
-}
+	}
+	# reiniciar o pc
+	Set-PSReadLineKeyHandler -Chord Ctrl+1 -ScriptBlock {
+		acoesDoSistema '/r' '/t' 1
+	}
+	# Deslogando o uuário atual
+	Set-PSReadLineKeyHandler -Chord Ctrl+2 -ScriptBlock {
+		acoesDoSistema '/l'
+	}
+	# hibernar o uuário atual
+	Set-PSReadLineKeyHandler -Chord Ctrl+3 -ScriptBlock {
+		acoesDoSistema '/hybrid'
+	}
+} # IF
+
 
 # Escrever markdown no konsole
 
@@ -914,17 +917,23 @@ Function fcrontab {
 
 }
 
-# No terminal se for teclado 1, ele irá setar o tema windows para tema CLARO
-Set-PSReadLineKeyHandler -Chord 1 -ScriptBlock {
-	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "SystemUsesLightTheme" /t REG_DWORD /d 1 /f
-	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d 1 /f
-}
-# No terminal se for teclado 1, ele irá setar o tema windows para tema ESCURO
-Set-PSReadLineKeyHandler -Chord 0 -ScriptBlock {
-	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "SystemUsesLightTheme" /t REG_DWORD /d 0 /f
-	reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d 0 /f
-}
-#
+
+	Write-Host "ENTROU NO WINDOWS PERFIL"
+	# No terminal se for teclado 1, ele irá setar o tema windows para tema CLARO
+	Set-PSReadLineKeyHandler -Chord Alt+1 -ScriptBlock {
+		if (verificandoPlataforma){
+			reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "SystemUsesLightTheme" /t REG_DWORD /d 1 /f
+			reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d 1 /f
+		} # IF
+	}
+	# No terminal se for teclado 1, ele irá setar o tema windows para tema ESCURO
+	Set-PSReadLineKeyHandler -Chord Alt+0 -ScriptBlock {
+		if (verificandoPlataforma){
+			reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "SystemUsesLightTheme" /t REG_DWORD /d 0 /f
+			reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d 0 /f
+		} # IF
+	}
+	#
 
 # No terminal teclar ctrl+A abrir o atende chat pedrinho da nasa
 Set-PSReadLineKeyHandler -Chord ctrl+a -ScriptBlock {
