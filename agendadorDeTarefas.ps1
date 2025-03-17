@@ -58,7 +58,8 @@ $listaArquivo = @(
     'powershell.vbs',
     'profile.vbs',
     'youtube.vbs',
-    'gitAwk.vbs'
+    'gitAwk.vbs',
+    'obsStudio.vbs'
 )
 $scheduledTaskLista = @(
     'abrirBubble',
@@ -66,7 +67,8 @@ $scheduledTaskLista = @(
     'abrirKonsolePowershell',
     'abrirProfilePowershell',
     'abrirYoutube',
-    'gitAwk'
+    'gitAwk',
+    'abrirObsStudio'
 )
 $descricaoLista = @(
     'abrir o bubble pelo chrome através do perfil DIB, no login',
@@ -74,7 +76,8 @@ $descricaoLista = @(
     'abrir o teminal windows no login',
     'abrir com o kate o arquivo de configuração do powershell, no login'
     'abrir o youtube no perfil do google chrome brenner, no login',
-    'baixar do gitHub todos os arquivos'
+    'baixar do gitHub todos os arquivos',
+    'abrir com o obs Studio, no login'
 )
 For ($i=0;$i -le $ScheduledTaskLista.Length -1;$i++){
     Try {
