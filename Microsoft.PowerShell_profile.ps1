@@ -1,10 +1,10 @@
 <#
-	 a versão '1.0.0.12' foram adicionados
-	Agora ao teclar ctrl+a no terminal será aberto no chrome o atende chat do pedrinho da nasa no perfil DIB
+	 a versão '1.0.0.13' foram adicionados
+	Agora ao chamar a função de cor do linux ele irá setar o tema do sistema, como por exemplo dark,light
 
 #>
 
-$versao = '1.0.0.12'
+$versao = '1.0.0.13'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
@@ -420,13 +420,21 @@ Set-PSReadLineKeyHandler -Chord Ctrl+g -ScriptBlock {
 #Set-PSReadLineKeyHandler -Chord Ctrl+t -ScriptBlock {telegram}
 # abri bubble
 Set-PSReadLineKeyHandler -Chord Ctrl+b -ScriptBlock {
-	$arquivoError = Join-Path -Path $env:HOME/Área` de` Trabalho -ChildPath 'googleError.txt'
-	$arquivoSaidaPadrao = Join-Path -Path $env:HOME/Área` de` Trabalho -ChildPath 'googleSaidaPadrao.txt'
+	$padrao = $(xdg-user-dir DESKTOP)
+	$arquivoError = Join-Path -Path "$padrao" -ChildPath 'googleError.txt'
+	$arquivoSaidaPadrao = Join-Path -Path "$padrao" -ChildPath 'googleSaidaPadrao.txt'
+	if (-not(Test-Path "$arquivoError")) {
+		New-Item -Type File -Path "arquivoError"
+	}
+	if (-not(Test-Path "$arquivoSaidaPadrao")) {
+		Write-Host "Nao existe"
+		New-Item -Type File -Path "$arquivoSaidaPadrao"
+	}
 	if (verificandoPlataforma){
 		Start-Process chrome -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-1&name=escolhaLocomocao&type=custom&version=41h0i', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-3&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=41h0i', 'https://www.sistemaviverbemseguros.com/version-41h0i'
 	}
 	else {
-			start-process google-chrome-stable -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-1&name=escolhaLocomocao&type=custom&version=41h0i', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-3&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=41h0i', 'https://www.sistemaviverbemseguros.com/version-41h0i' -RedirectStandardError $arquivoError -RedirectStandardOutput $arquivoSaidaPadrao
+			start-process google-chrome-stable -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-1&name=escolhaLocomocao&type=custom&version=41h0i', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-3&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=41h0i', 'https://www.sistemaviverbemseguros.com/version-41h0i' -RedirectStandardError "$arquivoError" -RedirectStandardOutput "$arquivoSaidaPadrao"
 	}
 
 }
@@ -892,8 +900,9 @@ Function b {
 Function chatgpt {
 		$url = 'https://chatgpt.com/'
 		$profile = 'Brenner'
-		$arquivoError = Join-Path -Path $env:HOME/Área` de` Trabalho -ChildPath 'googleError.txt'
-		$arquivoSaidaPadrao = Join-Path -Path $env:HOME/Área` de` Trabalho -ChildPath 'googleSaidaPadrao.txt'
+		$padrao = $(xdg-user-dir DESKTOP)
+		$arquivoError = Join-Path -Path "$padrao" -ChildPath 'googleError.txt'
+		$arquivoSaidaPadrao = Join-Path -Path "$padrao" -ChildPath 'googleSaidaPadrao.txt'
 
 		if (-not(verificandoPlataforma)) {
 			Start-Process google-chrome-stable -ArgumentList --profile-directory=$profile,"$url" -RedirectStandardError "$arquivoError" -RedirectStandardOutput "$arquivoSaidaPadrao"
@@ -966,3 +975,21 @@ Set-PSReadLineKeyHandler -Chord ctrl+a -ScriptBlock {
 	}
 
 }
+
+function corDesktop {
+	param(
+			[string]$cor
+		)
+		Switch ($cor) {
+			'd' {
+				$cor = 'light'
+			}
+			'n' {
+				$cor = 'dark'
+			}
+		} # SWICTH
+		Start-Process plasma-apply-desktoptheme "breeze-$cor" -RedirectStandardOutput 'ver.txt'
+		$cor = $cor.Substring(0,1).ToUpper() + $cor.Substring(1).ToLower()
+		Start-Process plasma-apply-colorscheme Breeze$cor -RedirectStandardOutput 'ver.txt'
+} # FUNCAO CORDESKTOP
+
