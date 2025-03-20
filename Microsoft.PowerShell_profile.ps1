@@ -428,7 +428,7 @@ Set-PSReadLineKeyHandler -Chord Ctrl+b -ScriptBlock {
 	$arquivoError = Join-Path -Path "$padrao" -ChildPath 'googleError.txt'
 	$arquivoSaidaPadrao = Join-Path -Path "$padrao" -ChildPath 'googleSaidaPadrao.txt'
 	if (-not(Test-Path "$arquivoError")) {
-		New-Item -Type File -Path "arquivoError"
+		New-Item -Type File -Path "$arquivoError"
 	}
 	if (-not(Test-Path "$arquivoSaidaPadrao")) {
 		Write-Host "Nao existe"
@@ -904,9 +904,20 @@ Function b {
 Function chatgpt {
 		$url = 'https://chatgpt.com/'
 		$profile = 'Brenner'
-		$padrao = $(xdg-user-dir DESKTOP)
+		$padrao = "$env:USERPROFILE\Desktop"
+		if (-not (verificandoPlataforma)) {
+			$padrao = $(xdg-user-dir DESKTOP)
+		}
+
 		$arquivoError = Join-Path -Path "$padrao" -ChildPath 'googleError.txt'
 		$arquivoSaidaPadrao = Join-Path -Path "$padrao" -ChildPath 'googleSaidaPadrao.txt'
+		if (-not(Test-Path "$arquivoError")) {
+			New-Item -Type File -Path "$arquivoError" | Out-Null
+		}
+		if (-not(Test-Path "$arquivoSaidaPadrao")) {
+			Write-Host "Nao existe"
+			New-Item -Type File -Path "$arquivoSaidaPadrao" | Out-Null
+		}
 
 		if (-not(verificandoPlataforma)) {
 			Start-Process google-chrome-stable -ArgumentList --profile-directory=$profile,"$url" -RedirectStandardError "$arquivoError" -RedirectStandardOutput "$arquivoSaidaPadrao"
