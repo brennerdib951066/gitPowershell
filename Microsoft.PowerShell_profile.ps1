@@ -420,7 +420,11 @@ Set-PSReadLineKeyHandler -Chord Ctrl+g -ScriptBlock {
 #Set-PSReadLineKeyHandler -Chord Ctrl+t -ScriptBlock {telegram}
 # abri bubble
 Set-PSReadLineKeyHandler -Chord Ctrl+b -ScriptBlock {
-	$padrao = $(xdg-user-dir DESKTOP)
+	$padrao = "$env:USERPROFILE\Desktop"
+	if (-not (verificandoPlataforma)) {
+		$padrao = $(xdg-user-dir DESKTOP)
+	}
+
 	$arquivoError = Join-Path -Path "$padrao" -ChildPath 'googleError.txt'
 	$arquivoSaidaPadrao = Join-Path -Path "$padrao" -ChildPath 'googleSaidaPadrao.txt'
 	if (-not(Test-Path "$arquivoError")) {
