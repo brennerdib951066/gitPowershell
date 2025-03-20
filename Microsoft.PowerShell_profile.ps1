@@ -986,14 +986,37 @@ function corDesktop {
 		)
 		Switch ($cor) {
 			'd' {
-				$cor = 'light'
+				if (-not(verificandoPlataforma)) {
+					$cor = 'light'
+				}
+				else {
+					#Write-Host "VOce que o modo dia para Windows"
+					#Start-Sleep -Seconds 3
+					[int]$cor = 1
+				}
 			}
 			'n' {
-				$cor = 'dark'
+				if (-not(verificandoPlataforma)) {
+					$cor = 'dark'
+				}
+				else {
+					#Write-Host "VOce que o modo NOITE para Windows"
+					#Start-Sleep -Seconds 3
+					[int]$cor = 0
+				}
 			}
 		} # SWICTH
-		Start-Process plasma-apply-desktoptheme "breeze-$cor" -RedirectStandardOutput 'ver.txt'
-		$cor = $cor.Substring(0,1).ToUpper() + $cor.Substring(1).ToLower()
-		Start-Process plasma-apply-colorscheme Breeze$cor -RedirectStandardOutput 'ver.txt'
+		if (-not (verificandoPlataforma)) {
+			Start-Process plasma-apply-desktoptheme "breeze-$cor" -RedirectStandardOutput 'ver.txt'
+			$cor = $cor.Substring(0,1).ToUpper() + $cor.Substring(1).ToLower()
+			Start-Process plasma-apply-colorscheme Breeze$cor -RedirectStandardOutput 'ver.txt'
+		}
+		else {
+			 #-WindowStyle Minimized
+			#Start-Process reg -ArgumentList add,"HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", /v, "AppsUseLightTheme", /t, REG_DWORD, /d, "$cor", /f
+			reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "SystemUsesLightTheme" /t REG_DWORD /d $cor /f
+			reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d $cor /f
+		}
+
 } # FUNCAO CORDESKTOP
 
