@@ -781,7 +781,8 @@ for ($i=0;$i -le $novoNomeAlias.Length-1;$i++){
 if (verificandoPlataforma){
 	Try {
 		$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
-		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$HOME/Desktop/powershell/$arquivoPs1" -ErrorAction Stop
+		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$USERPROFILE/Desktop/powershell/$arquivoPs1" -ErrorAction Stop
+		Copy-Item "$USERPROFILE/Desktop/powershell/$arquivoPs1" "$PROFILE"
 	}
 	Catch {
 		Write-Host ""
@@ -792,6 +793,7 @@ else {
 	# Configurando para que o powershell ignorar o case dos diretorios
 	$pastaDestino = (Get-ChildItem "$HOME" -Filter "Área de Trabalho" -Directory | Where-Object { $_.Name -ieq "Área de Trabalho" }).FullName
 	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
+	Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
 }
 
 <# if (verificandoPlataforma){
