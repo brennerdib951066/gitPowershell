@@ -48,13 +48,13 @@ $listaDeProgramasLinux = @(
 $listaDeProgramasWindows = @(
     'appmakes.Typora',                  # TYPORA
     'flameshot',
-    'reaper',                           # Reaper
+    'Cockos.REAPER',                    # Reaper
     'Google.Chrome',                    # GOOGLE CHROME
     'XPFFH613W8V6LV',                   # OBS STUDIO
     'XP8CD3D3Q50MS2',                   # PEEK
     'AnyDeskSoftwareGmbH.AnyDesk',      # ANYDESK
     'libreoffice',
-    'Valve.Stean',                      # STEAN
+    'Valve.Steam',                      # STEAN
     'kate',
     'visual',                           # VISUAL STUDIO
     'asio4all',                         # ASIO REPAER
