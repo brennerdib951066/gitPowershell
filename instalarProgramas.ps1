@@ -60,7 +60,8 @@ $listaDeProgramasWindows = @(
     'asio4all',                         # ASIO REPAER
     'peek',
     'anydesk',
-    'DebaucheeOpenSourceGroup.Barrier'  # Barrier
+    'DebaucheeOpenSourceGroup.Barrier',  # Barrier
+    'Microsoft.Git'                      # GIT WINDOWS
 )
 $plataforma = $PSEdition
 
