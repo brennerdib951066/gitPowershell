@@ -19,10 +19,12 @@ function verificandoPlataforma(){
 		##$plataforma = $PSEdition
 		if ($isWindows) {
 			#Write-Host -foregroundcolor red "É WINDOWSSSS"
-			Return $False
+			Return $True
 		}
 		# Se for Windows
-		Return $True
+		else {
+			Return $False
+		}
 }
 
 ################################Função de ações do sistema####################################################################################
