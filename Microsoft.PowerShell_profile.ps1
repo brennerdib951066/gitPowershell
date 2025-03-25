@@ -22,7 +22,7 @@ function verificandoPlataforma(){
 			Return $False
 		}
 		# Se for Windows
-		Return $False
+		Return $True
 }
 
 ################################Função de ações do sistema####################################################################################
