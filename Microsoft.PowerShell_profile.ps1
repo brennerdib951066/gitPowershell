@@ -15,6 +15,13 @@ if (-not ($versaoPowershell -match 7)) {
 }
 
 
+function matarProcess {
+	For ($i=0;$i -le $args.Length -1 ;$i++) {
+		Stop-Process -Name "$($args[$i])"
+	}
+	# FOR
+}
+
 function verificandoPlataforma(){
 		##$plataforma = $PSEdition
 		if ($isWindows) {
@@ -33,6 +40,7 @@ function reboot {
 	#$plataforma = $PSEdition
 	if ($IsWindows){
 		Restart-Computer -Force
+		matarProcess "obs64"
 	}
 	else {
 		systemctl reboot -i
