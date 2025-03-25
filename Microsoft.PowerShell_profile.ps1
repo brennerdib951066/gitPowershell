@@ -453,7 +453,8 @@ Set-PSReadLineKeyHandler -Chord Ctrl+b -ScriptBlock {
 	if (verificandoPlataforma){
 		Start-Process chrome -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=Design&name=escolhaLocomocao&type=custom&version=022ip' 'https://bubble.io/page?id=viverbemseguroscrm&tab=Data&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=022ip' 'https://www.sistemaviverbemseguros.com/version-022ip'
 	}
-	else {'https://bubble.io/page?id=viverbemseguroscrm&tab=Design&name=escolhaLocomocao&type=custom&version=022ip' 'https://bubble.io/page?id=viverbemseguroscrm&tab=Data&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=022ip' 'https://www.sistemaviverbemseguros.com/version-022ip' -RedirectStandardError "$arquivoError" -RedirectStandardOutput "$arquivoSaidaPadrao"
+	else {
+		Start-Process google-chrome-stable 'https://bubble.io/page?id=viverbemseguroscrm&tab=Design&name=escolhaLocomocao&type=custom&version=022ip' 'https://bubble.io/page?id=viverbemseguroscrm&tab=Data&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=022ip' 'https://www.sistemaviverbemseguros.com/version-022ip' -RedirectStandardError "$arquivoError" -RedirectStandardOutput "$arquivoSaidaPadrao"
 	}
 
 }
