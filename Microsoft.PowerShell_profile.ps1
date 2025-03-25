@@ -322,7 +322,7 @@ function envP {
 
 function meuIp{
 	if (-not(verificandoPlataforma)){
-		ip -c a | grep -iwE '^.+inet.*wlo1$' | cut -d' ' -f6 | cut -d'/' -f1
+		ifconfig
 	}
 	else {
 		$meuIp = (ipconfig.exe | Where-Object {$_ -match 'IPv4'} | ForEach-Object { $_ -replace '.*: ', '' })
@@ -451,10 +451,9 @@ Set-PSReadLineKeyHandler -Chord Ctrl+b -ScriptBlock {
 		New-Item -Type File -Path "$arquivoSaidaPadrao"
 	}
 	if (verificandoPlataforma){
-		Start-Process chrome -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-1&name=escolhaLocomocao&type=custom&version=41h0i', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-3&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=41h0i', 'https://www.sistemaviverbemseguros.com/version-41h0i'
+		Start-Process chrome -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=Design&name=escolhaLocomocao&type=custom&version=022ip' 'https://bubble.io/page?id=viverbemseguroscrm&tab=Data&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=022ip' 'https://www.sistemaviverbemseguros.com/version-022ip'
 	}
-	else {
-			start-process google-chrome-stable -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-1&name=escolhaLocomocao&type=custom&version=41h0i', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-3&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=41h0i', 'https://www.sistemaviverbemseguros.com/version-41h0i' -RedirectStandardError "$arquivoError" -RedirectStandardOutput "$arquivoSaidaPadrao"
+	else {'https://bubble.io/page?id=viverbemseguroscrm&tab=Design&name=escolhaLocomocao&type=custom&version=022ip' 'https://bubble.io/page?id=viverbemseguroscrm&tab=Data&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=022ip' 'https://www.sistemaviverbemseguros.com/version-022ip' -RedirectStandardError "$arquivoError" -RedirectStandardOutput "$arquivoSaidaPadrao"
 	}
 
 }
