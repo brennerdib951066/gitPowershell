@@ -322,7 +322,7 @@ function envP {
 
 function meuIp{
 	if (-not(verificandoPlataforma)){
-		ifconfig
+		ip -c a | grep -iwE '^.+inet.*wlo1$' | cut -d' ' -f6 | cut -d'/' -f1
 	}
 	else {
 		$meuIp = (ipconfig.exe | Where-Object {$_ -match 'IPv4'} | ForEach-Object { $_ -replace '.*: ', '' })
