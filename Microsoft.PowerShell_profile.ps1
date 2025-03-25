@@ -253,12 +253,16 @@ function telegram{
 
 function cdd {
 	#$plataforma = $PSEdition
-	if (verificandoPlataforma) {
-		cd ~/Desktop
+	if (-not(verificandoPlataforma)) {
+		$padrao = $(xdg-user-dir DESKTOP)
+		cd "$padrao"
+		Return
 	}
-	else{
+	cd ~̣/Desktop
+	<#else{
 		cd ~/"Área de [tT]rabalho" # Aqui o konsole já irá para a Área de trabalho do usuário
 	}
+	#>
 }
 
 function mpvm {
