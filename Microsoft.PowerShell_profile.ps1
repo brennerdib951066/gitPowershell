@@ -41,6 +41,7 @@ function reboot {
 	if ($IsWindows){
 		Restart-Computer -Force
 		matarProcess "obs64"
+		Start-Sleep -Seconds 2
 	}
 	else {
 		systemctl reboot -i
