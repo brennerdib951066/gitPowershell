@@ -322,7 +322,7 @@ function envP {
 
 function meuIp{
 	if (-not(verificandoPlataforma)){
-		ifconfig
+		ip -c a | grep -iwE '^.+inet.*wlo1$' | cut -d' ' -f6 | cut -d'/' -f1
 	}
 	else {
 		$meuIp = (ipconfig.exe | Where-Object {$_ -match 'IPv4'} | ForEach-Object { $_ -replace '.*: ', '' })
@@ -451,10 +451,10 @@ Set-PSReadLineKeyHandler -Chord Ctrl+b -ScriptBlock {
 		New-Item -Type File -Path "$arquivoSaidaPadrao"
 	}
 	if (verificandoPlataforma){
-		Start-Process chrome -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=Design&name=escolhaLocomocao&type=custom&version=022ip','https://bubble.io/page?id=viverbemseguroscrm&tab=Data&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=022ip','https://www.sistemaviverbemseguros.com/version-022ip'
+		Start-Process chrome -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-1&name=escolhaLocomocao&type=custom&version=41h0i', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-3&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=41h0i', 'https://www.sistemaviverbemseguros.com/version-41h0i'
 	}
 	else {
-		Start-Process google-chrome-stable -ArgumentList '--profile-directory=DIB','https://bubble.io/page?id=viverbemseguroscrm&tab=Design&name=escolhaLocomocao&type=custom&version=022ip','https://bubble.io/page?id=viverbemseguroscrm&tab=Data&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=022ip','https://www.sistemaviverbemseguros.com/version-022ip' -RedirectStandardError "$arquivoError" -RedirectStandardOutput "$arquivoSaidaPadrao"
+			start-process google-chrome-stable -ArgumentList '--profile-directory=DIB', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-1&name=escolhaLocomocao&type=custom&version=41h0i', 'https://bubble.io/page?id=viverbemseguroscrm&tab=tabs-3&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=41h0i', 'https://www.sistemaviverbemseguros.com/version-41h0i' -RedirectStandardError "$arquivoError" -RedirectStandardOutput "$arquivoSaidaPadrao"
 	}
 
 }
@@ -1036,10 +1036,16 @@ function corDesktop {
 			}
 		} # SWICTH
 		if (-not (verificandoPlataforma)) {
-			Start-Process plasma-apply-desktoptheme "breeze-$cor" -RedirectStandardOutput 'ver.txt'
-			$cor = $cor.Substring(0,1).ToUpper() + $cor.Substring(1).ToLower()
-			Start-Process plasma-apply-colorscheme Breeze$cor -RedirectStandardOutput 'ver.txt'
-			Return
+			$distro = $env:DESKTOP_SESSION.ToLower()
+			Switch ($distro) {
+				'plasma' {
+					Start-Process plasma-apply-desktoptheme "breeze-$cor" -RedirectStandardOutput 'ver.txt'
+					$cor = $cor.Substring(0,1).ToUpper() + $cor.Substring(1).ToLower()
+					Start-Process plasma-apply-colorscheme Breeze$cor -RedirectStandardOutput 'ver.txt'
+					Return
+				} # CASE PLASMA
+			} # SWICTH DISTRO
+
 		}
 		#-WindowStyle Minimized
 		#Start-Process reg -ArgumentList add,"HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", /v, "AppsUseLightTheme", /t, REG_DWORD, /d, "$cor", /f
