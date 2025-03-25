@@ -258,10 +258,7 @@ function cdd {
 		cd "$padrao"
 		Return
 	}
-	else {
-		cd ~̣/Desktop
-	}
-
+	cd "$env:USERPROFILE\Desktop"
 	<#else{
 		cd ~/"Área de [tT]rabalho" # Aqui o konsole já irá para a Área de trabalho do usuário
 	}
