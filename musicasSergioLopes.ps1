@@ -55,6 +55,18 @@ $albumSergioLopes = @{
     'yeshua' = 'bHOGzhD2lpg'
 }
 
+$listaAlbuns = @(
+    'vidas e futuros',
+    'selecao de ouro',
+    'lentilhas',
+    'libertação',
+    'galátas',
+    'o sétimo',
+    'canaan',
+    'getsemani',
+    'yeshua'
+)
+
 # Função para criar o arquivo do powershell administrativo
 Function criarArquivoAdministrativo {
 @'
@@ -71,7 +83,9 @@ function Test-Admin {
 }
 '@ | Out-File -FilePath "$env:USERPROFILE\desktop\powershell\permissaoAdministrativo.ps1" -Encoding utf8
 
-}
+} # FUNÇAO CIRARARQAUIVOADMINISTRATIVO
+
+# Function menu
 
 If (-not(Test-Path "$env:USERPROFILE\desktop\powershell")) {
     Write-Host "A pasta powershell não existe, criando..."
@@ -105,104 +119,144 @@ For ($i = 0;$i -lt $programas.Length;$i++) {
 #Exit
 
 If (-not("$($Args[0])")) {
-        Write-Host "Mande algum parametro"
+        Write-Host -ForegroundColor darkGray "Mande algum parametro"
         Exit
 }
 
-Switch ("$($Args[0])") {
-    1 {
-        $valor = 'bBs75Nt9UY4'
-        $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
-        Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
-        # Usando o mpv para tocar o album escolhido
+Function menuNaoInterativo {
+    Switch ("$($Args[0])") {
 
-        mpv --fs "https://www.youtube.com/watch?v=$valor"
+        1 {
+            $valor = 'bBs75Nt9UY4'
+            $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
+            Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
+            # Usando o mpv para tocar o album escolhido
+
+            mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
+            Exit
+
+        }
+        2 {
+            $valor = '092yCfekvhI'
+            $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
+            Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
+            # Usando o mpv para tocar o album escolhido
+
+            mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
+            Exit
+        }
+
+        3 {
+            $valor = 'XYI57pJOxoA'
+            $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
+            Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
+            # Usando o mpv para tocar o album escolhido
+
+            mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
+            Exit
+        }
+
+        4 {
+            $valor = 'vW8kWoNjBng'
+            $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
+            Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
+            # Usando o mpv para tocar o album escolhido
+
+            mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
+            Exit
+        }
+
+        5 {
+            $valor = 'yOFgec0nX7U'
+            $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
+            Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
+            # Usando o mpv para tocar o album escolhido
+
+            mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
+            Exit
+        }
+
+        6 {
+            $valor = 'UX0ohdQESEM'
+            $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
+            Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
+            # Usando o mpv para tocar o album escolhido
+
+            mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
+            Exit
+        }
+
+        7 {
+            $valor = 'x7KYjjUMLwU3D'
+            $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
+            Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
+            # Usando o mpv para tocar o album escolhido
+
+            mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
+            Exit
+        }
+
+        8 {
+            $valor = 'TaMZL03TYwk'
+            $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
+            Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
+            # Usando o mpv para tocar o album escolhido
+
+            mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
+            Exit
+        }
+
+        9 {
+            $valor = 'bHOGzhD2lpg'
+            $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
+            Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
+            # Usando o mpv para tocar o album escolhido
+
+            mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
+            Exit
+        }
+        <#Default {
+
+        }
+        #>
+    } # SWICTH
+} # FUNÇAO NAO menuNaoInterativo
+menuNaoInterativo "$($args[0])"
+Write-Host -ForegroundColor DarkYellow "albuns sergio lopens".ToUpper()
+For ($i = 0 ; $i -lt $listaAlbuns.Length ; $i++){
+
+    <#if ($i -eq $listaAlbuns.Length) {
         Exit
-
     }
-    2 {
-        $valor = '092yCfekvhI'
-        $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
-        Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
-        # Usando o mpv para tocar o album escolhido
-
-        mpv --fs "https://www.youtube.com/watch?v=$valor"
-        Exit
-    }
-
-    3 {
-        $valor = 'XYI57pJOxoA'
-        $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
-        Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
-        # Usando o mpv para tocar o album escolhido
-
-        mpv --fs "https://www.youtube.com/watch?v=$valor"
-        Exit
-    }
-
-    4 {
-        $valor = 'vW8kWoNjBng'
-        $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
-        Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
-        # Usando o mpv para tocar o album escolhido
-
-        mpv --fs "https://www.youtube.com/watch?v=$valor"
-        Exit
-    }
-
-    5 {
-        $valor = 'yOFgec0nX7U'
-        $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
-        Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
-        # Usando o mpv para tocar o album escolhido
-
-        mpv --fs "https://www.youtube.com/watch?v=$valor"
-        Exit
-    }
-
-    6 {
-        $valor = 'UX0ohdQESEM'
-        $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
-        Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
-        # Usando o mpv para tocar o album escolhido
-
-        mpv --fs "https://www.youtube.com/watch?v=$valor"
-        Exit
-    }
-
-    7 {
-        $valor = 'x7KYjjUMLwU3D'
-        $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
-        Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
-        # Usando o mpv para tocar o album escolhido
-
-        mpv --fs "https://www.youtube.com/watch?v=$valor"
-        Exit
-    }
-
-    8 {
-        $valor = 'TaMZL03TYwk'
-        $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
-        Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
-        # Usando o mpv para tocar o album escolhido
-
-        mpv --fs "https://www.youtube.com/watch?v=$valor"
-        Exit
-    }
-
-    9 {
-        $valor = 'bHOGzhD2lpg'
-        $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
-        Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
-        # Usando o mpv para tocar o album escolhido
-
-        mpv --fs "https://www.youtube.com/watch?v=$valor"
-        Exit
+    #>
+    Write-Host -ForegroundColor darkGray "$($i+1)) $($listaAlbuns[$i])"
+}
+While ($True){
+    $opcao = Read-Host "opção ".ToUpper()
+    if ($opcao) {
+        if (-not($opcao -as [int])) {
+            #if (-not($opcao -ge 1 -and $opcao -le 9)){
+                Write-Host -ForegroundColor DarkRed "Somente numeros de 1 á 9"
+                Remove-Variable opcao
+                Continue
+            #}
+            #Break
+        }
+        $opcao = [int]$opcao
+        if ($opcao -eq 0 -or $opcao -ge 10) {
+                Write-Host -ForegroundColor DarkRed "Escolha numero entre 1 e 9"
+                Remove-Variable opcao
+                Continue
+        }
+        Write-Host -ForegroundColor DArkGreen "Entrada válida!"
+        Break
     }
 }
+menuNaoInterativo "$opcao"
+# Chamndo o menu
 
-ForEach ($chave in $albumSergioLopes.Keys) {
+<#ForEach ($chave in $albumSergioLopes.Keys) {
     Write-Host -ForegroundColor DarkYellow "Abrindo o album $chave, $($albumSergioLopes[$chave])"
     mpv "https://www.youtube.com/watch?v=$($albumSergioLopes[$chave])]"
 }
-
+#>
