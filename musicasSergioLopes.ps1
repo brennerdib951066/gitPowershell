@@ -67,6 +67,8 @@ $listaAlbuns = @(
     'yeshua'
 )
 
+$diretorioPowershell = "$env:USERPROFILE\desktop\powershell"
+$permissao = "$env:USERPROFILE\desktop\powershell\permissaoAdministrativo.ps1"
 # Função para criar o arquivo do powershell administrativo
 Function criarArquivoAdministrativo {
 @'
@@ -87,16 +89,18 @@ function Test-Admin {
 
 # Function menu
 
-If (-not(Test-Path "$env:USERPROFILE\desktop\powershell")) {
+if (-not ($PSVersionTable.Platform -match 'unix')) {
+    If (-not(Test-Path "$diretorioPowershell")) {
     Write-Host "A pasta powershell não existe, criando..."
-    New-item -Type Directory -Path "$env:USERPROFILE\desktop\powershell"
+    New-item -Type Directory -Path "$diretorioPowershell"
+    }
+    If (-not(Test-Path "$diretorioPowershelll\permissaoAdministrativo.ps1")) {
+        Write-Host "O arquivo permissaoAdministrativo.ps1 não existe, criando..."
+        New-Item -Type File -Path "$diretorioPowershell\permissaoAdministrativo.ps1"
+        criarArquivoAdministrativo
+    }
 }
-If (-not(Test-Path "$env:USERPROFILE\desktop\powershell\permissaoAdministrativo.ps1")) {
-    Write-Host "O arquivo permissaoAdministrativo.ps1 não existe, criando..."
-    New-Item -Type File -Path "$env:USERPROFILE\desktop\powershell\permissaoAdministrativo.ps1"
-    criarArquivoAdministrativo
-
-}
+$diretorioPowershell = Join-Path -Path "$(xdg-user-dir DESKTOP)" -ChildPath 'powershell'
 # VerIficar se o usuário está como usuario administrativo
 $permissao = "$env:USERPROFILE\desktop\powershell\permissaoAdministrativo.ps1"
 . "$permissao"
