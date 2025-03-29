@@ -119,7 +119,10 @@ For ($i = 0;$i -lt $programas.Length;$i++) {
 #Exit
 
 If (-not("$($Args[0])")) {
-        Write-Host -ForegroundColor darkGray "Mande algum parametro"
+        Write-Host -ForegroundColor darkGray "Mande algum parametro ou insira n para o menu interativo"
+        Write-Host -ForegroundColor DarkGray "exemplo:".ToUpper()
+        Write-HOst -ForegroundColor Gray "___________________________"
+        Write-Host -ForegroundColor DarkRed 'musicasSergioLopes.ps1 n'
         Exit
 }
 
@@ -229,7 +232,7 @@ For ($i = 0 ; $i -lt $listaAlbuns.Length ; $i++){
         Exit
     }
     #>
-    Write-Host -ForegroundColor darkGray "$($i+1)) $($listaAlbuns[$i])"
+    Write-Host -ForegroundColor darkGray "$($i+1)) $($listaAlbuns[$i])".ToUpper()
 }
 While ($True){
     $opcao = Read-Host "opção ".ToUpper()
