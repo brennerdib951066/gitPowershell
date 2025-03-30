@@ -24,14 +24,11 @@ function matarProcess {
 
 function verificandoPlataforma(){
 		##$plataforma = $PSEdition
-		if ($isWindows) {
+		if (-not($isWindows)) {
 			#Write-Host -foregroundcolor red "É WINDOWSSSS"
-			Return $True
-		}
-		# Se for Windows
-		else {
 			Return $False
 		}
+		Return $True
 }
 
 ################################Função de ações do sistema####################################################################################
