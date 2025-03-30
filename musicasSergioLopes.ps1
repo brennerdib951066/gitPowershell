@@ -98,20 +98,21 @@ If (-not ($psVersionTable.Platform -match 'Win32NT')) {
 
 If (-not(Test-Path "$diretorioPOwershell")) {
     Write-Host "A pasta powershell não existe, criando..."
-    New-item -Type Directory -Path "$diretorioPOwershell"
+    New-item -Type Directory -Path "$diretorioPOwershell" -ErrorAction Ignore | Out-Null
     Start-Sleep -Seconds 3
 }
 If (-not(Test-Path "$arquivoAdministrativo")) {
     Write-Host "O arquivo permissaoAdministrativo.ps1 não existe, criando..."
-    New-Item -Type File -Path "$arquivoAdministrativo"
+    New-Item -Type File -Path "$arquivoAdministrativo" -ErrorAction Ignore | Out-Null
     criarArquivoAdministrativo "$arquivoAdministrativo"
     Start-Sleep -Seconds 3
 
 }
 # VerIficar se o usuário está como usuario administrativo
-$permissao = "$arquivoAdministrativo"
-. "$permissao"
+
 If (-not ($psVersionTable.Platform -match 'unix')) {
+    $permissao = "$arquivoAdministrativo"
+    . "$permissao"
     if (Test-Admin){
         Write-Host -ForegroundColor DarkRed "Não aceito terminal administrativo, use-me como usuário comum".ToUpper()
         Exit
