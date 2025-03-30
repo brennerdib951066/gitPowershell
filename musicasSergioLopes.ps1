@@ -66,6 +66,9 @@ $listaAlbuns = @(
     'getsemani',
     'yeshua'
 )
+$diretorioPOwershell = "$env:USERPROFILE\desktop\powershell"
+$arquivoAdministrativo = Join-Path -Path "$diretorioPOwershell" -ChildPath 'permissaoAdministrativo.ps1'
+
 
 # Função para criar o arquivo do powershell administrativo
 Function criarArquivoAdministrativo {
@@ -81,24 +84,32 @@ function Test-Admin {
     # VerIfica se o usuário está no grupo de administradores
     return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
 }
-'@ | Out-File -FilePath "$env:USERPROFILE\desktop\powershell\permissaoAdministrativo.ps1" -Encoding utf8
+'@ | Out-File -FilePath "$($args[0])" -Encoding utf8
 
 } # FUNÇAO CIRARARQAUIVOADMINISTRATIVO
 
 # Function menu
 
-If (-not(Test-Path "$env:USERPROFILE\desktop\powershell")) {
-    Write-Host "A pasta powershell não existe, criando..."
-    New-item -Type Directory -Path "$env:USERPROFILE\desktop\powershell"
+If (-not ($psVersionTable.Platform -match 'Win32NT')) {
+    Write-Host "Você está no linux"
+    $diretorioPOwershell = Join-Path -Path "$(xdg-user-dir DESKTOP)\powershell"
+    $arquivoAdministrativo = Join-Path -Path "$diretorioPOwershell" -ChildPath 'permissaoAdministrativo.ps1'
 }
-If (-not(Test-Path "$env:USERPROFILE\desktop\powershell\permissaoAdministrativo.ps1")) {
+
+If (-not(Test-Path "$diretorioPOwershell")) {
+    Write-Host "A pasta powershell não existe, criando..."
+    New-item -Type Directory -Path "$diretorioPOwershell"
+    Start-Sleep -Seconds 3
+}
+If (-not(Test-Path "$arquivoAdministrativo")) {
     Write-Host "O arquivo permissaoAdministrativo.ps1 não existe, criando..."
-    New-Item -Type File -Path "$env:USERPROFILE\desktop\powershell\permissaoAdministrativo.ps1"
-    criarArquivoAdministrativo
+    New-Item -Type File -Path "$arquivoAdministrativo"
+    criarArquivoAdministrativo "$arquivoAdministrativo"
+    Start-Sleep -Seconds 3
 
 }
 # VerIficar se o usuário está como usuario administrativo
-$permissao = "$env:USERPROFILE\desktop\powershell\permissaoAdministrativo.ps1"
+$permissao = "$arquivoAdministrativo"
 . "$permissao"
 If (Test-Admin) {
     Write-Host -ForegroundColor DarkRed "Não aceito terminal administrativo, use-me como usuário comum".ToUpper()
