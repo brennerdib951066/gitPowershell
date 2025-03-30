@@ -4,7 +4,7 @@
 
 #>
 
-$versao = '1.0.0.13'
+$versao = '1.0.0.14'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
