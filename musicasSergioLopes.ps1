@@ -112,7 +112,7 @@ If (-not(Test-Path "$arquivoAdministrativo")) {
 # VerIficar se o usuário está como usuario administrativo
 
 if (-not ($psVersionTable.Platform -match 'Win32NT')) {
-    if ($usuario -match 'root') {
+    if ($usuarioAtual -match 'root') {
         Write-Host -ForegroundColor DarkRed "Voce está como root, use-me como usuário comum!"
         Exit
     }
