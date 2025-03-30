@@ -92,7 +92,7 @@ function Test-Admin {
 
 If (-not ($psVersionTable.Platform -match 'Win32NT')) {
     Write-Host "Você está no linux"
-    $diretorioPOwershell = Join-Path -Path "$(xdg-user-dir DESKTOP)\powershell"
+    $diretorioPOwershell = "$(xdg-user-dir DESKTOP)\powershell"
     $arquivoAdministrativo = Join-Path -Path "$diretorioPOwershell" -ChildPath 'permissaoAdministrativo.ps1'
 }
 
