@@ -19,7 +19,7 @@
 
 .ICONURI
 
-.EXTERNALMODULEDEPENDENCIES 
+.EXTERNALMODULEDEPENDENCIES
 
 .REQUIREDSCRIPTS
 
@@ -32,10 +32,10 @@
 
 #>
 
-<# 
+<#
 
-.DESCRIPTION 
- Para ouvir musicas e albuns de sergio lopes 
+.DESCRIPTION
+ Para ouvir musicas e albuns de sergio lopes
 XYI57pJOxoA
 #>
 
@@ -94,6 +94,7 @@ If (-not ($psVersionTable.Platform -match 'Win32NT')) {
     Write-Host "Você está no linux"
     $diretorioPOwershell = "$(xdg-user-dir DESKTOP)\powershell"
     $arquivoAdministrativo = Join-Path -Path "$diretorioPOwershell" -ChildPath 'permissaoAdministrativo.ps1'
+    $usuarioAtual = "$env:USER"
 }
 
 If (-not(Test-Path "$diretorioPOwershell")) {
@@ -109,6 +110,13 @@ If (-not(Test-Path "$arquivoAdministrativo")) {
 
 }
 # VerIficar se o usuário está como usuario administrativo
+
+if (-not ($psVersionTable.Platform -match 'Win32NT')) {
+    if ($usuario -match 'root') {
+        Write-Host -ForegroundColor DarkRed "Voce está como root, use-me como usuário comum!"
+        Exit
+    }
+}
 
 If (-not ($psVersionTable.Platform -match 'unix')) {
     $permissao = "$arquivoAdministrativo"
