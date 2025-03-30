@@ -111,9 +111,11 @@ If (-not(Test-Path "$arquivoAdministrativo")) {
 # VerIficar se o usuário está como usuario administrativo
 $permissao = "$arquivoAdministrativo"
 . "$permissao"
-If (Test-Admin) {
-    Write-Host -ForegroundColor DarkRed "Não aceito terminal administrativo, use-me como usuário comum".ToUpper()
-    Exit
+If (-not ($psVersionTable.Platform -match 'unix')) {
+    if (Test-Admin){
+        Write-Host -ForegroundColor DarkRed "Não aceito terminal administrativo, use-me como usuário comum".ToUpper()
+        Exit
+    }
 }
 
 # VerIficar programas instalados
