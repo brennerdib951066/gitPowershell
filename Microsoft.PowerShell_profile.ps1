@@ -35,18 +35,13 @@ function verificandoPlataforma(){
 
 function reboot {
 	#$plataforma = $PSEdition
-	if ($IsWindows){
-		matarProcess "obs64"
-		Start-Sleep -Seconds 2
-		Start-Job -ScriptBlock {
-			Restart-Computer -Force
-		}
-
+	if (-not($IsWindows)){
+			systemctl reboot -i
 	}
-	else {
-		systemctl reboot -i
+	Start-Sleep -Seconds 2
+	Start-Job -ScriptBlock {
+		Restart-Computer -Force
 	}
-
 }
 function poweroff {
 	#$plataforma = $PSEdition
