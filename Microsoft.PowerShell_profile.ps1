@@ -38,19 +38,19 @@ function reboot {
 	if (-not($IsWindows)){
 			systemctl reboot -i
 	}
-	Start-Sleep -Seconds 2
+	Start-Sleep -Seconds 5
 	Start-Job -ScriptBlock {
 		Restart-Computer -Force
 	}
 }
 function poweroff {
 	#$plataforma = $PSEdition
-	if ($IsWindows){
-		Stop-Computer -Force
-	}
-	else {
+	if (-not($IsWindows)){
 		systemctl poweroff -i
+		Return
+
 	}
+	Stop-Computer -Force
 }
 
 ##################################################################################################################################################
@@ -209,17 +209,16 @@ function planilhaNotificacao {
 		$idSheet = '1V5fF38klj31iScKXRML4hEdD0L_hO5gf0NU6Pb9tizc'
 	)
 	#$plataforma = $PSEdition
-	if ($IsWindows){
-		Start-Process chrome -ArgumentList --profile-directory=Brenner,https://docs.google.com/spreadsheets/d/$idSheet
-	}
-	else {
+	if (-not($IsWindows)){
 		Start-Job -ScriptBlock {
 			param(
 				$idSheet = '1V5fF38klj31iScKXRML4hEdD0L_hO5gf0NU6Pb9tizc'
 			)
 			Start-Process google-chrome-stable -ArgumentList --profile-directory=Brenner,https://docs.google.com/spreadsheets/d/$idSheet
-		} -ArgumentList $idSheet
-	}
+		} -ArgumentList $idSheet # START-JOB
+		Return
+	} # IF $ISWINDOWS
+	Start-Process chrome -ArgumentList --profile-directory=Brenner,https://docs.google.com/spreadsheets/d/$idSheet
 
 }
 function telegram{
@@ -228,16 +227,14 @@ function telegram{
 	)
 	#$plataforma = $PSEdition
 	if ($IsWindows){
-		Start-Process chrome -ArgumentList --profile-directory=Brenner,$urlTelegram
-	}
-	else {
 		Start-Job -ScriptBlock {
 			param(
 					$urlTelegram = 'https://web.telegram.org/k/'
 			)
 			Start-Process google-chrome-stable -ArgumentList --profile-directory=Brenner,'https://web.telegram.org/k/'
-		} -ArgumentList $urlTelegram
-	}
+		} -ArgumentList $urlTelegram # START-PROCESS
+	} # IF $ISWINDOWS
+	Start-Process chrome -ArgumentList --profile-directory=Brenner,$urlTelegram
 }
 
 ##################################################################################################################################################
@@ -297,29 +294,29 @@ function cathead {
 	Get-Content -TotalCount $args[0] -Path $args[1] -Encoding utf8
 }
 function envP {
-	if (verificandoPlataforma){
-		Write-Host -Foregroundcolor DarkRed 'PATH Windowns'
+	if (-not(verificandoPlataforma)){
+		Write-Host -Foregroundcolor DarkGreen 'PATH linux'
 		Write-host -Foregroundcolor DarkGray '------------------------------------'
-		$env:Path.split(';')
+		$env:PATH.Split(':')
 		Write-host -Foregroundcolor DarkGray '------------------------------------'
-		Write-Host -ForegroundColor DarkGray 'total:'.ToUpper() "$env:path".split(':').Length
+		Write-Host -ForegroundColor DarkGray 'total:'.ToUpper() "$env:PATH".split(':').Length
 		Return
-	}
-	Write-Host -Foregroundcolor DarkGreen 'PATH linux'
+	} # IF VERIFICANDO PLATAFORMA
+	Write-Host -Foregroundcolor DarkRed 'PATH Windowns'
 	Write-host -Foregroundcolor DarkGray '------------------------------------'
-	$env:PATH.Split(':')
+	$env:Path.split(';')
 	Write-host -Foregroundcolor DarkGray '------------------------------------'
-	Write-Host -ForegroundColor DarkGray 'total:'.ToUpper() "$env:PATH".split(':').Length
+	Write-Host -ForegroundColor DarkGray 'total:'.ToUpper() "$env:path".split(':').Length
+
 }
 
 function meuIp{
 	if (-not(verificandoPlataforma)){
 		ip -c a | grep -iwE '^.+inet.*wlo1$' | cut -d' ' -f6 | cut -d'/' -f1
+		Return
 	}
-	else {
-		$meuIp = (ipconfig.exe | Where-Object {$_ -match 'IPv4'} | ForEach-Object { $_ -replace '.*: ', '' })
-		write-host $meuIp -foreground DarkCyan
-	}
+	$meuIp = (ipconfig.exe | Where-Object {$_ -match 'IPv4'} | ForEach-Object { $_ -replace '.*: ', '' })
+	write-host $meuIp -foreground DarkCyan
 }
 function kprofile {
 	if (verificandoPlataforma){
@@ -370,8 +367,6 @@ Function kssh {
 			Start-Sleep -Seconds 2
 			Start-Process Notepad.exe "$arquivoSsh"
 		}
-
-
 }
 
 function .profile{
@@ -415,12 +410,11 @@ else {
 }
 # Reiniciar Pc
 Set-PSReadLineKeyHandler -Chord Ctrl+g -ScriptBlock {
-	if (verificandoPlataforma){
-		Restart-Computer -Force
-	}
-	else{
+	if (-not(verificandoPlataforma)){
 		systemctl reboot -i
+		Return
 	}
+	Restart-Computer -Force
 }
 # abrir Whatsapp
 #Set-PSReadLineKeyHandler -Chord Ctrl+w -ScriptBlock {abrirWhatsApp}
@@ -460,13 +454,11 @@ function urlGoogleChrome {
 		$macroChamado
 	)
 	#write-host  'Voce chamou' $macroChamado.toupper() -foregroundcolor red,green
-	if(verificandoPlataforma){
-		start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador  | Out-Null
-	}
-	else {
+	if(-not(verificandoPlataforma)){
 		Start-Job -ScriptBlock { Start-Process google-chrome-stable -ArgumentList --start-maximized,--profile-directory=$($args[0]),$($args[1]);exit } -ArgumentList $userProfile,$urlNavegador
 	}
-}
+	start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador  | Out-Null
+} # FUNÇAO URMGOOGLECROME
 Set-PSReadLineKeyHandler -Chord Ctrl+w -ScriptBlock {urlGoogleChrome 'DIB' 'https://web.whatsapp.com/' 'whatsApp'}
 Set-PSReadLineKeyHandler -Chord Ctrl+t -ScriptBlock {urlGoogleChrome 'Brenner' 'https://web.telegram.org/k/' 'telegram'}
 Set-PSReadLineKeyHandler -Chord Ctrl+p -ScriptBlock {urlGoogleChrome 'Brenner' 'https://docs.google.com/spreadsheets/d/1V5fF38klj31iScKXRML4hEdD0L_hO5gf0NU6Pb9tizc' 'planilha notificação'}
