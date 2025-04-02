@@ -1,6 +1,6 @@
 <#
 	 a versão '1.0.0.15' foram adicionados
-	Foi adicionando a opção --cookies na função MPVM do mpv
+	Foi adicionando a opção --cookies na função bubble do mpv
 
 #>
 
@@ -254,7 +254,7 @@ function cdd {
 	#>
 }
 
-function mpvm {
+function bubble {
 	param(
 		$url
 	)
@@ -456,6 +456,7 @@ function urlGoogleChrome {
 	#write-host  'Voce chamou' $macroChamado.toupper() -foregroundcolor red,green
 	if(-not(verificandoPlataforma)){
 		Start-Job -ScriptBlock { Start-Process google-chrome-stable -ArgumentList --start-maximized,--profile-directory=$($args[0]),$($args[1]);exit } -ArgumentList $userProfile,$urlNavegador
+		Exit
 	}
 	start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador  | Out-Null
 } # FUNÇAO URMGOOGLECROME
