@@ -1,10 +1,10 @@
 <#
-	 a versão '1.0.0.13' foram adicionados
-	Agora ao chamar a função de cor do linux ele irá setar o tema do sistema, como por exemplo dark,light
+	 a versão '1.0.0.15' foram adicionados
+	Foi adicionando a opção --cookies na função MPVM do mpv
 
 #>
 
-$versao = '1.0.0.14'
+$versao = '1.0.0.15'
 $versaoPowershell = $PSVersionTable.PSVersion
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
