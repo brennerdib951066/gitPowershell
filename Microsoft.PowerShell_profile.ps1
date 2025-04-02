@@ -258,7 +258,7 @@ function mpvm {
 	param(
 		$url
 	)
-	mpv --fs $url
+	mpv --fs $url --cookies
 }
 
 function np {
