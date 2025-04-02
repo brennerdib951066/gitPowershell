@@ -827,7 +827,11 @@ else {
 }
 #>
 
-Set-PSReadlineKeyHandler -Chord Ctrl+o -ScriptBlock {peek}
+Set-PSReadlineKeyHandler -Chord Ctrl+o -ScriptBlock {
+	if (-not($IsWindows)) {
+		exec sudo su
+	}
+}
 
 # Função para criar arquivos em ps1
 
