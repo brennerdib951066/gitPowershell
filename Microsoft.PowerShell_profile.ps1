@@ -456,7 +456,7 @@ function urlGoogleChrome {
 	#write-host  'Voce chamou' $macroChamado.toupper() -foregroundcolor red,green
 	if(-not(verificandoPlataforma)){
 		Start-Job -ScriptBlock { Start-Process google-chrome-stable -ArgumentList --start-maximized,--profile-directory=$($args[0]),$($args[1]);exit } -ArgumentList $userProfile,$urlNavegador
-		Exit
+		Return
 	}
 	start-process chrome -ArgumentList --start-maximized,--profile-directory=$userProfile,$urlNavegador  | Out-Null
 } # FUNÇAO URMGOOGLECROME
