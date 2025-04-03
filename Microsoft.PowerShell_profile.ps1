@@ -254,7 +254,7 @@ function cdd {
 	#>
 }
 
-function bubble {
+function mpvm {
 	param(
 		$url
 	)
