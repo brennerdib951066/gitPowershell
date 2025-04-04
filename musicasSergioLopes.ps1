@@ -53,6 +53,7 @@ $albumSergioLopes = @{
     'canaan' = 'x7KYjjUMLwU3D'
     'getsemani' = 'TaMZL03TYwk'
     'yeshua' = 'bHOGzhD2lpg'
+    'sonhos' = 'jGgCtexyt9g'
 }
 
 $listaAlbuns = @(
@@ -64,7 +65,8 @@ $listaAlbuns = @(
     'o sétimo',
     'canaan',
     'getsemani',
-    'yeshua'
+    'yeshua',
+    'sonhos'
 )
 $diretorioPOwershell = "$env:USERPROFILE\desktop\powershell"
 $arquivoAdministrativo = Join-Path -Path "$diretorioPOwershell" -ChildPath 'permissaoAdministrativo.ps1'
@@ -240,6 +242,15 @@ Function menuNaoInterativo {
             mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
             Exit
         }
+        10 {
+            $valor = 'jGgCtexyt9g'
+            $albumAtual = $albumSergioLopes.GetEnumerator() | Where-Object {$_.Value -eq "$valor"} | Select-Object  -ExpandProperty Key
+            Write-Host -ForegroundColor DarkYellow "$albumAtual".ToUpper()
+            # Usando o mpv para tocar o album escolhido
+
+            mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
+            Exit
+        }
         <#Default {
 
         }
@@ -268,7 +279,7 @@ While ($True){
             #Break
         }
         $opcao = [int]$opcao
-        if ($opcao -eq 0 -or $opcao -ge 10) {
+        if ($opcao -eq 0 -or $opcao -ge 11) {
                 Write-Host -ForegroundColor DarkRed "Escolha numero entre 1 e 9"
                 Remove-Variable opcao
                 Continue
