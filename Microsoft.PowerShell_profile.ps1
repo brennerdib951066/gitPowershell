@@ -2102,9 +2102,8 @@ function corDesktop {
 
 # FUNÇÃO DE BAIXAR O SSH SE NÃO EXSITIR
 Function instalarSSH {
-	if ( -not ($sshService)) {
-		Write-Host -ForegroundColor "Não está instalado o ssh no seu computador!"
-		Return
-	}
+	Write-Host "Instalando"
 }
-
+if ( -not ($sshService)) {
+		Write-Host -ForegroundColor "Não está instalado o ssh no seu computador!"
+}
