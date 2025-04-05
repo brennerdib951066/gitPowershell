@@ -7,10 +7,10 @@
 $versao = '1.0.0.15'
 $versaoPowershell = $PSVersionTable.PSVersion
 $sshService = Get-Service sshd -ErrorAction Ignore
-$programaSSH = @(
-                'OpenSSH.Server~~~~0.0.1.0'
-                'OpenSSH.Client~~~~0.0.1.0'
-)
+$programaSSH = @{
+                'sshd' = 'OpenSSH.Server~~~~0.0.1.0'
+                'ssh-agent' = 'OpenSSH.Client~~~~0.0.1.0'
+}
 $nomeRede = (Get-NetConnectionProfile).Name.ToLower()
 $estadoRede = (get-netConnectionProfile).NetworkCategory
 
@@ -2118,10 +2118,10 @@ Function instalarSSH {
 		Return
 	}
 	Write-Host "Instalando"
-	For ($i = 0;$i -le $programaSSH.Length -1;$i++) {
-		"$($programaSSH[$i])"
-		Add-WindowsCapability -Online -Name "$($programaSSH[$i])"
-		 Set-Service -Name "$($programaSSH[$i])" -StartupType Automatic -Status Running
+	ForEach ($chave in $programaSSH.Keys) {
+		"$chave"
+		Add-WindowsCapability -Online -Name "$($programaSSH[$chave])"
+		Set-Service -Name "$chave" -StartupType Automatic -Status Running
 	}
 }
 if (verificandoPlataforma){
