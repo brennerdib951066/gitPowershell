@@ -2106,7 +2106,7 @@ Function instalarSSH {
 	For ($i = 0;$i -le $programaSSH.Length -1;$i++) {
 		"$($programaSSH[$i])"
 		Add-WindowsCapability -Online -Name "$($programaSSH[$i])"
-		 Set-Service -Name sshd -StartupType Automatic -Status Running
+		 Set-Service -Name "$($programaSSH[$i])" -StartupType Automatic -Status Running
 	}
 }
 if (verificandoPlataforma){
