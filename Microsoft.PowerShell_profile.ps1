@@ -53,6 +53,17 @@ function verificandoPlataforma(){
 		Return $True
 }
 
+function Test-Admin {
+    # Obtém a identidade do usuário atual
+    $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+
+    # Cria um objeto principal a partir da identidade
+    $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
+
+    # Verifica se o usuário está no grupo de administradores
+    return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
 ################################Função de ações do sistema####################################################################################
 
 function reboot {
@@ -2109,7 +2120,7 @@ Function instalarSSH {
 		 Set-Service -Name "$($programaSSH[$i])" -StartupType Automatic -Status Running
 	}
 }
-if (verificandoPlataforma){
+if (verificandoPlataforma -and Test-Admin){
 	if ( -not ($sshService)) {
 			Write-Host -ForegroundColor Red "Não está instalado o ssh no seu computador!"
 			instalarSSH
