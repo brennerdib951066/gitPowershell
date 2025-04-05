@@ -2103,7 +2103,7 @@ function corDesktop {
 # FUNÇÃO DE BAIXAR O SSH SE NÃO EXSITIR
 Function instalarSSH {
 	Write-Host "Instalando"
-	For ($i = 0;$i -le $programaSSH.Length -1;$++) {
+	For ($i = 0;$i -le $programaSSH.Length -1;$i++) {
 		Add-WindowsCapability -Online -Name "$($programaSSH[$i])"
 	}
 }
