@@ -2109,4 +2109,5 @@ Function instalarSSH {
 }
 if ( -not ($sshService)) {
 		Write-Host -ForegroundColor Red "Não está instalado o ssh no seu computador!"
+		instalarSSH
 }
