@@ -151,6 +151,17 @@ If (-not("$($Args[0])")) {
 }
 
 Function menuNaoInterativo {
+
+    if (-not ($args[1])){
+            if ($funcaoChamada -ne 2) {
+                $funcaoChamada = 1
+            }
+            else {
+                Write-Host -ForegroundColor DarkRed "Seu argumento dois está vazio, saindo agora"
+                Start-Sleep -Seconds 5
+                Exit
+            }
+    } # IF ARGS[1]
     Switch ("$($Args[0])") {
 
         1 {
@@ -160,7 +171,10 @@ Function menuNaoInterativo {
             # Usando o mpv para tocar o album escolhido
 
             mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
-            Exit
+            $funcaoChamada++
+            $opcao = 1
+            menuNaoInterativo ($opcao+1)
+            #Exit
 
         }
         2 {
@@ -170,7 +184,10 @@ Function menuNaoInterativo {
             # Usando o mpv para tocar o album escolhido
 
             mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
-            Exit
+            $funcaoChamada++
+            $opcao = 2
+            menuNaoInterativo ($opcao+1)
+            #Exit
         }
 
         3 {
@@ -180,7 +197,10 @@ Function menuNaoInterativo {
             # Usando o mpv para tocar o album escolhido
 
             mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
-            Exit
+            $funcaoChamada++
+            $opcao = 3
+            menuNaoInterativo ($opcao+1)
+            #Exit
         }
 
         4 {
@@ -190,7 +210,10 @@ Function menuNaoInterativo {
             # Usando o mpv para tocar o album escolhido
 
             mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
-            Exit
+            $funcaoChamada++
+            $opcao = 4
+            menuNaoInterativo ($opcao+1)
+            #Exit
         }
 
         5 {
@@ -200,7 +223,10 @@ Function menuNaoInterativo {
             # Usando o mpv para tocar o album escolhido
 
             mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
-            Exit
+            $funcaoChamada++
+            $opcao = 5
+            menuNaoInterativo ($opcao+1)
+            #Exit
         }
 
         6 {
@@ -210,7 +236,10 @@ Function menuNaoInterativo {
             # Usando o mpv para tocar o album escolhido
 
             mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
-            Exit
+            $funcaoChamada++
+            $opcao = 6
+            menuNaoInterativo ($opcao+1)
+            #Exit
         }
 
         7 {
@@ -220,7 +249,10 @@ Function menuNaoInterativo {
             # Usando o mpv para tocar o album escolhido
 
             mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
-            Exit
+            $funcaoChamada++
+            $opcao = 7
+            menuNaoInterativo ($opcao+1)
+            #Exit
         }
 
         8 {
@@ -230,7 +262,10 @@ Function menuNaoInterativo {
             # Usando o mpv para tocar o album escolhido
 
             mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
-            Exit
+            $funcaoChamada++
+            $opcao = 8
+            menuNaoInterativo ($opcao+1)
+            #Exit
         }
 
         9 {
@@ -240,7 +275,11 @@ Function menuNaoInterativo {
             # Usando o mpv para tocar o album escolhido
 
             mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
-            Exit
+            $funcaoChamada++
+            $opcao = 9
+            menuNaoInterativo ($opcao+1)
+            #Continue
+            #Exit
         }
         10 {
             $valor = 'jGgCtexyt9g'
@@ -249,7 +288,10 @@ Function menuNaoInterativo {
             # Usando o mpv para tocar o album escolhido
 
             mpv --window-minimized "https://www.youtube.com/watch?v=$valor"
-            Exit
+            $funcaoChamada++
+            $opcao = 1
+            menuNaoInterativo $opcao
+            #Exit
         }
         <#Default {
 
