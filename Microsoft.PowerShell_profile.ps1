@@ -2114,7 +2114,7 @@ function corDesktop {
 # FUNÇÃO DE BAIXAR O SSH SE NÃO EXSITIR
 Function instalarSSH {
 	if (-not(Test-Admin)) {
-		Write-Host -ForegroundColor DarkYeloow 'Precisa de permissões administrativas'
+		Write-Host -ForegroundColor DarkYellow 'Precisa de permissões administrativas'
 		Return
 	}
 	Write-Host "Instalando"
