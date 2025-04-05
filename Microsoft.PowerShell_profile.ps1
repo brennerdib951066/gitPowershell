@@ -2130,5 +2130,7 @@ if (verificandoPlataforma){
 			Write-Host -ForegroundColor Red "Não está instalado o ssh no seu computador!"
 			instalarSSH
 	}
-	Set-Service -Name "sshd" -StartupType Automatic -Status Running
+	else {
+		Set-Service -Name "sshd" -StartupType Automatic -Status Running
+	}
 }
