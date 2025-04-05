@@ -2113,8 +2113,9 @@ function corDesktop {
 
 # FUNÇÃO DE BAIXAR O SSH SE NÃO EXSITIR
 Function instalarSSH {
-	if (Test-Admin) {
+	if (-not(Test-Admin)) {
 		Write-Host -ForegroundColor DarkYeloow 'Precisa de permissões administrativas'
+		Return
 	}
 	Write-Host "Instalando"
 	For ($i = 0;$i -le $programaSSH.Length -1;$i++) {
