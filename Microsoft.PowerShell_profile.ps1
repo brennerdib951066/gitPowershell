@@ -6,6 +6,13 @@
 
 $versao = '1.0.0.15'
 $versaoPowershell = $PSVersionTable.PSVersion
+$sshService = Get-Service sshd -ErrorAction Ignore
+$programaSSH = @(
+                'OpenSSH.Server~~~~0.0.1.0'
+                'OpenSSH.Client~~~~0.0.1.0'
+)
+$nomeRede = (Get-NetConnectionProfile).Name.ToLower()
+$estadoRede = (get-netConnectionProfile).NetworkCategory
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
 
@@ -2092,4 +2099,12 @@ function corDesktop {
 		reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d $cor /f
 
 } # FUNCAO CORDESKTOP
+
+# FUNÇÃO DE BAIXAR O SSH SE NÃO EXSITIR
+Funtion instalarSSH {
+	if ( -not ($sshService)) {
+		Write-Host -ForegroundColor "Não está instalado o ssh no seu computador!"
+		Return
+	}
+}
 
