@@ -2103,6 +2103,9 @@ function corDesktop {
 # FUNÇÃO DE BAIXAR O SSH SE NÃO EXSITIR
 Function instalarSSH {
 	Write-Host "Instalando"
+	For ($i = 0;$i -le $programaSSH.Length -1;$++) {
+		Add-WindowsCapability -Online -Name "$($programaSSH[$i])"
+	}
 }
 if ( -not ($sshService)) {
 		Write-Host -ForegroundColor Red "Não está instalado o ssh no seu computador!"
