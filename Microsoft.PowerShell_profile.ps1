@@ -7,6 +7,7 @@
 $versao = '1.0.0.15'
 $versaoPowershell = $PSVersionTable.PSVersion
 $sshService = Get-Service sshd -ErrorAction Ignore
+$sshServiceStatus = (Get-Service sshd).Status
 $programaSSH = @{
                 'sshd' = 'OpenSSH.Server~~~~0.0.1.0'
                 'ssh-agent' = 'OpenSSH.Client~~~~0.0.1.0'
@@ -2129,4 +2130,5 @@ if (verificandoPlataforma){
 			Write-Host -ForegroundColor Red "Não está instalado o ssh no seu computador!"
 			instalarSSH
 	}
+	Set-Service -Name "sshd" -StartupType Automatic -Status Running
 }
