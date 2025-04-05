@@ -2113,6 +2113,9 @@ function corDesktop {
 
 # FUNÇÃO DE BAIXAR O SSH SE NÃO EXSITIR
 Function instalarSSH {
+	if (Test-Admin) {
+		Write-Host -ForegroundColor DarkYeloow 'Precisa de permissões administrativas'
+	}
 	Write-Host "Instalando"
 	For ($i = 0;$i -le $programaSSH.Length -1;$i++) {
 		"$($programaSSH[$i])"
@@ -2120,7 +2123,7 @@ Function instalarSSH {
 		 Set-Service -Name "$($programaSSH[$i])" -StartupType Automatic -Status Running
 	}
 }
-if (verificandoPlataforma -and Test-Admin){
+if (verificandoPlataforma){
 	if ( -not ($sshService)) {
 			Write-Host -ForegroundColor Red "Não está instalado o ssh no seu computador!"
 			instalarSSH
