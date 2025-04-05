@@ -2108,7 +2108,9 @@ Function instalarSSH {
 		 Set-Service -Name sshd -StartupType Automatic -Status Running
 	}
 }
-if ( -not ($sshService)) {
-		Write-Host -ForegroundColor Red "Não está instalado o ssh no seu computador!"
-		instalarSSH
+if (verificandoPlataforma){
+	if ( -not ($sshService)) {
+			Write-Host -ForegroundColor Red "Não está instalado o ssh no seu computador!"
+			instalarSSH
+	}
 }
