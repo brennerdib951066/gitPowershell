@@ -2131,7 +2131,8 @@ if (verificandoPlataforma){
 			instalarSSH
 	}
 	else {
-		if ((Test-Admin)) sshd -StartupType Automatic -Status Running
+		if ((Test-Admin)) {
+			sshd -StartupType Automatic -Status Running
 		}
 	}
 
