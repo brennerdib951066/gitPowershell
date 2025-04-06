@@ -2131,6 +2131,8 @@ if (verificandoPlataforma){
 			instalarSSH
 	}
 	else {
-		Set-Service -Name "sshd" -StartupType Automatic -Status Running
+		if ((Test-Admin)) sshd -StartupType Automatic -Status Running
+		}
 	}
+
 }
