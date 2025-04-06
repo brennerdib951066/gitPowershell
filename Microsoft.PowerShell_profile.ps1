@@ -2132,6 +2132,8 @@ if (verificandoPlataforma){
 	}
 	else {
 		if ((Test-Admin)) {
+			Write-Host "Rodando seu sshd"
+			Start-Sleep -Seconds 2
 			Set-Service -Name sshd -StartupType Automatic -Status Running
 		}
 	}
