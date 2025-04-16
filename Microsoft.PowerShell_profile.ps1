@@ -31,6 +31,7 @@ if (-not ($versaoPowershell -match 7)) {
 
 if (-not ($IsWindows) -and $env:PATH.Split(':') -notcontains (Join-Path -Path (xdg-user-dir DESKTOP) -ChildPath 'gitPowershell')) {
 	Write-Host -ForegroundColor red 'não existe a pasta gitPowershell para ser executado via PATH'
+	$ENV:PATH = $ENV:PATH + ':' + (Join-Path -Path (xdg-user-dir DESKTOP) -ChildPath 'gitPowershell')
 }
 
 
