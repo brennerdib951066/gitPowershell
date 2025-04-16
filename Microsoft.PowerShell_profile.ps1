@@ -29,9 +29,8 @@ if (-not ($versaoPowershell -match 7)) {
 
 #>
 
-if (-not ($versaoPowershell -match 7)) {
-	Write-Error "use a versão 7 do powershell".ToUpper()
-	Exit
+if (-not ($IsWindows) -and $env:PATH.Split(':') -notcontains (Join-Path -Path (xdg-user-dir DESKTOP) -ChildPath 'gitPowershell')) {
+	Write-Host -ForegroundColor red 'não existe a pasta gitPowershell para ser executado via PATH'
 }
 
 
