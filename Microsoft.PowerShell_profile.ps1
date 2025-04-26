@@ -290,10 +290,10 @@ function mpvm {
 		$url
 	)
 	Try {
-		Start-Process mpv -ArgumentList --fs,"$url",--cookies -ErrorAction Stop
+		Start-Process mpv -ArgumentList --fs,"$url",--cookies -ErrorAction Stop -NoNewWindow
 	}
 	Catch {
-		Start-Process mpv -ArgumentList --fs,"$url"
+		Start-Process mpv -ArgumentList --fs,"$url" -NoNewWindow
 	}
 }
 
