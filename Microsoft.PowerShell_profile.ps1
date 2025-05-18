@@ -810,6 +810,10 @@ Function criarHtml {
         .alturaElementoPadrao {
             height: 35px;
         }
+        .laguraImagemPadrao {
+            width: 70px;
+            border-radius: 100%;
+        }
 
     </style>
 </head>
