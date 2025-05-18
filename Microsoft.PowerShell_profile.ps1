@@ -773,8 +773,52 @@ Function criarHtml {
 
 	Try {
 		$programaIDE = 'code'.ToLower()
-		(Get-Command "$programaIDE" -ErrorAction stop).Source
-		code "$AreaDeTrabalhoUsuario/$criarArquivo" &
+		(Get-Command "$programaIDE" -ErrorAction stop | Out-Null).Source
+		@'
+			<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* GLOBAL */
+        .grupoColunaDisplayPadrao {
+            display: flex;
+            flex-direction: column;
+        }
+        .grupoLinhaDisplayPadrao {
+            display: flex;
+            flex-direction: row;
+        }
+        .grupoBordaPadrao {
+            border-radius: 10px;
+        }
+        .larguraElementoPadrao {
+            width: 100%;
+        }
+        .alturaElementoPadrao {
+            height: 35px;
+        }
+
+    </style>
+</head>
+<body>
+    <main>
+        <section>
+
+        </section>
+    </main>
+</body>
+</html>
+		@' | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo"
+
+		code "$AreaDeTrabalhoUsuario/$criarArquivo" | Out-Null
 	}
 	Catch {
 		Write-Host -ForegroundColor Red "Instale o visual estudio para prosseguir"
