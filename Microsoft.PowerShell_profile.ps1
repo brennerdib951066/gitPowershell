@@ -764,6 +764,11 @@ Function criarHtml {
 		Write-Host -ForegroundColor DarkRed "Não é windows, deve ser linux"
 		$AreaDeTrabalhoUsuario = (xdg-user-dir DESKTOP)
 	}
+	if (Test-Path ("$AreaDeTrabalhoUsuario/$criarArquivo")) {
+		Write-Host -ForegroundColor Yellow "Arquivo $criarArquivo existente"
+		Return
+	}
+
 	Try {
 		New-Item -Type File -Path "$AreaDeTrabalhoUsuario/$criarArquivo" -ErrorAction Stop | Out-Null
 	}
