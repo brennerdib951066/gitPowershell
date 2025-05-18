@@ -770,6 +770,17 @@ Function criarHtml {
 	Catch {
 		Write-Host -ForegroundColor Red "Erro ai criar seu arquivo html".ToUpper()
 	}
+
+	Try {
+		$programaIDE = 'code'.ToLower()
+		(Get-Command "$programaIDE" -ErrorAction stop).Source
+		code "$AreaDeTrabalhoUsuario/$criarArquivo" &
+	}
+	Catch {
+		Write-Host -ForegroundColor Red "Instale o visual estudio para prosseguir"
+	}
+
+
 }
 
 	if ($criarArquivo){
