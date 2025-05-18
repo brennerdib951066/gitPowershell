@@ -752,8 +752,16 @@ Start-Process "kate" -ArgumentList "`"$arquivoCaminho`""
 	}
 } # FUNCAO CRIARPS1
 Function criarHtml {
+	$AreaDeTrabalhoUsuario = Join-Path -Path "$env:HOMEPATH" -ChildPath "Desktop"
 	if (-not ($isWindows)) {
 		Write-Host -ForegroundColor DarkRed "Não é windows, deve ser linux"
+		$AreaDeTrabalhoUsuario = (xdg-user-dir DESKTOP)
+	}
+	Try {
+		New-Item -Type File -Path "$AreaDeTrabalhoUsuario/$criarArquivo" -ErrorAction Stop
+	}
+	Catch {
+		Write-Host -ForegroundColor Red "Erro ai criar seu arquivo html".ToUpper()
 	}
 }
 
@@ -780,7 +788,7 @@ Function criarHtml {
 					criarPs1 $criarArquivo # chamando a função de criar arquivos em ps1
 			}
 			"*.html"{
-					Write-Host 'Seua arquivo é PS1'
+					Write-Host 'Seua arquivo é HTML'
 					criarHtml $criarArquivo # chamando a função de criar arquivos em ps1
 			}
 			Default {
