@@ -816,7 +816,7 @@ Function criarHtml {
     </main>
 </body>
 </html>
-		@' | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo"
+		@' | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo" -Encoding UTF8
 
 		code "$AreaDeTrabalhoUsuario/$criarArquivo" | Out-Null
 	}
