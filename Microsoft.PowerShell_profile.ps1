@@ -751,7 +751,11 @@ Start-Process "kate" -ArgumentList "`"$arquivoCaminho`""
 
 	}
 } # FUNCAO CRIARPS1
-
+Function criarHtml {
+	if (-not ($isWindows)) {
+		Write-Host -ForegroundColor DarkRed "Não é windows, deve ser linux"
+	}
+}
 
 	if ($criarArquivo){
 		switch -Wildcard ($criarArquivo) {
@@ -774,6 +778,10 @@ Start-Process "kate" -ArgumentList "`"$arquivoCaminho`""
 			"*.ps1"{
 					Write-Host 'Seua arquivo é PS1'
 					criarPs1 $criarArquivo # chamando a função de criar arquivos em ps1
+			}
+			"*.html"{
+					Write-Host 'Seua arquivo é PS1'
+					criarHtml $criarArquivo # chamando a função de criar arquivos em ps1
 			}
 			Default {
 					Write-Host 'Encontrei nada aqui'
