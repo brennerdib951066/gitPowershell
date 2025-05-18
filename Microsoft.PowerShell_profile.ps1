@@ -765,7 +765,7 @@ Function criarHtml {
 		$AreaDeTrabalhoUsuario = (xdg-user-dir DESKTOP)
 	}
 	Try {
-		New-Item -Type File -Path "$AreaDeTrabalhoUsuario/$criarArquivo" -ErrorAction Stop
+		New-Item -Type File -Path "$AreaDeTrabalhoUsuario/$criarArquivo" -ErrorAction Stop | Out-Null
 	}
 	Catch {
 		Write-Host -ForegroundColor Red "Erro ai criar seu arquivo html".ToUpper()
@@ -774,8 +774,8 @@ Function criarHtml {
 	Try {
 		$programaIDE = 'code'.ToLower()
 		(Get-Command "$programaIDE" -ErrorAction stop | Out-Null).Source
-		@'
-			<!DOCTYPE html>
+@'
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -816,7 +816,7 @@ Function criarHtml {
     </main>
 </body>
 </html>
-		'@ | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo" -Encoding UTF8
+'@ | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo" -Encoding UTF8
 
 		code "$AreaDeTrabalhoUsuario/$criarArquivo" | Out-Null
 	}
