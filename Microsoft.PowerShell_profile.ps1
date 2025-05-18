@@ -752,7 +752,14 @@ Start-Process "kate" -ArgumentList "`"$arquivoCaminho`""
 	}
 } # FUNCAO CRIARPS1
 Function criarHtml {
-	$AreaDeTrabalhoUsuario = Join-Path -Path "$env:HOMEPATH" -ChildPath "Desktop" -ErrorAction ignore
+
+	Try {
+		$AreaDeTrabalhoUsuario = Join-Path -Path "$env:HOMEPATH" -ChildPath "Desktop" -ErrorAction ignore
+	}
+	Catch {
+
+	}
+
 	if (-not ($isWindows)) {
 		Write-Host -ForegroundColor DarkRed "Não é windows, deve ser linux"
 		$AreaDeTrabalhoUsuario = (xdg-user-dir DESKTOP)
