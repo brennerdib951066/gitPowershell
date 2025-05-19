@@ -4,7 +4,7 @@
 
 #>
 
-$versao = '1.0.0.15'
+$versao = '1.0.0.16'
 $versaoPowershell = $PSVersionTable.PSVersion
 if ($IsWindows) {
 	$sshService = Get-Service sshd -ErrorAction Ignore
@@ -827,6 +827,7 @@ Function criarHtml {
 </html>
 '@ | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo" -Encoding UTF8
 
+	try {
 		code "$AreaDeTrabalhoUsuario/$criarArquivo" | Out-Null
 	}
 	Catch {
