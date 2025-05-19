@@ -762,7 +762,7 @@ Function criarHtml {
 
 	if (-not ($isWindows)) {
 		Write-Host -ForegroundColor DarkRed "Não é windows, deve ser linux"
-		$AreaDeTrabalhoUsuario = (xdg-user-dir DESKTOP)
+		$AreaDeTrabalhoUsuario = `(xdg-user-dir DESKTOP)`
 	}
 	if (Test-Path ("$AreaDeTrabalhoUsuario/$criarArquivo")) {
 		Write-Host -ForegroundColor Yellow "Arquivo $criarArquivo existente"
@@ -823,14 +823,14 @@ Function criarHtml {
     </main>
 </body>
 </html>
-'@ | Out-File -FilePath `"$AreaDeTrabalhoUsuario/$criarArquivo`" -Encoding UTF8
+'@ | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo" -Encoding UTF8
 
 	try {
 		$programaIDE = 'code'.ToLower()
 		(Get-Command "$programaIDE" -ErrorAction stop | Out-Null).Source
 		Write-Host -ForegroundColor Green "Abrindo seu arquivo $AreaDeTrabalhoUsuario/$criarArquivo"
 		Start-Sleep -Seconds 5s
-		code `"$AreaDeTrabalhoUsuario/$criarArquivo`" | Out-Null
+		code "$AreaDeTrabalhoUsuario/$criarArquivo" | Out-Null
 	}
 	Catch {
 		Write-Host -ForegroundColor Red "Instale o visual estudio para prosseguir"
