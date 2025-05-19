@@ -1,10 +1,10 @@
 <#
-	 a versão '1.0.0.15' foram adicionados
-	Foi adicionando a opção --cookies na função bubble do mpv
+	 a versão '1.0.0.17' foram adicionados
+	Para o MPVM agora a saída será redirecionada para um arquivo
 
 #>
 
-$versao = '1.0.0.16'
+$versao = '1.0.0.17'
 $versaoPowershell = $PSVersionTable.PSVersion
 if ($IsWindows) {
 	$sshService = Get-Service sshd -ErrorAction Ignore
@@ -290,10 +290,10 @@ function mpvm {
 		$url
 	)
 	Try {
-		Start-Process mpv -ArgumentList --fs,"$url",--cookies -ErrorAction Stop -NoNewWindow
+		Start-Process mpv -ArgumentList --fs,"$url",--cookies -ErrorAction Stop -NoNewWindow -RedirectStandardOutput 'mpvSaida.txt'
 	}
 	Catch {
-		Start-Process mpv -ArgumentList --fs,"$url" -NoNewWindow
+		Start-Process mpv -ArgumentList --fs,"$url" -NoNewWindow -RedirectStandardOutput 'mpvSaida.txt'
 	}
 }
 
