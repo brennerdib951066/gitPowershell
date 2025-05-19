@@ -776,9 +776,7 @@ Function criarHtml {
 		Write-Host -ForegroundColor Red "Erro ai criar seu arquivo html".ToUpper()
 	}
 
-	Try {
-		$programaIDE = 'code'.ToLower()
-		(Get-Command "$programaIDE" -ErrorAction stop | Out-Null).Source
+
 @'
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -828,6 +826,10 @@ Function criarHtml {
 '@ | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo" -Encoding UTF8
 
 	try {
+		$programaIDE = 'code'.ToLower()
+		(Get-Command "$programaIDE" -ErrorAction stop | Out-Null).Source
+		Write-Host -ForegroundColor Green "Abrindo seu arquivo $AreaDeTrabalhoUsuario/$criarArquivo"
+		Start-Sleep -Seconds 5s
 		code "$AreaDeTrabalhoUsuario/$criarArquivo" | Out-Null
 	}
 	Catch {
