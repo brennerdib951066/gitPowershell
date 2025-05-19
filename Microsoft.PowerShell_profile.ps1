@@ -823,7 +823,7 @@ Function criarHtml {
     </main>
 </body>
 </html>
-'@ | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo" -Encoding UTF8
+'@ | Out-File -FilePath `"$AreaDeTrabalhoUsuario/$criarArquivo`" -Encoding UTF8
 
 	try {
 		$programaIDE = 'code'.ToLower()
