@@ -768,14 +768,14 @@ Function criarHtml {
 		Write-Host -ForegroundColor Yellow "Arquivo $criarArquivo existente"
 		Return
 	}
-
+	<#
 	Try {
 		New-Item -Type File -Path "$AreaDeTrabalhoUsuario/$criarArquivo" -ErrorAction Stop | Out-Null
 	}
 	Catch {
 		Write-Host -ForegroundColor Red "Erro ai criar seu arquivo html".ToUpper()
 	}
-
+	#>
 
 @'
 <!DOCTYPE html>
