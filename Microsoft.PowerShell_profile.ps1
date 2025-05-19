@@ -823,14 +823,14 @@ Function criarHtml {
     </main>
 </body>
 </html>
-'@ | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo" -Encoding UTF8
+'@ | Out-File -FilePath `"$AreaDeTrabalhoUsuario/$criarArquivo`" -Encoding UTF8
 
 	try {
 		$programaIDE = 'code'.ToLower()
 		(Get-Command "$programaIDE" -ErrorAction stop | Out-Null).Source
 		Write-Host -ForegroundColor Green "Abrindo seu arquivo $AreaDeTrabalhoUsuario/$criarArquivo"
 		Start-Sleep -Seconds 5s
-		code "$AreaDeTrabalhoUsuario/$criarArquivo" | Out-Null
+		code "$AreaDeTrabalhoUsuario/$criarArquivo"
 	}
 	Catch {
 		Write-Host -ForegroundColor Red "Instale o visual estudio para prosseguir"
