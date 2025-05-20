@@ -290,11 +290,18 @@ function mpvm {
 		$url
 	)
 	Try {
-		Start-Process mpv -ArgumentList --fs,"$url",--cookies -ErrorAction Stop -NoNewWindow -RedirectStandardOutput 'mpvSaida.txt'
+		Start-Process mpv -ArgumentList --fs,"$url",--cookies -ErrorAction Stop -NoNewWindow -RedirectStandardOutput 'mpvSaida.txt' -RedirectStandardError 'mpvError.txt'
 	}
 	Catch {
-		Start-Process mpv -ArgumentList --fs,"$url" -NoNewWindow -RedirectStandardOutput 'mpvSaida.txt'
+		Start-Process mpv -ArgumentList --fs,"$url" -NoNewWindow -RedirectStandardOutput 'mpvSaida.txt' -RedirectStandardError 'mpvError.txt'
 	}
+	Write-Host -ForegroundColor DarkRed 'Excluindo os arquivos de erros e saidas do mpv'
+	Start-Sleep -Seconds 2
+	<#
+	if () {
+	}
+	#>
+	Remove-Item -Path 'mpvError.txt','mpvSaida.txt' -ErrorAction Ignore
 }
 
 function np {
