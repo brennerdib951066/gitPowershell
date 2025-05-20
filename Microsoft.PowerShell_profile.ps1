@@ -301,7 +301,7 @@ function mpvm {
 	if () {
 	}
 	#>
-	Remove-Item -Path 'mpvError.txt','mpvSaida.txt' -ErrorAction Ignore
+	Remove-Item -Path 'mpvError.txt','mpvSaida.txt' <#-ErrorAction Ignore#>
 }
 
 function np {
