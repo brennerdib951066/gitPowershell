@@ -804,6 +804,12 @@ Function criarHtml {
         .grupoBordaPadrao {
             border-radius: 10px;
         }
+        .alignPadrao {
+            align-items: center;
+        }
+        .justifyPadrao {
+            justify-content: center;
+        }
         .larguraElementoPadrao {
             width: 100%;
         }
@@ -813,6 +819,9 @@ Function criarHtml {
         .laguraImagemPadrao {
             width: 70px;
             border-radius: 100%;
+        }
+        .paddingPadrao {
+            padding: 10px;
         }
 
 		/*RESPONSIVIDADE*/
