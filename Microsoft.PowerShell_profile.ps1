@@ -815,7 +815,7 @@ Function criarHtml {
             border-radius: 100%;
         }
 
-		<# RESPONSIVIDADE #>
+		/*RESPONSIVIDADE*/
 		@media (){
 
 		}
