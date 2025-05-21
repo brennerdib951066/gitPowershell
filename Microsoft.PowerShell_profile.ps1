@@ -852,6 +852,15 @@ Function criarHtml {
 	}
 	Catch {
 		Write-Host -ForegroundColor Red "Instale o visual estudio para prosseguir"
+		Start-Sleep -Seconds 2
+		if (-not ($IsWindows)) {
+			sudo apt install code -y
+			code "$AreaDeTrabalhoUsuario/$criarArquivo"
+		}
+		else {
+			winget install code
+			code "$AreaDeTrabalhoUsuario/$criarArquivo"
+		}
 	}
 
 
