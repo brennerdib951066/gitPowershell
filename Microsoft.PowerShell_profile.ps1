@@ -1,10 +1,10 @@
 <#
-	 a versão '1.0.0.17' foram adicionados
-	Para o MPVM agora a saída será redirecionada para um arquivo
+	 a versão '1.0.0.18' foram adicionados
+	@media adicionado para criação de arquivos em HTML
 
 #>
 
-$versao = '1.0.0.17'
+$versao = '1.0.0.18'
 $versaoPowershell = $PSVersionTable.PSVersion
 if ($IsWindows) {
 	$sshService = Get-Service sshd -ErrorAction Ignore
@@ -814,6 +814,11 @@ Function criarHtml {
             width: 70px;
             border-radius: 100%;
         }
+
+		<# RESPONSIVIDADE #>
+		@media (){
+
+		}
 
     </style>
 </head>
