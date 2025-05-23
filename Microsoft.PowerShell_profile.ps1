@@ -947,7 +947,7 @@ else {
 	# Configurando para que o powershell ignorar o case dos diretorios
 	$pastaDestino = (xdg-user-dir DESKTOP)
 	Try {
-		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1","$PROFILE" -ErrorAction stop
+		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoPs1" -OutFile "$PROFILE" -ErrorAction stop
 		Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
 	}
 	Catch {
