@@ -1095,8 +1095,9 @@ Function fcrontab {
 
 }
 
-
+	<#
 	Write-Host "ENTROU NO WINDOWS PERFIL"
+	#>
 	# No terminal se for teclado 1, ele irá setar o tema windows para tema CLARO
 	Set-PSReadLineKeyHandler -Chord Alt+1 -ScriptBlock {
 		if (verificandoPlataforma){
