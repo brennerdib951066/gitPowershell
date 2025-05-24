@@ -17,11 +17,13 @@ if ($IsWindows) {
 	$estadoRede = (get-netConnectionProfile).NetworkCategory
 }
 
-Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
+<# Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
+#>
 
 if (-not ($versaoPowershell -match 7)) {
-	Write-Error "use a versão 7 do powershell".ToUpper()
+	<# Write-Error "use a versão 7 do powershell".ToUpper()
 	Exit
+	#>
 }
 <#
 	 a versão '1.0.0.15' foram adicionados
@@ -30,8 +32,9 @@ if (-not ($versaoPowershell -match 7)) {
 #>
 
 if (-not ($IsWindows) -and $env:PATH.Split(':') -notcontains (Join-Path -Path (xdg-user-dir DESKTOP) -ChildPath 'gitPowershell')) {
-	Write-Host -ForegroundColor red 'não existe a pasta gitPowershell para ser executado via PATH'
+	<# Write-Host -ForegroundColor red 'não existe a pasta gitPowershell para ser executado via PATH'
 	$ENV:PATH = $ENV:PATH + ':' + (Join-Path -Path (xdg-user-dir DESKTOP) -ChildPath 'gitPowershell')
+	#>
 }
 
 
@@ -852,15 +855,6 @@ Function criarHtml {
 	}
 	Catch {
 		Write-Host -ForegroundColor Red "Instale o visual estudio para prosseguir"
-		Start-Sleep -Seconds 2
-		if (-not ($IsWindows)) {
-			sudo apt install code -y
-			code "$AreaDeTrabalhoUsuario/$criarArquivo"
-		}
-		else {
-			winget install code
-			code "$AreaDeTrabalhoUsuario/$criarArquivo"
-		}
 	}
 
 
@@ -945,14 +939,9 @@ if (verificandoPlataforma){
 else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
 	# Configurando para que o powershell ignorar o case dos diretorios
-	$pastaDestino = (xdg-user-dir DESKTOP)
-	Try {
-		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoPs1" -OutFile "$PROFILE" -ErrorAction stop
-		Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
-	}
-	Catch {
-		Write-Host -ForegroundColor DarkYellow 'Verifique sua internet'
-	}
+	$pastaDestino = (Get-ChildItem "$HOME" -Filter "Área de Trabalho" -Directory | Where-Object { $_.Name -ieq "Área de Trabalho" }).FullName
+	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
+	Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
 }
 
 <# if (verificandoPlataforma){
