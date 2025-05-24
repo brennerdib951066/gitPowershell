@@ -331,7 +331,7 @@ function scpba {
 	}
 	$arquivo = "$($args[0])"
 	$hostname = "$($args[1])"
-	scp $arquivo "$hostname:$AreaDeTrabalhoUsuario"
+	scp $arquivo "${hostname}:${AreaDeTrabalhoUsuario}"
 }
 function criarItem {
 	param(
