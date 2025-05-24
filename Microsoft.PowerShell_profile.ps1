@@ -311,12 +311,27 @@ function np {
 }
 
 function scpba {
-
+	<#
 	param(
 		$arquivo,
 		$hostname
 	)
-	scp $arquivo $hostname':Área de Trabalho'
+	#>
+	$AreaDeTrabalhoUsuario = "$Env:HOMEPROFILE/Desktop"
+	if (-not($IsWindows)) {
+		$AreaDeTrabalhoUsuario = (xdg-user-dir DESKTOP)
+	}
+
+	if (-not ($args[0])) {
+		Write-Host -Foregroundcolor DarkYellow 'Mande seu arquivo como primeiro parametro'
+		Return
+	}
+	if (-not ($args[1])) {
+		Write-Host -Foregroundcolor DarkYellow 'preciso do seu do ip de  destino como segundo parametro'
+	}
+	$arquivo = "$($args[0])"
+	$hostname = "$($args[1])"
+	scp $arquivo "$hostname:$AreaDeTrabalhoUsuario"
 }
 function criarItem {
 	param(
