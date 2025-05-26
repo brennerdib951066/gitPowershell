@@ -754,6 +754,10 @@ Start-Process "kate" -ArgumentList "`"$arquivoCaminho`""
 	}
 } # FUNCAO CRIARPS1
 Function criarHtml {
+	$tituloHtml = 'nome do titulo do documento'.ToUpper()
+	if ($args[1]) {
+		$criarArquivo = $args[1]
+	}
 
 	Try {
 		$AreaDeTrabalhoUsuario = Join-Path -Path "$env:HOMEPATH" -ChildPath "Desktop" -ErrorAction ignore
@@ -781,14 +785,13 @@ Function criarHtml {
 	if ($args[0]) {
 		$tituloHtml = $args[0]
 	}
-
-@'
+@"
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${tituloHtml}</title>
+    <title>$tituloHtml</title>
     <style>
         * {
             margin: 0;
@@ -842,7 +845,7 @@ Function criarHtml {
     </main>
 </body>
 </html>
-'@ | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo" -Encoding UTF8
+"@ | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo" -Encoding UTF8
 
 	try {
 		$programaIDE = 'code'.ToLower()
