@@ -17,13 +17,11 @@ if ($IsWindows) {
 	$estadoRede = (get-netConnectionProfile).NetworkCategory
 }
 
-<# Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
-#>
+Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
 
 if (-not ($versaoPowershell -match 7)) {
-	<# Write-Error "use a versão 7 do powershell".ToUpper()
+	Write-Error "use a versão 7 do powershell".ToUpper()
 	Exit
-	#>
 }
 <#
 	 a versão '1.0.0.15' foram adicionados
@@ -32,9 +30,8 @@ if (-not ($versaoPowershell -match 7)) {
 #>
 
 if (-not ($IsWindows) -and $env:PATH.Split(':') -notcontains (Join-Path -Path (xdg-user-dir DESKTOP) -ChildPath 'gitPowershell')) {
-	<# Write-Host -ForegroundColor red 'não existe a pasta gitPowershell para ser executado via PATH'
+	Write-Host -ForegroundColor red 'não existe a pasta gitPowershell para ser executado via PATH'
 	$ENV:PATH = $ENV:PATH + ':' + (Join-Path -Path (xdg-user-dir DESKTOP) -ChildPath 'gitPowershell')
-	#>
 }
 
 
@@ -311,27 +308,12 @@ function np {
 }
 
 function scpba {
-	<#
+
 	param(
 		$arquivo,
 		$hostname
 	)
-	#>
-	$AreaDeTrabalhoUsuario = "$Env:HOMEPROFILE/Desktop"
-	if (-not($IsWindows)) {
-		$AreaDeTrabalhoUsuario = (xdg-user-dir DESKTOP)
-	}
-
-	if (-not ($args[0])) {
-		Write-Host -Foregroundcolor DarkYellow 'Mande seu arquivo como primeiro parametro'
-		Return
-	}
-	if (-not ($args[1])) {
-		Write-Host -Foregroundcolor DarkYellow 'preciso do seu do ip de  destino como segundo parametro'
-	}
-	$arquivo = "$($args[0])"
-	$hostname = "$($args[1])"
-	scp $arquivo "${hostname}:${AreaDeTrabalhoUsuario}"
+	scp $arquivo $hostname':Área de Trabalho'
 }
 function criarItem {
 	param(
@@ -796,6 +778,9 @@ Function criarHtml {
 		Write-Host -ForegroundColor Red "Erro ai criar seu arquivo html".ToUpper()
 	}
 	#>
+	if ($args[0]) {
+		tituloHtml = $args[0]
+	}
 
 @'
 <!DOCTYPE html>
@@ -803,7 +788,7 @@ Function criarHtml {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>${tituloHtml}</title>
     <style>
         * {
             margin: 0;
@@ -870,6 +855,15 @@ Function criarHtml {
 	}
 	Catch {
 		Write-Host -ForegroundColor Red "Instale o visual estudio para prosseguir"
+		Start-Sleep -Seconds 2
+		if (-not ($IsWindows)) {
+			sudo apt install code -y
+			code "$AreaDeTrabalhoUsuario/$criarArquivo"
+		}
+		else {
+			winget install code
+			code "$AreaDeTrabalhoUsuario/$criarArquivo"
+		}
 	}
 
 
@@ -954,9 +948,14 @@ if (verificandoPlataforma){
 else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
 	# Configurando para que o powershell ignorar o case dos diretorios
-	$pastaDestino = (Get-ChildItem "$HOME" -Filter "Área de Trabalho" -Directory | Where-Object { $_.Name -ieq "Área de Trabalho" }).FullName
-	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
-	Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
+	$pastaDestino = (xdg-user-dir DESKTOP)
+	Try {
+		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoPs1" -OutFile "$PROFILE" -ErrorAction stop
+		Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
+	}
+	Catch {
+		Write-Host -ForegroundColor DarkYellow 'Verifique sua internet'
+	}
 }
 
 <# if (verificandoPlataforma){
@@ -1110,9 +1109,8 @@ Function fcrontab {
 
 }
 
-	<#
+
 	Write-Host "ENTROU NO WINDOWS PERFIL"
-	#>
 	# No terminal se for teclado 1, ele irá setar o tema windows para tema CLARO
 	Set-PSReadLineKeyHandler -Chord Alt+1 -ScriptBlock {
 		if (verificandoPlataforma){
