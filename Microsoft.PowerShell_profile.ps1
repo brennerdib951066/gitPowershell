@@ -779,7 +779,7 @@ Function criarHtml {
 	}
 	#>
 	if ($args[0]) {
-		tituloHtml = $args[0]
+		$tituloHtml = $args[0]
 	}
 
 @'
