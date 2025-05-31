@@ -295,7 +295,7 @@ function mpvm {
 	Try {Get-Command mpv -ErrorAction ignore,stop
 	}
 	Catch {
-		Write-Host -ForegroundColor 'mpv não instalado'
+		Write-Host -ForegroundColor DarkRed 'mpv não instalado'
 		$instalarMpv = Read-Host -Prompt 'instalar mpv? [S/n]'.ToUpper()
 		if ($instalarMpv) {
 			$instalarMpv = $instalarMpv.ToLower()
