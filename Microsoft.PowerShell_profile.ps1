@@ -1254,3 +1254,15 @@ if (verificandoPlataforma){
 	}
 
 }
+
+Function pwshDebugger {
+	if ($args[0] -is [string]) {
+		Write-Host -ForegroundColor DarkYellow 'Preciso de uma numero'
+		Return
+	}
+	if ($args[0] -gt 1) {
+		Write-Host -ForegroundColor DarkRed 'Aceito 0 ou 1'
+		Return
+	}
+	[int]$setar=$args[0]Set-Psdebug -Trace $setar
+} # FUNÇÃO DEGUG POWERSHELL
