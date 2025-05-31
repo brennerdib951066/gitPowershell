@@ -300,7 +300,7 @@ function mpvm {
 		if ($instalarMpv) {
 			$instalarMpv = $instalarMpv.ToLower()
 		}
-		if (-not $instalarMpv -eq 's') {
+		if (-not ($instalarMpv -eq 's')) {
 			Return
 		}
 		# Instalando o MPV
