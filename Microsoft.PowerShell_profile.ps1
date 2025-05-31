@@ -295,7 +295,7 @@ function mpvm {
 
 	# Verificando se o mpv Existe
 
-	Try {Get-Command mpv -ErrorAction stop
+	Try {Get-Command mpv -ErrorAction stop | Out-Null
 	}
 	Catch {
 		Write-Host -ForegroundColor DarkRed 'mpv não instalado'
