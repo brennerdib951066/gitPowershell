@@ -1264,5 +1264,6 @@ Function pwshDebugger {
 		Write-Host -ForegroundColor DarkRed 'Aceito 0 ou 1'
 		Return
 	}
-	[int]$setar=$args[0]Set-Psdebug -Trace $setar
+	[int]$setar=$args[0]
+	Set-Psdebug -Trace $setar
 } # FUNÇÃO DEGUG POWERSHELL
