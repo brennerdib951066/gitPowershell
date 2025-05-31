@@ -292,24 +292,27 @@ function mpvm {
 	param(
 		$url
 	)
-	Try {Get-Command mpv -ErrorAction ignore,stop
-	}
-	Catch {
-		Write-Host -ForegroundColor DarkRed 'mpv não instalado'
-		$instalarMpv = Read-Host -Prompt 'instalar mpv? [S/n]'.ToUpper()
-		if ($instalarMpv) {
-			$instalarMpv = $instalarMpv.ToLower()
-		}
-		if (-not ($instalarMpv -eq 's')) {
-			Return
-		}
-		# Instalando o MPV
-		if (-not $isWindows) {
-			sudo apt install mpv -y
-		}
-		Winget install mpv
-	}
 
+	# Verificando se o mpv Existe
+	<#
+		Try {Get-Command mpv -ErrorAction ignore,stop
+		}
+		Catch {
+			Write-Host -ForegroundColor DarkRed 'mpv não instalado'
+			$instalarMpv = Read-Host -Prompt 'instalar mpv? [S/n]'.ToUpper()
+			if ($instalarMpv) {
+				$instalarMpv = $instalarMpv.ToLower()
+			}
+			if (-not ($instalarMpv -eq 's')) {
+				Return
+			}
+			# Instalando o MPV
+			if (-not $isWindows) {
+				sudo apt install mpv -y
+			}
+			Winget install mpv
+		}
+	#>
 	Try {
 		Start-Process mpv -ArgumentList --fs,"$url",--cookies -ErrorAction Stop -NoNewWindow -RedirectStandardOutput 'mpvSaida.txt' -RedirectStandardError 'mpvError.txt' -Wait
 	}
