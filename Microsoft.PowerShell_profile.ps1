@@ -863,7 +863,7 @@ Function criarHtml {
             padding: 10px;
         }
 	.gapPadrao {
-			gap: 10px;
+		gap: 10px;
         }
 
 		/*RESPONSIVIDADE*/
