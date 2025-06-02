@@ -1,10 +1,10 @@
 <#
-	 a versão '1.0.0.18' foram adicionados
-	@media adicionado para criação de arquivos em HTML
+	 a versão '1.0.0.19' foram adicionados
+	Adicionado o .GAP para o CSS
 
 #>
 
-$versao = '1.0.0.18'
+$versao = '1.0.0.19'
 $versaoPowershell = $PSVersionTable.PSVersion
 if ($IsWindows) {
 	$sshService = Get-Service sshd -ErrorAction Ignore
@@ -862,8 +862,8 @@ Function criarHtml {
         .paddingPadrao {
             padding: 10px;
         }
-	.gapPadrao {
-		gap: 10px;
+		.gapPadrao {
+			gap: 10px;
         }
 
 		/*RESPONSIVIDADE*/
