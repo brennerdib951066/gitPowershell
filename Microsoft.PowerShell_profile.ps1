@@ -849,6 +849,9 @@ Function criarHtml {
         .justifyPadrao {
             justify-content: center;
         }
+        .justifyBetweenPadrao {
+			justify-content: space-between ;
+        }
         .larguraElementoPadrao {
             width: 100%;
         }
