@@ -1280,3 +1280,18 @@ Function pwshDebugger {
 	[int]$setar=$args[0]
 	Set-Psdebug -Trace $setar
 } # FUNÇÃO DEGUG POWERSHELL
+
+Function sshStatus {
+	if (-not $IsWindows) { Invoke-Command -ScriptBlock {
+		bash -c 'awk ''BEGIN {FS=" "}NR==3{texto = $0; if (texto !~ /running/){ exibir = toupper("seu ssh esta parado") ;print exibir;exit} exibir = toupper("ssh está rodando");print exibir  }'' <<< $(systemctl status sshd)'
+			return
+		}
+
+	}
+	Try {
+		Get-Service sshd -ErrorAction stop
+	}
+	Catch {
+
+	}
+}
