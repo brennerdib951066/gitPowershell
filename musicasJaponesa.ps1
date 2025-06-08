@@ -59,7 +59,7 @@ while ($true){
 
     $artistaEscolhido = Read-Host -Prompt ':'
     try {
-        if (verificarPlataforma){ Write-Host -ForegroundColor red "Voce é windows"; $pastaBase = join-Path -Path ~ -ChildPath "Desktop/powershell/bibliotecas" } else { Write-Host -ForegroundColor red "Voce é LINUXXXX"; $pastaBase = join-Path -Path ~ -ChildPath "Área de Trabalho/powershell/bibliotecas"}
+        if (verificarPlataforma){ Write-Host -ForegroundColor red "Voce é windows"; $pastaBase = join-Path -Path ~ -ChildPath "Desktop/powershell/bibliotecas" } else { Write-Host -ForegroundColor red "Voce é LINUXXXX"; $pastaBase = join-Path -Path (xdg-user-dir DESKTOP) -ChildPath "gitPowershell/bibliotecas"}
         #$pastaBase = join-Path -Path $areaDeTrabalho -ChildPath "Área de Trabalho/powershell/bibliotecas"
         #Get-Content $pastaBase/hiroTakahashi.ps1
         if ([int]$artistaEscolhido -and $artistaEscolhido -le $listaDeArtistas.count){
