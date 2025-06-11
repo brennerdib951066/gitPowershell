@@ -1,10 +1,10 @@
 <#
-	 a versão '1.0.0.19' foram adicionados
-	Adicionado o .GAP para o CSS
+	 a versão '1.0.0.18' foram adicionados
+	@media adicionado para criação de arquivos em HTML
 
 #>
 
-$versao = '1.0.0.19'
+$versao = '1.0.0.18'
 $versaoPowershell = $PSVersionTable.PSVersion
 if ($IsWindows) {
 	$sshService = Get-Service sshd -ErrorAction Ignore
@@ -17,13 +17,11 @@ if ($IsWindows) {
 	$estadoRede = (get-netConnectionProfile).NetworkCategory
 }
 
-<# Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
-#>
+Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
 
 if (-not ($versaoPowershell -match 7)) {
-	<# Write-Error "use a versão 7 do powershell".ToUpper()
+	Write-Error "use a versão 7 do powershell".ToUpper()
 	Exit
-	#>
 }
 <#
 	 a versão '1.0.0.15' foram adicionados
@@ -32,9 +30,8 @@ if (-not ($versaoPowershell -match 7)) {
 #>
 
 if (-not ($IsWindows) -and $env:PATH.Split(':') -notcontains (Join-Path -Path (xdg-user-dir DESKTOP) -ChildPath 'gitPowershell')) {
-	<# Write-Host -ForegroundColor red 'não existe a pasta gitPowershell para ser executado via PATH'
+	Write-Host -ForegroundColor red 'não existe a pasta gitPowershell para ser executado via PATH'
 	$ENV:PATH = $ENV:PATH + ':' + (Join-Path -Path (xdg-user-dir DESKTOP) -ChildPath 'gitPowershell')
-	#>
 }
 
 
@@ -292,27 +289,6 @@ function mpvm {
 	param(
 		$url
 	)
-
-	# Verificando se o mpv Existe
-
-	Try {Get-Command mpv -ErrorAction stop | Out-Null
-	}
-	Catch {
-		Write-Host -ForegroundColor DarkRed 'mpv não instalado'
-		$instalarMpv = Read-Host -Prompt 'instalar mpv? [S/n]'.ToUpper()
-		if ($instalarMpv) {
-			$instalarMpv = $instalarMpv.ToLower()
-		}
-		if (-not ($instalarMpv -eq 's')) {
-			Return
-		}
-		# Instalando o MPV
-		if (-not $isWindows) {
-			sudo apt install mpv -y
-		}
-		Winget install mpv
-	}
-
 	Try {
 		Start-Process mpv -ArgumentList --fs,"$url",--cookies -ErrorAction Stop -NoNewWindow -RedirectStandardOutput 'mpvSaida.txt' -RedirectStandardError 'mpvError.txt' -Wait
 	}
@@ -332,27 +308,12 @@ function np {
 }
 
 function scpba {
-	<#
+
 	param(
 		$arquivo,
 		$hostname
 	)
-	#>
-	$AreaDeTrabalhoUsuario = "$Env:HOMEPROFILE/Desktop"
-	if (-not($IsWindows)) {
-		$AreaDeTrabalhoUsuario = (xdg-user-dir DESKTOP)
-	}
-
-	if (-not ($args[0])) {
-		Write-Host -Foregroundcolor DarkYellow 'Mande seu arquivo como primeiro parametro'
-		Return
-	}
-	if (-not ($args[1])) {
-		Write-Host -Foregroundcolor DarkYellow 'preciso do seu do ip de  destino como segundo parametro'
-	}
-	$arquivo = "$($args[0])"
-	$hostname = "$($args[1])"
-	scp $arquivo "${hostname}:${AreaDeTrabalhoUsuario}"
+	scp $arquivo $hostname':Área de Trabalho'
 }
 function criarItem {
 	param(
@@ -849,9 +810,6 @@ Function criarHtml {
         .justifyPadrao {
             justify-content: center;
         }
-        .justifyBetweenPadrao {
-			justify-content: space-between ;
-        }
         .larguraElementoPadrao {
             width: 100%;
         }
@@ -864,9 +822,6 @@ Function criarHtml {
         }
         .paddingPadrao {
             padding: 10px;
-        }
-		.gapPadrao {
-			gap: 10px;
         }
 
 		/*RESPONSIVIDADE*/
@@ -897,6 +852,15 @@ Function criarHtml {
 	}
 	Catch {
 		Write-Host -ForegroundColor Red "Instale o visual estudio para prosseguir"
+		Start-Sleep -Seconds 2
+		if (-not ($IsWindows)) {
+			sudo apt install code -y
+			code "$AreaDeTrabalhoUsuario/$criarArquivo"
+		}
+		else {
+			winget install code
+			code "$AreaDeTrabalhoUsuario/$criarArquivo"
+		}
 	}
 
 
@@ -972,7 +936,7 @@ if (verificandoPlataforma){
 	Try {
 		$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
 		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$USERPROFILE/Desktop/powershell/$arquivoPs1" -ErrorAction Stop
-		Copy-Item "$USERPROFILE/Desktop/powershell/$arquivoPs1" "$PROFILE"
+		Copy-Item "$USERPROFILE/Desktop/gitPowershell/$arquivoPs1" "$PROFILE"
 	}
 	Catch {
 		Write-Host ""
@@ -981,16 +945,9 @@ if (verificandoPlataforma){
 else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
 	# Configurando para que o powershell ignorar o case dos diretorios
-	$pastaDestino = (Get-ChildItem "$HOME" -Filter "Área de Trabalho" -Directory | Where-Object { $_.Name -ieq "Área de Trabalho" }).FullName
-	Try {
-		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1" -ErrorAction stop
-		Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
-	}
-	Catch {
-		$deuErrado = $_
-
-	}
-
+	$pastaDestino = (xdg-user-dir DESKTOP)
+	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
+	Copy-Item "$pastaDestino/gitPowershell/$arquivoPs1" "$PROFILE"
 }
 
 <# if (verificandoPlataforma){
@@ -1144,9 +1101,8 @@ Function fcrontab {
 
 }
 
-	<#
+
 	Write-Host "ENTROU NO WINDOWS PERFIL"
-	#>
 	# No terminal se for teclado 1, ele irá setar o tema windows para tema CLARO
 	Set-PSReadLineKeyHandler -Chord Alt+1 -ScriptBlock {
 		if (verificandoPlataforma){
@@ -1266,32 +1222,4 @@ if (verificandoPlataforma){
 		}
 	}
 
-}
-
-Function pwshDebugger {
-	if ($args[0] -is [string]) {
-		Write-Host -ForegroundColor DarkYellow 'Preciso de uma numero'
-		Return
-	}
-	if ($args[0] -gt 1) {
-		Write-Host -ForegroundColor DarkRed 'Aceito 0 ou 1'
-		Return
-	}
-	[int]$setar=$args[0]
-	Set-Psdebug -Trace $setar
-} # FUNÇÃO DEGUG POWERSHELL
-
-Function sshStatus {
-	if (-not $IsWindows) { Invoke-Command -ScriptBlock {
-		bash -c 'awk ''BEGIN {FS=" "}NR==3{texto = $0; if (texto !~ /running/){ exibir = toupper("seu ssh esta parado") ;print exibir;exit} exibir = toupper("ssh está rodando");print exibir  }'' <<< $(systemctl status sshd)'
-			return
-		}
-
-	}
-	Try {
-		Get-Service sshd -ErrorAction stop
-	}
-	Catch {
-
-	}
 }
