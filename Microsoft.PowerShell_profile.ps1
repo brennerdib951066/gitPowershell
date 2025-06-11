@@ -935,8 +935,8 @@ for ($i=0;$i -le $novoNomeAlias.Length-1;$i++){
 if (verificandoPlataforma){
 	Try {
 		$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
-		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$USERPROFILE/Desktop/powershell/$arquivoPs1" -ErrorAction Stop
-		Copy-Item "$USERPROFILE/Desktop/gitPowershell/$arquivoPs1" "$PROFILE"
+		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoPs1" -OutFile "$USERPROFILE/Desktop/powershell/$arquivoPs1" -ErrorAction Stop
+		Copy-Item "$USERPROFILE/Desktop/gitPowershell/$arquivoPs1" "$PROFILE" -ErrorAction stop
 	}
 	Catch {
 		Write-Host ""
@@ -946,7 +946,7 @@ else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
 	# Configurando para que o powershell ignorar o case dos diretorios
 	$pastaDestino = (xdg-user-dir DESKTOP)
-	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
+	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/gitPowershell/$arquivoPs1"
 	Copy-Item "$pastaDestino/gitPowershell/$arquivoPs1" "$PROFILE"
 }
 
