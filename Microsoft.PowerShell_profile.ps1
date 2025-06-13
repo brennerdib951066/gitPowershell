@@ -1044,41 +1044,28 @@ function corDesktop {
 } # FUNCAO CORDESKTOP
 
 Function hastag {
-	if (-not $args[0]) {
+		if (-not $args[0]) {
+			$args[0] = $args[0].ToLower()
+		}
+
 		if (-not ($IsWindows)) {
-			google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
-			Return
+			$programa = 'google-chrome-stable'
 		} # IF $ISWINDOWS
-			chrome  --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
-			Return
-	} # IF SE ARGS[0] for vazio
-	# Se ARGS[0] contiver algo cai aqui
-	$args[0] = $args[0].ToLower()
+		else {
+			$programa = 'chrome'
+		}
+
 	Switch ($args[0]) {
 		'html' {
-			if (-not $IsWindows) {
-				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
-				Return
-			}
-			chrome  --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
-			Return
+				Start-Process $programa --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400' &
 		} # SWITCH CASE HTML
 		'javascript' {
-			if (-not $IsWindows) {
-				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com/aulas/1721151249547x539810744415551500'
-				Return
-			}
-			chrome  --profile-directory='DIB' 'https://portalhashtag.com/aulas/1721151249547x539810744415551500'
-			Return
+				Start-Process $programa --profile-directory='DIB' 'https://portalhashtag.com/aulas/1721151249547x539810744415551500' &
 		} # SWITCH CASE AAVASCRIPT
 		'python' {
-			if (-not $IsWindows) {
-				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com/aulas/1661224661487x907919532850037100'
-				Return
-			}
-			chrome  --profile-directory='DIB' 'https://portalhashtag.com/aulas/1661224661487x907919532850037100'
-			Return
-		} # SWITCH CASE AAVASCRIPT
+
+				$programa --profile-directory='DIB' 'https://portalhashtag.com/aulas/1661224661487x907919532850037100' &
+		} # SWITCH CASE PYTHON
 
 	} # SWITCH CASE
 
