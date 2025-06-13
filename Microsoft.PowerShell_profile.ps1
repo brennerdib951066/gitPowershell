@@ -1059,14 +1059,14 @@ Function hastag {
 
 	Switch ($args[0]) {
 		'html' {
-				Start-Process $programa -ArgumentList --profile-directory='DIB','https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+				Start-Process $programa -ArgumentList --profile-directory='DIB','https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400' -RedirectStandardError 'googleError.txt' -RedirectStandardOutput 'googleSaidaPadrao.txt'
 		} # SWITCH CASE HTML
 		'javascript' {
-				Start-Process $programa -ArgumentList --profile-directory='DIB','https://portalhashtag.com/aulas/1721151249547x539810744415551500'
+				Start-Process $programa -ArgumentList --profile-directory='DIB','https://portalhashtag.com/aulas/1721151249547x539810744415551500' -RedirectStandardError 'googleError.txt' -RedirectStandardOutput 'googleSaidaPadrao.txt'
 		} # SWITCH CASE AAVASCRIPT
 		'python' {
 
-				Start-Process $programa -ArgumentList --profile-directory='DIB','https://portalhashtag.com/aulas/1661224661487x907919532850037100'
+				Start-Process $programa -ArgumentList --profile-directory='DIB','https://portalhashtag.com/aulas/1661224661487x907919532850037100' -RedirectStandardError 'googleError.txt' -RedirectStandardOutput 'googleSaidaPadrao.txt'
 		} # SWITCH CASE PYTHON
 
 	} # SWITCH CASE
