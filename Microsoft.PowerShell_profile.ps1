@@ -1044,9 +1044,11 @@ function corDesktop {
 } # FUNCAO CORDESKTOP
 
 Function hastag {
-		if (-not $args[0]) {
-			$args[0] = $args[0].ToLower()
+		if ($args[0] -eq $null) {
+			Write-Host -ForegroundColor Red 'Mande algum parametro'
+			Return
 		}
+		$args[0] = $args[0].ToLower()
 
 		if (-not ($IsWindows)) {
 			$programa = 'google-chrome-stable'
@@ -1070,3 +1072,4 @@ Function hastag {
 	} # SWITCH CASE
 
 }
+
