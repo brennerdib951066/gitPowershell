@@ -1082,3 +1082,4 @@ Function hastag {
 
 	} # SWITCH CASE
 
+}
