@@ -1045,7 +1045,11 @@ function corDesktop {
 
 Function hastag {
 		if ($args[0] -eq $null) {
-			Write-Host -ForegroundColor Red 'Mande algum parametro'
+			Write-Host -ForegroundColor Red 'use:'.ToUpper()
+			Write-Host ""
+			Write-Host -ForegroundColor DarkGreen "hastag" "html".ToUpper()
+			Write-Host -ForegroundColor DarkGreen "hastag" "javascript".ToUpper()
+			Write-Host -ForegroundColor DarkGreen "hastag" "python".ToUpper()
 			Return
 		}
 		$args[0] = $args[0].ToLower()
