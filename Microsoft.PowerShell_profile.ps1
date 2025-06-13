@@ -1,37 +1,17 @@
 <#
-	 a versão '1.0.0.18' foram adicionados
-	@media adicionado para criação de arquivos em HTML
+	 a versão '1.0.0.16' foram adicionados
+	Foi adicionando a função para abrir a hashtag programcao
 
 #>
 
-$versao = '1.0.0.18'
+$versao = '1.0.0.15'
 $versaoPowershell = $PSVersionTable.PSVersion
-if ($IsWindows) {
-	$sshService = Get-Service sshd -ErrorAction Ignore
-	$sshServiceStatus = (Get-Service sshd).Status
-	$programaSSH = @{
-					'sshd' = 'OpenSSH.Server~~~~0.0.1.0'
-					'ssh-agent' = 'OpenSSH.Client~~~~0.0.1.0'
-	}
-	$nomeRede = (Get-NetConnectionProfile).Name.ToLower()
-	$estadoRede = (get-netConnectionProfile).NetworkCategory
-}
 
 Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
 
 if (-not ($versaoPowershell -match 7)) {
 	Write-Error "use a versão 7 do powershell".ToUpper()
 	Exit
-}
-<#
-	 a versão '1.0.0.15' foram adicionados
-	Foi adicionando a opção --cookies na função bubble do mpv
-
-#>
-
-if (-not ($IsWindows) -and $env:PATH.Split(':') -notcontains (Join-Path -Path (xdg-user-dir DESKTOP) -ChildPath 'gitPowershell')) {
-	Write-Host -ForegroundColor red 'não existe a pasta gitPowershell para ser executado via PATH'
-	$ENV:PATH = $ENV:PATH + ':' + (Join-Path -Path (xdg-user-dir DESKTOP) -ChildPath 'gitPowershell')
 }
 
 
@@ -49,17 +29,6 @@ function verificandoPlataforma(){
 			Return $False
 		}
 		Return $True
-}
-
-function Test-Admin {
-    # Obtém a identidade do usuário atual
-    $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
-
-    # Cria um objeto principal a partir da identidade
-    $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
-
-    # Verifica se o usuário está no grupo de administradores
-    return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
 ################################Função de ações do sistema####################################################################################
@@ -289,14 +258,7 @@ function mpvm {
 	param(
 		$url
 	)
-	Try {
-		Start-Process mpv -ArgumentList --fs,"$url",--cookies -ErrorAction Stop -NoNewWindow -RedirectStandardOutput 'mpvSaida.txt' -RedirectStandardError 'mpvError.txt' -Wait
-	}
-	Catch {
-		Start-Process mpv -ArgumentList --fs,"$url" -NoNewWindow -RedirectStandardOutput 'mpvSaida.txt' -RedirectStandardError 'mpvError.txt' -Wait
-	}
-
-	Remove-Item -Path 'mpvError.txt','mpvSaida.txt' -ErrorAction Ignore
+	mpv --fs "$url" --cookies
 }
 
 function np {
@@ -753,118 +715,7 @@ Start-Process "kate" -ArgumentList "`"$arquivoCaminho`""
 
 	}
 } # FUNCAO CRIARPS1
-Function criarHtml {
 
-	Try {
-		$AreaDeTrabalhoUsuario = Join-Path -Path "$env:HOMEPATH" -ChildPath "Desktop" -ErrorAction ignore
-	}
-	Catch {
-
-	}
-
-	if (-not ($isWindows)) {
-		Write-Host -ForegroundColor DarkRed "Não é windows, deve ser linux"
-		$AreaDeTrabalhoUsuario = (xdg-user-dir DESKTOP)
-	}
-	if (Test-Path ("$AreaDeTrabalhoUsuario/$criarArquivo")) {
-		Write-Host -ForegroundColor Yellow "Arquivo $criarArquivo existente"
-		Return
-	}
-	<#
-	Try {
-		New-Item -Type File -Path "$AreaDeTrabalhoUsuario/$criarArquivo" -ErrorAction Stop | Out-Null
-	}
-	Catch {
-		Write-Host -ForegroundColor Red "Erro ai criar seu arquivo html".ToUpper()
-	}
-	#>
-
-@'
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        /* GLOBAL */
-        .grupoColunaDisplayPadrao {
-            display: flex;
-            flex-direction: column;
-        }
-        .grupoLinhaDisplayPadrao {
-            display: flex;
-            flex-direction: row;
-        }
-        .grupoBordaPadrao {
-            border-radius: 10px;
-        }
-        .alignPadrao {
-            align-items: center;
-        }
-        .justifyPadrao {
-            justify-content: center;
-        }
-        .larguraElementoPadrao {
-            width: 100%;
-        }
-        .alturaElementoPadrao {
-            height: 35px;
-        }
-        .laguraImagemPadrao {
-            width: 70px;
-            border-radius: 100%;
-        }
-        .paddingPadrao {
-            padding: 10px;
-        }
-
-		/*RESPONSIVIDADE*/
-		@media (){
-
-		}
-
-    </style>
-</head>
-<body>
-    <main>
-        <section>
-
-        </section>
-    </main>
-</body>
-</html>
-'@ | Out-File -FilePath "$AreaDeTrabalhoUsuario/$criarArquivo" -Encoding UTF8
-
-	try {
-		$programaIDE = 'code'.ToLower()
-		(Get-Command "$programaIDE" -ErrorAction stop | Out-Null).Source
-		<#
-			Write-Host -ForegroundColor Green "Abrindo seu arquivo $AreaDeTrabalhoUsuario/$criarArquivo"
-			Start-Sleep -Seconds 5s
-		#>
-		code "$AreaDeTrabalhoUsuario/$criarArquivo"
-	}
-	Catch {
-		Write-Host -ForegroundColor Red "Instale o visual estudio para prosseguir"
-		Start-Sleep -Seconds 2
-		if (-not ($IsWindows)) {
-			sudo apt install code -y
-			code "$AreaDeTrabalhoUsuario/$criarArquivo"
-		}
-		else {
-			winget install code
-			code "$AreaDeTrabalhoUsuario/$criarArquivo"
-		}
-	}
-
-
-}
 
 	if ($criarArquivo){
 		switch -Wildcard ($criarArquivo) {
@@ -887,10 +738,6 @@ Function criarHtml {
 			"*.ps1"{
 					Write-Host 'Seua arquivo é PS1'
 					criarPs1 $criarArquivo # chamando a função de criar arquivos em ps1
-			}
-			"*.html"{
-					Write-Host 'Seua arquivo é HTML'
-					criarHtml $criarArquivo # chamando a função de criar arquivos em ps1
 			}
 			Default {
 					Write-Host 'Encontrei nada aqui'
@@ -935,8 +782,8 @@ for ($i=0;$i -le $novoNomeAlias.Length-1;$i++){
 if (verificandoPlataforma){
 	Try {
 		$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
-		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoPs1" -OutFile "$USERPROFILE/Desktop/powershell/$arquivoPs1" -ErrorAction Stop
-		Copy-Item "$USERPROFILE/Desktop/gitPowershell/$arquivoPs1" "$PROFILE" -ErrorAction stop
+		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$USERPROFILE/Desktop/powershell/$arquivoPs1" -ErrorAction Stop
+		Copy-Item "$USERPROFILE/Desktop/powershell/$arquivoPs1" "$PROFILE"
 	}
 	Catch {
 		Write-Host ""
@@ -945,9 +792,9 @@ if (verificandoPlataforma){
 else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
 	# Configurando para que o powershell ignorar o case dos diretorios
-	$pastaDestino = (xdg-user-dir DESKTOP)
-	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitPowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/gitPowershell/$arquivoPs1"
-	Copy-Item "$pastaDestino/gitPowershell/$arquivoPs1" "$PROFILE"
+	$pastaDestino = (Get-ChildItem "$HOME" -Filter "Área de Trabalho" -Directory | Where-Object { $_.Name -ieq "Área de Trabalho" }).FullName
+	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
+	Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
 }
 
 <# if (verificandoPlataforma){
@@ -1196,30 +1043,42 @@ function corDesktop {
 
 } # FUNCAO CORDESKTOP
 
-# FUNÇÃO DE BAIXAR O SSH SE NÃO EXSITIR
-Function instalarSSH {
-	if (-not(Test-Admin)) {
-		Write-Host -ForegroundColor DarkYellow 'Precisa de permissões administrativas'
-		Return
-	}
-	Write-Host "Instalando"
-	ForEach ($chave in $programaSSH.Keys) {
-		"$chave"
-		Add-WindowsCapability -Online -Name "$($programaSSH[$chave])"
-		Set-Service -Name "$chave" -StartupType Automatic -Status Running
-	}
-}
-if (verificandoPlataforma){
-	if ( -not ($sshService)) {
-			Write-Host -ForegroundColor Red "Não está instalado o ssh no seu computador!"
-			instalarSSH
-	}
-	else {
-		if ((Test-Admin)) {
-			Write-Host "Rodando seu sshd"
-			Start-Sleep -Seconds 2
-			Set-Service -Name sshd -StartupType Automatic -Status Running
-		}
-	}
+Function hastag {
+	if (-not $args[0]) {
+		if (-not ($IsWindows)) {
+			google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+			Return
+		} # IF $ISWINDOWS
+			chrome  --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+			Return
+	} # IF SE ARGS[0] for vazio
+	# Se ARGS[0] contiver algo cai aqui
+	$args[0] = $args[0].ToLower()
+	Switch ($args[0]) {
+		'html' {
+			if (-not $IsWindows) {
+				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+				Return
+			}
+			chrome  --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+			Return
+		} # SWITCH CASE HTML
+		'javascript' {
+			if (-not $IsWindows) {
+				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com/aulas/1721151249547x539810744415551500'
+				Return
+			}
+			chrome  --profile-directory='DIB' 'https://portalhashtag.com/aulas/1721151249547x539810744415551500'
+			Return
+		} # SWITCH CASE AAVASCRIPT
+		'python' {
+			if (-not $IsWindows) {
+				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com/aulas/1661224661487x907919532850037100'
+				Return
+			}
+			chrome  --profile-directory='DIB' 'https://portalhashtag.com/aulas/1661224661487x907919532850037100'
+			Return
+		} # SWITCH CASE AAVASCRIPT
 
-}
+	} # SWITCH CASE
+
