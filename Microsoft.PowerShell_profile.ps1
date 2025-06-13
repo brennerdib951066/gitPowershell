@@ -1064,7 +1064,7 @@ Function hastag {
 		} # SWITCH CASE AAVASCRIPT
 		'python' {
 
-				$programa --profile-directory='DIB' 'https://portalhashtag.com/aulas/1661224661487x907919532850037100' &
+				Start-Process $programa --profile-directory='DIB' 'https://portalhashtag.com/aulas/1661224661487x907919532850037100' &
 		} # SWITCH CASE PYTHON
 
 	} # SWITCH CASE
