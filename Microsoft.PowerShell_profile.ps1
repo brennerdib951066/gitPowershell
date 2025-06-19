@@ -793,8 +793,13 @@ else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
 	# Configurando para que o powershell ignorar o case dos diretorios
 	$pastaDestino = (Get-ChildItem "$HOME" -Filter "Área de Trabalho" -Directory | Where-Object { $_.Name -ieq "Área de Trabalho" }).FullName
-	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
-	Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
+	Try {
+		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1" -ErrorAction Stop
+		Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
+	}
+	Catch {
+
+	}
 }
 
 <# if (verificandoPlataforma){
