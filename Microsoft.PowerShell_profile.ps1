@@ -315,7 +315,7 @@ function meuIp{
 		ip -c a | grep -iwE '^.+inet.*wlo1$' | cut -d' ' -f6 | cut -d'/' -f1
 		Return
 	}
-	$meuIp = (ipconfig.exe | Where-Object {$_ -match 'IPv4'} | ForEach-Object { $_ -replace '.*: ', '' })
+	$meuIp = (ipconfig.exe | Where-Object {$_ -match 'IPv4' -and $_ -notmatch '172'} | ForEach-Object { $_ -replace '.*: ', '' })
 	write-host $meuIp -foreground DarkCyan
 }
 function kprofile {
@@ -793,13 +793,8 @@ else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
 	# Configurando para que o powershell ignorar o case dos diretorios
 	$pastaDestino = (Get-ChildItem "$HOME" -Filter "Área de Trabalho" -Directory | Where-Object { $_.Name -ieq "Área de Trabalho" }).FullName
-	Try {
-		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1" -ErrorAction Stop
-		Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
-	}
-	Catch {
-
-	}
+	Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1"
+	Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE"
 }
 
 <# if (verificandoPlataforma){
@@ -1049,36 +1044,42 @@ function corDesktop {
 } # FUNCAO CORDESKTOP
 
 Function hastag {
-		if ($args[0] -eq $null) {
-			Write-Host -ForegroundColor Red 'use:'.ToUpper()
-			Write-Host ""
-			Write-Host -ForegroundColor DarkGreen "hastag" "html".ToUpper()
-			Write-Host -ForegroundColor DarkGreen "hastag" "javascript".ToUpper()
-			Write-Host -ForegroundColor DarkGreen "hastag" "python".ToUpper()
-			Return
-		}
-		$args[0] = $args[0].ToLower()
-
+	if (-not $args[0]) {
 		if (-not ($IsWindows)) {
-			$programa = 'google-chrome-stable'
+			google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+			Return
 		} # IF $ISWINDOWS
-		else {
-			$programa = 'chrome'
-		}
-
+			chrome  --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+			Return
+	} # IF SE ARGS[0] for vazio
+	# Se ARGS[0] contiver algo cai aqui
+	$args[0] = $args[0].ToLower()
 	Switch ($args[0]) {
 		'html' {
-				Start-Process $programa -ArgumentList --profile-directory='DIB','https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400' -RedirectStandardError 'googleError.txt' -RedirectStandardOutput 'googleSaidaPadrao.txt'
+			if (-not $IsWindows) {
+				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+				Return
+			}
+			chrome  --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+			Return
 		} # SWITCH CASE HTML
 		'javascript' {
-				Start-Process $programa -ArgumentList --profile-directory='DIB','https://portalhashtag.com/aulas/1721151249547x539810744415551500' -RedirectStandardError 'googleError.txt' -RedirectStandardOutput 'googleSaidaPadrao.txt'
+			if (-not $IsWindows) {
+				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com/aulas/1721151249547x539810744415551500'
+				Return
+			}
+			chrome  --profile-directory='DIB' 'https://portalhashtag.com/aulas/1721151249547x539810744415551500'
+			Return
 		} # SWITCH CASE AAVASCRIPT
 		'python' {
-
-				Start-Process $programa -ArgumentList --profile-directory='DIB','https://portalhashtag.com/aulas/1661224661487x907919532850037100' -RedirectStandardError 'googleError.txt' -RedirectStandardOutput 'googleSaidaPadrao.txt'
-		} # SWITCH CASE PYTHON
+			if (-not $IsWindows) {
+				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com/aulas/1661224661487x907919532850037100'
+				Return
+			}
+			chrome  --profile-directory='DIB' 'https://portalhashtag.com/aulas/1661224661487x907919532850037100'
+			Return
+		} # SWITCH CASE AAVASCRIPT
 
 	} # SWITCH CASE
 
 }
-
