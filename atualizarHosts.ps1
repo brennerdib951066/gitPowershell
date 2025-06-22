@@ -40,7 +40,8 @@ Function verificarIp {
 
 if (-not ($isWindows)){
     $areaDeTabalho = (xdg-user-dir DESKTOP)
-    $arquivoHost = "$areaDeTabalho/hostsLinux.txt"
+    $pastaHost = "$areaDeTabalho/hosts"
+    $arquivoHost = "$pastaHost/hostsLinux.txt"
     $meuIp = (ip a | grep -iwE '^.+inet.*wlo1$' | cut -d' ' -f6 | cut -d'/' -f1)
     #$meuIp = ($meuIp -replace "`e\[[\d;]*m", "")
     $hostAtual = 'linux'
