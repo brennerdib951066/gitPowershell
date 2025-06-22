@@ -1,5 +1,6 @@
 $areaDeTabalho = "$env:USERPROFILE/Desktop"
-$arquivoHost = "$areaDeTabalho/hostWindows.txt"
+$pastaHost = "$areaDeTabalho/hosts"
+$arquivoHost = "$pastaHost/hostWindows.txt"
 $hostAtual = 'windows'
 $arquivoNotificacao = "$areaDeTabalho/powershell/notificarWhatsApp.ps1"
 $scpLigado = 'nao'
@@ -7,8 +8,12 @@ Function verificarIp {
     param(
         [string]$ip = "$meuIp"
     )
+    if (-not (Test-Path "$pastaHost")) {
+        New-Item -Type Directory -Path "$pastaHost" -ErrorAction Ignore
+        Start-Sleep -Seconds 1
+    }
     if (-not (Test-Path "$arquivoHost")) {
-        New-Item -Type File -Path "$areaDeTabalho" -ErrorAction Ignore
+        New-Item -Type File -Path "$arquivoHost" -ErrorAction Ignore
         Start-Sleep -Seconds 1
     }
     if ($ip -notcontains (Get-Content $arquivoHost -ErrorAction Ignore)) {
@@ -17,7 +22,7 @@ Function verificarIp {
 
         if ($scpLigado -eq 'nao') {
             . $arquivoNotificacao
-            notificarWhatsApp "Seu host $hostAtual mudou para: *$(Get-Content $arquivoHost)*. Seu scp está desligado".ToUpper() '385910829'
+            notificarWhatsApp "Seu host ``$hostAtual`` mudou para: *$(Get-Content $arquivoHost)*. Seu scp está desligado".ToUpper() '385910829'
             Return
         }
         if ($hostAtual -eq 'windows') {
@@ -28,6 +33,8 @@ Function verificarIp {
             scp "$arquivoHost" brenner@192.168.1.67:'Desktop'
     } # IF ARQUIVOHOST
     #Exit
+    . $arquivoNotificacao
+    notificarWhatsApp "Tudo certo com ip ``$hostAtual``".ToUpper() '385910829'
 }
 
 
