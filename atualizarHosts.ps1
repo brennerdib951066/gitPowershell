@@ -33,8 +33,10 @@ Function verificarIp {
             scp "$arquivoHost" brenner@192.168.1.67:'Desktop'
     } # IF ARQUIVOHOST
     #Exit
+    <# Notificar dizendo que IP da maquina ainda permance o mesmo
     . $arquivoNotificacao
     notificarWhatsApp "Tudo certo com ip ``$hostAtual``".ToUpper() '385910829'
+    #>
 }
 
 
