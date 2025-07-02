@@ -7,43 +7,58 @@
 
 .AUTHOR brenner
 
-.COMPANYNAME 
+.COMPANYNAME
 
-.COPYRIGHT 
+.COPYRIGHT
 
-.TAGS 
+.TAGS
 
-.LICENSEURI 
+.LICENSEURI
 
-.PROJECTURI 
+.PROJECTURI
 
-.ICONURI 
+.ICONURI
 
-.EXTERNALMODULEDEPENDENCIES 
+.EXTERNALMODULEDEPENDENCIES
 
-.REQUIREDSCRIPTS 
+.REQUIREDSCRIPTS
 
-.EXTERNALSCRIPTDEPENDENCIES 
+.EXTERNALSCRIPTDEPENDENCIES
 
 .RELEASENOTES
 
 
 #>
 
-<# 
+<#
 
-.DESCRIPTION 
- abrir flameshot 
+.DESCRIPTION
+ abrir flameshot
 
 #>
 $areaDeTrabalho = "$Env:USERPROFILE/Desktop"
 $arquivoNotificacao = "$areaDeTrabalho/powershell/notificarWhatsApp.ps1"
+$arquivoDeErro = "$areaDeTrabalho/saidaPadraoPowershell/googleError.txt"
+$arquivoDeSaida = "$areaDeTrabalho/saidaPadraoPowershell/googleSaidaPadrao.txt"
+$nomePrograma = 'chrome'
+
 $hora = (Get-Date).Hour
 
 if (-not $IsWindows) {
     $areaDeTrabalho = (xdg-user-dir DESKTOP)
+    $nomePrograma = 'google-chrome-stable'
+    $arquivoDeErro = "$areaDeTrabalho/saidaPadraoPowershell/googleError.txt"
+    $arquivoDeSaida = "$areaDeTrabalho/saidaPadraoPowershell/googleSaidaPadrao.txt"
+
     if (-not(Test-Path ($arquivoNotificacao -replace 'notificarWhatsApp.ps1',''))) {
         $arquivoNotificacao = "$areaDeTrabalho/gitPowershell/notificarWhatsApp.ps1"
+    }
+
+    if (-not(Test-Path ($arquivoDeErro -replace 'googleError.txt',''))) {
+        New-Item -Type Directory -Path ($arquivoDeErro -replace 'googleError.txt','')
+    }
+    if (-not(Test-Path ($arquivoDeErro -replace 'googleSaidaPadrao.txt',''))) {
+        New-Item -Type Directory -Path ($arquivoDeSaida -replace 'googleSaidaPadrao.txt','')
     }
 }
 
@@ -53,10 +68,19 @@ if ($psVersionTable.PSVersion.Major -lt 7) {
     Exit
 }
 
+Try {
+    Get-Command -Name $nomePrograma -ErrorAction Stop | Out-Null
+}
+Catch {
+    Write-Host -ForegroundColor "$nomePrograma, não instalado!"
+    Exit
+}
+
 if (-not ($hora -ge 5 -and $hora -le 20)) {
    . $arquivoNotificacao
     notificarWhatsApp 'O horario de abrir o BUBBLE está fora'.Tolower() '385910829'
     Exit
 }
+$nomePrograma
 
-chrome --profile-directory='DIB' 'https://bubble.io/page?id=viverbemseguroscrm&tab=Design&name=escolhaLocomocao&type=custom&version=022ip' 'https://bubble.io/page?id=viverbemseguroscrm&tab=Data&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=022ip' 'https://www.sistemaviverbemseguros.com/version-022ip' #'https://centraldechat.sistemaviverbemseguros.com/#/atendimento/1920?t=1742911239525'
+Start-Process $nomePrograma -ArgumentList --profile-directory='DIB','https://bubble.io/page?id=viverbemseguroscrm&tab=Design&name=escolhaLocomocao&type=custom&version=022ip','https://bubble.io/page?id=viverbemseguroscrm&tab=Data&name=escolhaLocomocao&type=custom&subtab=Data+Types&type_id=outros_dados&version=022ip','https://www.sistemaviverbemseguros.com/version-022ip' -RedirectStandardError "$arquivoDeErro" -RedirectStandardOutput $arquivoDeSaida #'https://centraldechat.sistemaviverbemseguros.com/#/atendimento/1920?t=1742911239525'
