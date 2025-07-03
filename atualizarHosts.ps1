@@ -3,7 +3,7 @@ $pastaHost = "$areaDeTabalho/hosts"
 $arquivoHost = "$pastaHost/hostWindows.txt"
 $hostAtual = 'windows'
 $arquivoNotificacao = "$areaDeTabalho/powershell/notificarWhatsApp.ps1"
-$scpLigado = 'nao'
+$scpLigado = 'sim'
 Function verificarIp {
     param(
         [string]$ip = "$meuIp"
@@ -16,6 +16,8 @@ Function verificarIp {
         New-Item -Type File -Path "$arquivoHost" -ErrorAction Ignore
         Start-Sleep -Seconds 1
     }
+
+
     if ($ip -notcontains (Get-Content $arquivoHost -ErrorAction Ignore)) {
         $ip | Out-File -FilePath $arquivoHost -Encoding utf8
         $ip
@@ -26,11 +28,18 @@ Function verificarIp {
             Return
         }
         if ($hostAtual -eq 'windows') {
-            scp "$arquivoHost" brenner@192.168.1.72:'Área de trabalho'
+            $arquivoHostLinux = (Get-Content "$pastaHost/hostsLinux.txt")
+            Write-Host -ForegroundColor Red "$arquivoHostLinux"
+            Start-Sleep -Seconds 3
+            Get-Content ($arquivoHostLinux)
+            scp -v "$arquivoHost" brenner@${arquivoHostLinux}:'Área de trabalho/hosts'
             Write-Host 'Tem que enviar para LINUX'
+            Start-Sleep -Seconds 3
             Return
         }
-            scp "$arquivoHost" brenner@192.168.1.67:'Desktop'
+            $arquivoHostWindows = (Get-Content "$pastaHost/hostWindows.txt")
+            Write-Host -ForegroundColor Red "$arquivoHostWindows"
+            scp -v "$arquivoHost" brenner@${arquivoHostWindows}:'Desktop/hosts'
     } # IF ARQUIVOHOST
     #Exit
     <# Notificar dizendo que IP da maquina ainda permance o mesmo
@@ -54,6 +63,8 @@ if (-not ($isWindows)){
     verificarIp
     Exit
 }
+
+
 $meuIp = (ipconfig.exe | Where-Object {$_ -match 'IPv4' -and $_ -notmatch '172'} | ForEach-Object { $_ -replace '.*: ', '' })
 verificarIp
 
