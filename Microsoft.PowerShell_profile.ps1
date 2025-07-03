@@ -7,7 +7,6 @@
 $versao = '1.0.0.15'
 $versaoPowershell = $PSVersionTable.PSVersion
 
-Write-Host -ForegroundColor DarkRed "powershell versão profile $versao".Toupper()
 
 if (-not ($versaoPowershell -match 7)) {
 	Write-Error "use a versão 7 do powershell".ToUpper()
@@ -786,19 +785,17 @@ if (verificandoPlataforma){
 		Copy-Item "$USERPROFILE/Desktop/powershell/$arquivoPs1" "$PROFILE"
 	}
 	Catch {
-		Write-Host ""
 	}
 }
 else {
 	$arquivoPs1 = 'Microsoft.PowerShell_profile.ps1'
 	# Configurando para que o powershell ignorar o case dos diretorios
 	$pastaDestino = (Get-ChildItem "$HOME" -Filter "Área de Trabalho" -Directory | Where-Object { $_.Name -ieq "Área de Trabalho" }).FullName
-	Try {
-		Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1" -ErrorAction Stop
-	}
-	Catch {
-
-	}
+		Try {
+			Invoke-WebRequest "https://raw.githubusercontent.com/brennerdib951066/gitpowershell/refs/heads/main/$arquivoPs1" -OutFile "$pastaDestino/powershell/$arquivoPs1" -ErrorAction Stop
+		}
+		Catch {
+		}
 	Copy-Item "$pastaDestino/powershell/$arquivoPs1" "$PROFILE" -ErrorAction Ignore
 }
 
@@ -954,7 +951,6 @@ Function fcrontab {
 }
 
 
-	Write-Host "ENTROU NO WINDOWS PERFIL"
 	# No terminal se for teclado 1, ele irá setar o tema windows para tema CLARO
 	Set-PSReadLineKeyHandler -Chord Alt+1 -ScriptBlock {
 		if (verificandoPlataforma){
