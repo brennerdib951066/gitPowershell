@@ -59,7 +59,10 @@ $listaArquivo = @(
     'profile.vbs',
     'youtube.vbs',
     'gitAwk.vbs',
-    'obsStudio.vbs'
+    'obsStudio.vbs',
+    'moverArquivosDeGravacaoTrabalho.vbs',
+    '\hostsAtual.vbs',
+    'update.vbs'
 )
 $scheduledTaskLista = @(
     'abrirBubble',
@@ -68,7 +71,10 @@ $scheduledTaskLista = @(
     'abrirProfilePowershell',
     'abrirYoutube',
     'gitAwk',
-    'abrirObsStudio'
+    'abrirObsStudio',
+    'moverGravacaoTrabalho',
+    'hostAtual',
+    'update'
 )
 $descricaoLista = @(
     'abrir o bubble pelo chrome através do perfil DIB, no login',
@@ -78,6 +84,9 @@ $descricaoLista = @(
     'abrir o youtube no perfil do google chrome brenner, no login',
     'baixar do gitHub todos os arquivos',
     'abrir com o obs Studio, no login'
+    'mover arquivos de gravação dos trabalhos e estudos',
+    'Atulizar sempre o host do desktop atual',
+    'Atulizar o sistema Windows frequentemente'
 )
 For ($i=0;$i -le $ScheduledTaskLista.Length -1;$i++){
     Try {
@@ -85,6 +94,21 @@ For ($i=0;$i -le $ScheduledTaskLista.Length -1;$i++){
     }
     Catch {
         #Write-Host -ForegroundColor Red "ScheduledTask não adicionado $($scheduledTaskLista[$i])"
+        if ($i -eq 9) {
+
+            $acao = New-ScheduledTaskAction -Execute "$env:USERPROFILE\Desktop\vbs\$($listaArquivo[$i])"
+            $trigger = New-ScheduledTaskTrigger -Once -RepetitionInterval (New-TimeSpan -Hours 4) -At '08:00'
+            $principal =  New-ScheduledTaskPrincipal -UserId 'brenner' -RunLevel Highest
+            $registrar = Register-ScheduledTask -Action $acao -Trigger $trigger -Description $descricaoLista[$i] -Principal $principal -TaskName $scheduledTaskLista[$i]
+            Continue
+        }
+        if ($i -ge 7) {
+            $acao =  New-ScheduledTaskAction -Execute "$env:USERPROFILE\Desktop\vbs\$($listaArquivo[$i])"
+            $trigger = New-ScheduledTaskTrigger -Once  -RepetitionInterval (New-TimeSpan -Hours 4) -At '14:00'
+
+            $registrar = Register-ScheduledTask -Action $acao -Trigger $trigger -Description "$($descricaoLista[$i])" -TaskName "$($scheduledTaskLista[$i])"
+            Continue
+        }
         if ($i -ne 5){
             $acao =  New-ScheduledTaskAction -Execute "$env:USERPROFILE\Desktop\vbs\$($listaArquivo[$i])"
             $trigger = New-ScheduledTaskTrigger -AtLogOn
