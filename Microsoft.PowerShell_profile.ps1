@@ -1028,7 +1028,7 @@ function corDesktop {
 		if (-not (verificandoPlataforma)) {
 			$distro = $env:DESKTOP_SESSION.ToLower()
 			Switch ($distro) {
-				'plasma' {
+				{'plasma' -or 'plasmawayland'} {
 					Start-Process plasma-apply-desktoptheme "breeze-$cor" -RedirectStandardOutput 'ver.txt'
 					$cor = $cor.Substring(0,1).ToUpper() + $cor.Substring(1).ToLower()
 					Start-Process plasma-apply-colorscheme Breeze$cor -RedirectStandardOutput 'ver.txt'
