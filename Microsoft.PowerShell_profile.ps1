@@ -1102,6 +1102,8 @@ Function hastag {
 				$diretorioPowershell = Join-Path "$areaDeTrabalho" -ChildPath 'gitPowershell'
 				$diretorioBiblioteca = Join-Path "$diretorioPowershell" -ChildPath 'bibliotecas'
 				$arquivoBibliotecaHastag = Join-Path "$diretorioBiblioteca" -ChildPath 'hastagProgramacao.ps1'
+				. $arquivoBibliotecaHastag
+
 				ForEach ($valor in $url.keys) {
 					if ($valor -ne $args[0]) {
 						Continue
@@ -1126,6 +1128,8 @@ Function hastag {
 				$diretorioPowershell = Join-Path "$areaDeTrabalho" -ChildPath 'gitPowershell'
 				$diretorioBiblioteca = Join-Path "$diretorioPowershell" -ChildPath 'bibliotecas'
 				$arquivoBibliotecaHastag = Join-Path "$diretorioBiblioteca" -ChildPath 'hastagProgramacao.ps1'
+				. $arquivoBibliotecaHastag
+
 				ForEach ($valor in $url.keys) {
 					if ($valor -ne $args[0]) {
 						Continue
@@ -1148,3 +1152,4 @@ Function hastag {
 	} # SWITCH CASE
 
 }
+
