@@ -1106,7 +1106,7 @@ Function hastag {
 					if ($valor -ne $args[0]) {
 						Continue
 					}
-					$url
+					$urlAtual = $url[$valor]
 				}
 				google-chrome-stable --profile-directory='DIB' "$urlAtual"
 				Return
@@ -1115,7 +1115,7 @@ Function hastag {
 					if ($valor -ne $args[0]) {
 						Continue
 					}
-					$url
+					$urlAtual = $url[$valor]
 			}
 			chrome  --profile-directory='DIB' "$urlAtual"
 			Return
@@ -1130,7 +1130,7 @@ Function hastag {
 					if ($valor -ne $args[0]) {
 						Continue
 					}
-					$url
+					$urlAtual = $url[$valor]
 				}
 				google-chrome-stable --profile-directory='DIB' "$urlAtual"
 				Return
@@ -1139,7 +1139,7 @@ Function hastag {
 					if ($valor -ne $args[0]) {
 						Continue
 					}
-					$url
+					$urlAtual = $url[$valor]
 			}
 			chrome  --profile-directory='DIB' "$urlAtual"
 			Return
