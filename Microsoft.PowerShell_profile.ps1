@@ -1078,7 +1078,7 @@ Function hastag {
 				$diretorioBiblioteca = Join-Path "$diretorioPowershell" -ChildPath 'bibliotecas'
 				$arquivoBibliotecaHastag = Join-Path "$diretorioBiblioteca" -ChildPath 'hastagProgramacao.ps1'
 				. $arquivoBibliotecaHastag
-				google-chrome-stable --profile-directory='DIB'"$urlAtual"
+				google-chrome-stable --profile-directory='DIB' "$urlAtual"
 				Return
 			}
 			chrome  --profile-directory='DIB' "$urlAtual"
@@ -1093,7 +1093,7 @@ Function hastag {
 				google-chrome-stable --profile-directory='DIB' "$urlAtual"
 				Return
 			}
-			chrome  --profile-directory='DIB'"$urlAtual"
+			chrome  --profile-directory='DIB' "$urlAtual"
 			Return
 		} # SWITCH CASE AAVASCRIPT
 		'python' {
