@@ -1045,12 +1045,27 @@ function corDesktop {
 } # FUNCAO CORDESKTOP
 
 Function hastag {
+	Try {
+		$areaDeTrabalho = Join-Path -Path $Env:USERPROFILE -ChildPath 'Desktop'
+		$diretorioPowershell = Join-Path "$areaDeTrabalho" -ChildPath 'powershell'
+		$diretorioBiblioteca = Join-Path "$diretorioPowershell" -ChildPath 'bibliotecas'
+		$arquivoBibliotecaHastag = Join-Path "$diretorioBiblioteca" -ChildPath 'hastagProgramacao.ps1'
+		. $arquivoBibliotecaHastag
+	}
+	Catch {
+	}
 	if (-not $args[0]) {
 		if (-not ($IsWindows)) {
-			google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+			$areaDeTrabalho = (xdg-user-dir DESKTOP)
+			$diretorioPowershell = Join-Path "$areaDeTrabalho" -ChildPath 'gitPowershell'
+			$diretorioBiblioteca = Join-Path "$diretorioPowershell" -ChildPath 'bibliotecas'
+			$arquivoBibliotecaHastag = Join-Path "$diretorioBiblioteca" -ChildPath 'hastagProgramacao.ps1'
+			. $arquivoBibliotecaHastag
+
+			google-chrome-stable --profile-directory='DIB' "$urlAtual"
 			Return
 		} # IF $ISWINDOWS
-			chrome  --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+			chrome  --profile-directory='DIB' "$urlAtual"
 			Return
 	} # IF SE ARGS[0] for vazio
 	# Se ARGS[0] contiver algo cai aqui
@@ -1058,26 +1073,39 @@ Function hastag {
 	Switch ($args[0]) {
 		'html' {
 			if (-not $IsWindows) {
-				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+				$areaDeTrabalho = (xdg-user-dir DESKTOP)
+				$diretorioPowershell = Join-Path "$areaDeTrabalho" -ChildPath 'gitPowershell'
+				$diretorioBiblioteca = Join-Path "$diretorioPowershell" -ChildPath 'bibliotecas'
+				$arquivoBibliotecaHastag = Join-Path "$diretorioBiblioteca" -ChildPath 'hastagProgramacao.ps1'
+				. $arquivoBibliotecaHastag
+				google-chrome-stable --profile-directory='DIB'"$urlAtual"
 				Return
 			}
-			chrome  --profile-directory='DIB' 'https://portalhashtag.com//aulas/1691791554725x466972569712726100?colapsado=0&colapsado-ml=1&anterior=1687993410802x330668866594150400'
+			chrome  --profile-directory='DIB' "$urlAtual"
 			Return
 		} # SWITCH CASE HTML
 		'javascript' {
 			if (-not $IsWindows) {
-				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com/aulas/1721151249547x539810744415551500'
+				$areaDeTrabalho = (xdg-user-dir DESKTOP)
+				$diretorioPowershell = Join-Path "$areaDeTrabalho" -ChildPath 'gitPowershell'
+				$diretorioBiblioteca = Join-Path "$diretorioPowershell" -ChildPath 'bibliotecas'
+				$arquivoBibliotecaHastag = Join-Path "$diretorioBiblioteca" -ChildPath 'hastagProgramacao.ps1'
+				google-chrome-stable --profile-directory='DIB' "$urlAtual"
 				Return
 			}
-			chrome  --profile-directory='DIB' 'https://portalhashtag.com/aulas/1721151249547x539810744415551500'
+			chrome  --profile-directory='DIB'"$urlAtual"
 			Return
 		} # SWITCH CASE AAVASCRIPT
 		'python' {
 			if (-not $IsWindows) {
-				google-chrome-stable --profile-directory='DIB' 'https://portalhashtag.com/aulas/1661224661487x907919532850037100'
+				$areaDeTrabalho = (xdg-user-dir DESKTOP)
+				$diretorioPowershell = Join-Path "$areaDeTrabalho" -ChildPath 'gitPowershell'
+				$diretorioBiblioteca = Join-Path "$diretorioPowershell" -ChildPath 'bibliotecas'
+				$arquivoBibliotecaHastag = Join-Path "$diretorioBiblioteca" -ChildPath 'hastagProgramacao.ps1'
+				google-chrome-stable --profile-directory='DIB' "$urlAtual"
 				Return
 			}
-			chrome  --profile-directory='DIB' 'https://portalhashtag.com/aulas/1661224661487x907919532850037100'
+			chrome  --profile-directory='DIB' "$urlAtual"
 			Return
 		} # SWITCH CASE AAVASCRIPT
 
