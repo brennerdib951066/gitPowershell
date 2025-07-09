@@ -1107,6 +1107,7 @@ Function hastag {
 						Continue
 					}
 					$url
+				}
 				google-chrome-stable --profile-directory='DIB' "$urlAtual"
 				Return
 			}
@@ -1115,6 +1116,7 @@ Function hastag {
 						Continue
 					}
 					$url
+			}
 			chrome  --profile-directory='DIB' "$urlAtual"
 			Return
 		} # SWITCH CASE AAVASCRIPT
@@ -1129,6 +1131,7 @@ Function hastag {
 						Continue
 					}
 					$url
+				}
 				google-chrome-stable --profile-directory='DIB' "$urlAtual"
 				Return
 			}
@@ -1137,6 +1140,7 @@ Function hastag {
 						Continue
 					}
 					$url
+			}
 			chrome  --profile-directory='DIB' "$urlAtual"
 			Return
 		} # SWITCH CASE AAVASCRIPT
