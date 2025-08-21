@@ -1158,12 +1158,12 @@ Function brilho {
 		if ($ENV:XDG_CURRENT_DESKTOP) {
 			$interaceGrafica = ($ENV:XDG_CURRENT_DESKTOP).ToLower()
 			if ($interaceGrafica -ne 'kde') {
-				return Write-Host -BackgroundColor 'Não é KDE'
+				return Write-Host -BackgroundColor red 'Não é KDE'
 			} # CASO NÃO SEJA KDE
 			if ($ENV:KDE_SESSION_VERSION -lt 6) {
-				return Write-Host -BackgroundColor 'Vixe escolha a versão 6 do KDE'
+				return Write-Host -BackgroundColor red 'Vixe escolha a versão 6 do KDE'
 			} # CASO A VERSÂO NÃO SEJA 6
-			Write-Host -BackgroundColor 'Parabens sua versão é a 6 ah mais recente!'
+			Write-Host -BackgroundColor green 'Parabens sua versão é a 6 ah mais recente!'
 			qdbus6 org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl setBrightness $args[0]
 		}
 		else {
@@ -1172,6 +1172,7 @@ Function brilho {
 	} # IF Caso seja LINUX
 
 }
+
 
 
 
