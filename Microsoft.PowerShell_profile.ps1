@@ -1152,13 +1152,12 @@ Function hastag {
 	} # SWITCH CASE
 
 }
-
 # Criando uma função que altera o brilho da tela
 Function brilho {
 	if (-not $ISWINDOWS) {
 		if ($ENV:XDG_CURRENT_DESKTOP) {
 			$interaceGrafica = ($ENV:XDG_CURRENT_DESKTOP).ToLower()
-			if ($interaceGrafica != 'kde') {
+			if ($interaceGrafica -ne 'kde') {
 				return Write-Host -BackgroundColor 'Não é KDE'
 			} # CASO NÃO SEJA KDE
 			if ($ENV:KDE_SESSION_VERSION -lt 6) {
@@ -1173,5 +1172,7 @@ Function brilho {
 	} # IF Caso seja LINUX
 
 }
+
+
 
 
