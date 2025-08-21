@@ -1172,8 +1172,24 @@ Function brilho {
 	} # IF Caso seja LINUX
 
 }
-
-
+Function luzAzul {
+		if ($args[0]) {
+			Return Write-Host -BackgroundColor Yellow 'Chame pelo meu nome e depois digite o valor 7500 por exemplo'
+		}
+		if (-not $ISWINDOWS) {
+			if ($ENV:XDG_CURRENT_DESKTOP) {
+				$interfaceGrafica = ($ENV:XDG_CURRENT_DESKTOP).ToLower()
+				if ($interfaceGrafica -ne 'kde') {
+					Return Write-Host -BackgroundColor DarkRed 'Seu motor de interface grafica não é KDE'
+				}
+				if ($ENV:KDE_SESSION_VERSION -lt 6) {
+					Return Write-Host -BackgroundColor DarkRed 'Por favor use a versão 6 do KDE'
+				}
+				# Configurando a luz azul da tela
+				kwriteconfig6 --file kwinrc --group NightColor --key NightTemperature $args[0] && kwin_x11 --replace
+			}
+		}
+}
 
 
 
