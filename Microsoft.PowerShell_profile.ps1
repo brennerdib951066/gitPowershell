@@ -1173,7 +1173,7 @@ Function brilho {
 
 }
 Function luzAzul {
-		if ($args[0]) {
+		if (-not $args[0]) {
 			Return Write-Host -BackgroundColor Yellow 'Chame pelo meu nome e depois digite o valor 7500 por exemplo'
 		}
 		if (-not $ISWINDOWS) {
@@ -1190,6 +1190,7 @@ Function luzAzul {
 			}
 		}
 }
+
 
 
 
