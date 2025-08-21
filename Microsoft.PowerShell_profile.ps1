@@ -1153,3 +1153,25 @@ Function hastag {
 
 }
 
+# Criando uma função que altera o brilho da tela
+Function brilho {
+	if (-not $ISWINDOWS) {
+		if ($ENV:XDG_CURRENT_DESKTOP) {
+			$interaceGrafica = ($ENV:XDG_CURRENT_DESKTOP).ToLower()
+			if ($interaceGrafica != 'kde') {
+				return Write-Host -BackgroundColor 'Não é KDE'
+			} # CASO NÃO SEJA KDE
+			if ($ENV:KDE_SESSION_VERSION -lt 6) {
+				return Write-Host -BackgroundColor 'Vixe escolha a versão 6 do KDE'
+			} # CASO A VERSÂO NÃO SEJA 6
+			Write-Host -BackgroundColor 'Parabens sua versão é a 6 ah mais recente!'
+			qdbus6 org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl setBrightness $args[0]
+		}
+		else {
+			Write-Host -BackgroundColor 'Olha não existe a variavél XDG_CURRENT_DESKTOP no linux atual'
+		}
+	} # IF Caso seja LINUX
+
+}
+
+
