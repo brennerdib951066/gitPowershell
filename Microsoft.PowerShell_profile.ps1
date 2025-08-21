@@ -1186,10 +1186,11 @@ Function luzAzul {
 					Return Write-Host -BackgroundColor DarkRed 'Por favor use a versão 6 do KDE'
 				}
 				# Configurando a luz azul da tela
-				kwriteconfig6 --file kwinrc --group NightColor --key NightTemperature $args[0] && kwin_x11 --replace
+				kwriteconfig6 --file kwinrc --group NightColor --key NightTemperature $args[0] && kwin_x11 --replace &
 			}
 		}
 }
+
 
 
 
