@@ -1155,6 +1155,18 @@ Function hastag {
 # Criando uma função que altera o brilho da tela
 Function brilho {
 	if (-not $ISWINDOWS) {
+		if (-not $args[0]) {
+			Return Write-Host -BackgroundColor blue 'Mande 2500 por exemplo'
+		}
+		if ($args[0] -notMatch '[0-9]+') {
+			return Write-Host -BackgroundColor blue 'Por favor somente numeros'
+		}
+		if ($args[0] -ne 2500 -Or $args[0] -ne 8000) {
+			Write-Host -BackgroundColor blue 'Use 2500 = 10%'
+			Write-Host -BackgroundColor blue 'Use 8000 = 42%'
+			Return
+		}
+
 		if ($ENV:XDG_CURRENT_DESKTOP) {
 			$interaceGrafica = ($ENV:XDG_CURRENT_DESKTOP).ToLower()
 			if ($interaceGrafica -ne 'kde') {
@@ -1190,6 +1202,7 @@ Function luzAzul {
 			}
 		}
 }
+
 
 
 
