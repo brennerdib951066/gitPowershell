@@ -1161,7 +1161,7 @@ Function brilho {
 		if ($args[0] -notMatch '[0-9]+') {
 			return Write-Host -BackgroundColor blue 'Por favor somente numeros'
 		}
-		if ($args[0] -ne 2500 -Or $args[0] -ne 8000) {
+		if ($args[0] -lt 2500 -And $args[0] -ne 8000) {
 			Write-Host -BackgroundColor blue 'Use 2500 = 10%'
 			Write-Host -BackgroundColor blue 'Use 8000 = 42%'
 			Return
@@ -1202,6 +1202,7 @@ Function luzAzul {
 			}
 		}
 }
+
 
 
 
