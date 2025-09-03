@@ -69,14 +69,14 @@ if (-not $args[2]) {
 
         if ($respostaVersaoApi -notMatch 's') {
             if ($respostaVersaoApi -notMatch 'n') {
-                Write-Host -ForegroundColor 'Opah escolha entre sim ou não!'
+                Write-Host -ForegroundColor Red 'Opah escolha entre sim ou não!'
                 continue
             }
             $versaoApi = 'version-222is'
-            Break
+
+            #Break
         }
         Break
-        # se contiver alguma string e seu valor for s
 
     }
 }
