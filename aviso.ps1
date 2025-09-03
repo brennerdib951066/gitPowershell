@@ -106,9 +106,16 @@ Switch ($args[1]) {
 
 
 
-
-Invoke-WebRequest -URI $urlApi -Method PATCH -Headers $herader -Body (@{
+Try {
+    Invoke-WebRequest -URI $urlApi -Method PATCH -Headers $herader -Body (@{
 'tituloAviso' = $args[0]
 'textoDoAviso' = @((Get-Content -Path $arquivoAvisoPadrao -Raw))
-'tipoAvisoDisplay' = $args[1]} | ConvertTo-Json)
+'tipoAvisoDisplay' = $args[1]} | ConvertTo-Json) -ErrorAction Stop
+ Write-Host -ForegroundColor DarkGreen "Mensagem enviada para versão $versaoApi!"
+}
+
+Catch {
+    Write-Host -ForegroundColor Red "Error".ToUpper()
+}
+
 
