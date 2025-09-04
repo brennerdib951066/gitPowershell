@@ -831,7 +831,7 @@ else {
 
 Set-PSReadlineKeyHandler -Chord Ctrl+o -ScriptBlock {
 	if (-not($IsWindows)) {
-		exec sudo su
+		exec sudo apt update -y && sudo apt upgrade -y
 	}
 }
 
