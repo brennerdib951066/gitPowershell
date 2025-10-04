@@ -35,7 +35,7 @@
 <# 
 
 .DESCRIPTION 
- clonar os repositorios correspondentes 
+ clonar os repositorios correspondentes Deseja 
 
 #> 
 #Param()
@@ -58,18 +58,46 @@ if (-not($psVersionTable.OS -match 'windows')) {
 ForEach ($clonar in $listaDeRepositorio){
     #Write-Host -ForegroundColor Red "$clonar"
     Start-Sleep -Seconds 1
-    If (Test-Path "$areaDeTrabalho\$clonar"){
+    If (Test-Path "$areaDeTrabalho/$clonar"){
         Write-Host -ForegroundColor Red "$clonar já existe na sua área de trabalho".ToUpper()
-        Continue
+        While($true) {
+            $forcarCriacao = Read-Host -Prompt 'Deseja cria-lo mesmo assim [S/n]'
+            if ($forcarCriacao -notMatch '[A-Za-z]+') {
+                Write-Host -ForegroundColor Red 'Somente S ou N'
+                Continue
+                
+            }
+            $forcarCriacao = $forcarCriacao.ToLower()
+            Switch ($forcarCriacao) {
+                { $_ -eq 'sim' -or $_ -eq 's' } {
+                    Write-Host 'Escolheu sim'
+                    if (Test-Path "$areaDeTrabalho/$clonar") {
+                        Remove-Item -Path "$areaDeTrabalho/$clonar"  -confirm:$False -Force -Recurse
+                    }
+                    Try {
+                            git -C "$areaDeTrabalho/" clone "https://github.com/brennerdib951066/$clonar"
+                    }
+                    Catch {
+                            Write-Host "erro ao clonar seu repositório $clonar"
+                    }
+                    
+                }
+                
+                { $_ -eq 'nao' -or $_ -eq 'n'} {
+                    Write-Host 'Escolheu não'
+                    Break
+                }
+                Default {
+                    Write-Host 'Escolha entre sim ou não!'
+                }
+            
+            } # CASE
+            Break
+        } # WHILE
+        
+        
     }
-    Try {
-        git -C "$areaDeTrabalho\" clone "https://github.com/brennerdib951066/$clonar"
-    }
-    Catch {
-        Write-Host "erro ao clonar seu repositório $clonar"
-    }
-
-}
+}    
 #>
 
 Write-Host -ForegroundColor DarkGreen "Repositórios clonados com sucesso".ToUpper()
