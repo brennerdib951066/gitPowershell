@@ -1016,69 +1016,63 @@ function corDesktop {
 			}
 			'n' {
 				if (-not(verificandoPlataforma)) {
-					$cor = 'breezedark'
+					$cor = 'dark'
 				}
 				else {
 					#Write-Host "VOce que o modo NOITE para Windows"
 					#Start-Sleep -Seconds 3
-					$cor = 'breeze'
+					[int]$cor = 0
 				}
 			}
 		} # SWICTH
 		if (-not (verificandoPlataforma)) {
 			$distro = $env:DESKTOP_SESSION.ToLower()
-$cor = 'breezedark'
 			Switch ($distro) {
 				{'plasma' -or 'plasmawayland'} {
-					Get-Command lookandfeeltool -ErrorAction Ignore || & {
-						While ($True) {
-							$respostaTema = Read-Host -Prompt 'Deseja instalar o programa de temas?[S/n]'
-							if ($respostaTema -NotMatch '[A-Za-z]+') {
-								Write-Host 'Por favor escolha entre S ou n!'
-								Continue
-							} # IF
-							Switch ($respostaTema) {
-								{'sim' -Or 's'} {
-									sudo apt install kde-cli-tools
-								} # CASE SIM
-
-								{'não' -Or 'n' -Or 'nao'} {
-									Write-Host 'ok'.ToUpper()
-									Return
-								} # CASE NÃO
-
-								Default {
-
-									Continue
-								} # CASE SIM
-							} # SWICTH RESPOSTATEMA
-
-						} # WHILE
-					} # Caso de erro em GET-COMMAND, comandos agrupados
-                    if ($args[0]) {
-                        Switch ($args[0]) {
-                           { $_ -eq 'n' -Or $_ -eq 'N' -Or $_ -eq 'noite'} {
-                                $cor = 'breezedark'
-
-                           }
-
-                           { $_ -eq 'd' -Or $_ -eq 'D' -Or $_ -eq 'dia'} {
-                                $cor = 'breeze'
-
-                           }
-                        }
-                    } # Argumento
-                    $cor
-					Start-Process lookandfeeltool  "-a org.kde.$cor.desktop" -RedirectStandardOutput 'ver.txt'
+					Start-Process plasma-apply-desktoptheme "breeze-$cor" -RedirectStandardOutput 'ver.txt'
+					$cor = $cor.Substring(0,1).ToUpper() + $cor.Substring(1).ToLower()
+					Start-Process plasma-apply-colorscheme Breeze$cor -RedirectStandardOutput 'ver.txt'
 					Return
 				} # CASE PLASMA
 			} # SWICTH DISTRO
 
-		} # IF
-		#-WindowStyle Minimized
-		#Start-Process reg -ArgumentList add,"HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", /v, "AppsUseLightTheme", /t, REG_DWORD, /d, "$cor", /f
-		reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "SystemUsesLightTheme" /t REG_DWORD /d $cor /f
-		reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d $cor /f
+		}
+		# Defina aqui o valor do tema:
+	# Altera os valores de tema no registro
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLightTheme" -Value $cor
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value $cor
+
+	# Adiciona o tipo NativeMethods apenas se ainda não foi carregado
+	if (-not ([System.Management.Automation.PSTypeName]'NativeMethods').Type) {
+		Add-Type @"
+		using System;
+		using System.Runtime.InteropServices;
+
+		public class NativeMethods {
+			[DllImport("user32.dll", SetLastError=true)]
+			public static extern IntPtr SendMessageTimeout(
+				IntPtr hWnd, uint Msg, UIntPtr wParam, string lParam,
+				uint fuFlags, uint uTimeout, out UIntPtr lpdwResult);
+		}
+	"@
+	}
+
+	# Envia a notificação de mudança de tema para os apps abertos
+	$HWND_BROADCAST = [IntPtr]0xffff
+	$WM_SETTINGCHANGE = 0x001A
+	$SMTO_ABORTIFHUNG = 0x0002
+	[UIntPtr]$result = [UIntPtr]::Zero
+
+	[NativeMethods]::SendMessageTimeout(
+		$HWND_BROADCAST,
+		$WM_SETTINGCHANGE,
+		[UIntPtr]::Zero,
+		"ImmersiveColorSet",
+		$SMTO_ABORTIFHUNG,
+		100,
+		[ref]$result
+	) | Out-Null
+
 
 } # FUNCAO CORDESKTOP
 
