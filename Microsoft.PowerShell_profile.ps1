@@ -1054,7 +1054,7 @@ function corDesktop {
 				IntPtr hWnd, uint Msg, UIntPtr wParam, string lParam,
 				uint fuFlags, uint uTimeout, out UIntPtr lpdwResult);
 		}
-	"@
+"@
 	}
 
 	# Envia a notificação de mudança de tema para os apps abertos
