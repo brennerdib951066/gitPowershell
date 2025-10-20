@@ -19,7 +19,7 @@
 
 .ICONURI
 
-.EXTERNALMODULEDEPENDENCIES 
+.EXTERNALMODULEDEPENDENCIES
 
 .REQUIREDSCRIPTS
 
@@ -32,12 +32,12 @@
 
 #>
 
-<# 
+<#
 
-.DESCRIPTION 
- clonar os repositorios correspondentes Deseja 
+.DESCRIPTION
+ clonar os repositorios correspondentes Deseja
 
-#> 
+#>
 #Param()
 
 $listaDeRepositorio = @(
@@ -65,7 +65,7 @@ ForEach ($clonar in $listaDeRepositorio){
             if ($forcarCriacao -notMatch '[A-Za-z]+') {
                 Write-Host -ForegroundColor Red 'Somente S ou N'
                 Continue
-                
+
             }
             $forcarCriacao = $forcarCriacao.ToLower()
             Switch ($forcarCriacao) {
@@ -80,9 +80,9 @@ ForEach ($clonar in $listaDeRepositorio){
                     Catch {
                             Write-Host "erro ao clonar seu repositório $clonar"
                     }
-                    
+
                 }
-                
+
                 { $_ -eq 'nao' -or $_ -eq 'n'} {
                     Write-Host 'Escolheu não'
                     Break
@@ -90,14 +90,15 @@ ForEach ($clonar in $listaDeRepositorio){
                 Default {
                     Write-Host 'Escolha entre sim ou não!'
                 }
-            
+
             } # CASE
             Break
         } # WHILE
-        
-        
+    } #IF
+    else {
+        git -C "$areaDeTrabalho/" clone "https://github.com/brennerdib951066/$clonar"
     }
-}    
+}
 #>
 
 Write-Host -ForegroundColor DarkGreen "Repositórios clonados com sucesso".ToUpper()
