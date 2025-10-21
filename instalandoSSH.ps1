@@ -1,86 +1,89 @@
-$diretorioPowershell = "$Env:USERPROFILE\Desktop\powershell"
-$permissaoAdministrativa = "$env:USERPROFILE\Desktop\powershell\permissaoAdministrativo.ps1"
-$programaSSH = @(
-                'OpenSSH.Server~~~~0.0.1.0'
-                'OpenSSH.Client~~~~0.0.1.0'
-                )
-#$programaSSH
-$configuracaoNet = (get-netConnectionProfile -Name "Rede").NetworkCategory
-. $permissaoAdministrativa
+# Verificando se é WINDOWS
 if (-not($IsWindows)) {
     Write-Host -ForegroundColor DarkYellow "Sistema operacional aceito, somente windows"
     Exit
 }
 
+$diretorioPowershell = "$Env:USERPROFILE\Desktop\gitPowershell"
+$permissaoAdministrativa = "$env:USERPROFILE\Desktop\gitPowershell\permissaoAdministrativo.ps1"
+$programaSSH = @(
+                'OpenSSH.Server~~~~0.0.1.0'
+                'OpenSSH.Client~~~~0.0.1.0'
+                )
+#$programaSSH
+$configuracaoNet = Get-netConnectionProfile
+$configuracaoNetNome = (Get-netConnectionProfile).Name
+$configuracaoNetCategoria = (Get-netConnectionProfile).NetworkCategory
+
+. $permissaoAdministrativa
 if (-not(Test-Admin)){
     Write-Host -ForegroundColor DarkYellow "Preciso de permissões administrativas para prosseguir"
     Exit
 }
 
-if (-not(Test-Path "$diretorioPowershell")) {
-    Write-Host -ForegroundColor red "Diretório $diretorioPowershell não existe, criando-o"
-    New-Item -Type Directory -Path "$diretorioPowershell"
-    # Se não existir o arquivo de permissão criar
-    if (-not(Test-Path "$permissaoAdministrativa")){
-@'
-# Função que verifica se o usuário atual é um administrador
-function Test-Admin {
-    # Obtém a identidade do usuário atual
-    $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 
-    # Cria um objeto principal a partir da identidade
-    $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    Write-Host -ForegroundColor DarkGray 'Powerhsell 7 é necessario!'
+    Exit
+} # IF
 
-    # Verifica se o usuário está no grupo de administradores
-    return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
-}
-'@ | Out-File -Encoding utf8 -LiteralPath "$permissaoAdministrativa"
-    } # IF $PERMISSAO
-} # IF $diretorioPowershell
+Get-Service -Name sshd -ErrorAction Ignore | Out-Null || & {
 
-. $permissaoAdministrativa
-Try {
-    $status = (Get-Service -Name sshd -ErrorAction Stop).Status
-    Switch ($status) {
-        'running'.ToLower() {
-            Write-Host -ForegroundColor Green "Seu ssh está em execução"
-        } # CASE RUNIING
-        'stopped'.ToLower() {
-            Write-Host -ForegroundColor red "SSH está parado vamos inicializa-lo"
+        While ($TRUE){
+            $resposta = Read-Host -Prompt 'o ssh não está instalado,desja instalar? [S/n]'
+            if ($resposta -notMatch '[A-Za-z]+') {
+                Write-Host -ForegroundColor DarkRed 'Preciso de sim ou não!'
+            } # If resposta
 
-            Start-Sleep -Seconds 1
-            Try {
-                    Restart-Service -Name sshd -ErrorAction Stop
-                    Start-Sleep -Seconds 1
-                    Write-Host -ForegroundColor DarkGreen "Inicalizado com sucesso"
+            # Caso contenha algum valor verifique se SIM ou NÃO
+            $resposta = $resposta.ToLower()
+            Switch ($resposta) {
+                's' {
+
+                    Add-WindowsCapability -Online -Name $programaSSH[0]
+
+                } # SIM
+
+                'n' {
+                    Write-Host -ForegroundColor DarkYellow "Obriagado então, até a proxima!"
+                    Exit
                 }
-              Catch {
-                    Write-Host -ForegroundColor "Erro ao inicilizar seu OPEN SSH"
-                }
-        } # CASE stopped
-        Default {
-            Write-Host 'Caiu no default'
-        }
-    } # CASE
-} # TRY
-Catch {
-    Write-Host -ForegroundColor DarkRed "Voce não tem o SSH instalado"
-    Try {
-        for ($i = 0; $i -le $programaSSH.Length -1; $i++) {
-            add-WindowsCapability -Online -Name "$($programaSSH[$i])"
-            Start-Sleep -Seconds 1
-        }
 
-        if ($configuracaoNet -ne "Private") {
-            Write-Host "É diferente"
-            Set-NetConnectionProfile -Name "Rede" -NetworkCategory Private -ErrorAction Stop
-        }
-        Restart-Service -Name sshd -ErrorAction Stop
-        Write-Host -ForegroundColor DarkGreen "baixado com suecsso".ToUpper()
-        Start-Sleep -Seconds 1
-        #>
-    }
-    Catch {
-        Write-Host -ForegroundColor DarkRed "Não consegui baixar o OPEN SSH"
-    }
-}
+                Default {
+                    Continue
+                } # DEFAULT
+            } # CASE
+
+        } # WHILE
+    } # GET_SERVICE
+
+    # Caso já esteja instalado verificar se está rodando
+    $status = Get-Service -Name sshd
+    if ($status.Status -match 'running') {
+        Write-Host -ForegroundColor DarkBlue "ssh rodando".ToUpper()
+    } # IF STATUS running
+
+    if ($status.Status -match 'stopped') {
+        Write-Host -ForegroundColor DarkGray "ssh parado".ToUpper()
+        Write-Host -ForegroundColor Gray 'Inicializado para você!'
+        Start-Service -Name sshd
+    } # IF STATUS running
+
+    # Se rede estiver em publico setar para privado
+
+    if ($configuracaoNetCategoria -match 'public') {
+        Try{
+            Set-NetConnectionProfile -Name $configuracaoNetNome -NetworkCategory Private -ErrorAction Stop
+            $ip = Get-NetIPAddress -AddressFamily IPv4 `
+                | Where-Object {
+                            $_.PrefixOrigin -eq 'Dhcp' -and $_.InterfaceAlias -match 'Wi-Fi|Ethernet'
+                } `
+                    | Select-Object -ExpandProperty IPAddress
+
+
+            ssh ${env:USERNAME}@$ip
+        } # TRY
+        Catch {
+            Write-Host 'Erro ao setar sua categoria de internet'
+        } # CATCH
+} # IF PRIVATE
