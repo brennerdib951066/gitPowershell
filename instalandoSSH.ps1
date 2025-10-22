@@ -41,19 +41,24 @@ Get-Service -Name sshd -ErrorAction Ignore | Out-Null || & {
                 's' {
 
                     Add-WindowsCapability -Online -Name $programaSSH[0]
+                    Add-WindowsCapability -Online -Name $programaSSH[1]
+                    Set-Service sshd -StartupType Automatic
+                    Start-Service sshd
+                    Remove-Variable resposta
+                    Break
 
                 } # SIM
 
                 'n' {
                     Write-Host -ForegroundColor DarkYellow "Obriagado então, até a proxima!"
                     Exit
-                }
+                } # N
 
                 Default {
                     Continue
                 } # DEFAULT
             } # CASE
-
+            Break
         } # WHILE
     } # GET_SERVICE
 
@@ -74,14 +79,36 @@ Get-Service -Name sshd -ErrorAction Ignore | Out-Null || & {
     if ($configuracaoNetCategoria -match 'public') {
         Try{
             Set-NetConnectionProfile -Name $configuracaoNetNome -NetworkCategory Private -ErrorAction Stop
-            $ip = Get-NetIPAddress -AddressFamily IPv4 `
-                | Where-Object {
-                            $_.PrefixOrigin -eq 'Dhcp' -and $_.InterfaceAlias -match 'Wi-Fi|Ethernet'
-                } `
-                    | Select-Object -ExpandProperty IPAddress
+
+            While ($TRUE) {
+                $resposta = Read-Host -Prompt 'Para testar se o ssh foi instalado corretamente, deseja utiliza-lo agora[S/n]'
+
+                if ($resposta -notMatch '[A-Za-z]+') {
+                    Write-Host -ForegroundColor DarkYellow 'Escolha entre sim ou não'
+                    Continue
+                }
+                $resposta = $resposta.ToLower()
+                Switch ($resposta) {
+                    's' {
+                        $ip = Get-NetIPAddress -AddressFamily IPv4 `
+                        | Where-Object {
+                                    $_.PrefixOrigin -eq 'Dhcp' -and $_.InterfaceAlias -match 'Wi-Fi|Ethernet'
+                        } `
+                            | Select-Object -ExpandProperty IPAddress
 
 
-            ssh ${env:USERNAME}@$ip
+                        ssh ${env:USERNAME}@$ip
+
+                    } # S
+
+                    'n' {
+                        Write-Host -ForegroundColor DarkGreen 'Obrigado!'
+
+                    } # N
+                } # SWITCH
+                Exit
+            } # WHILE RESPOSTA SSH
+
         } # TRY
         Catch {
             Write-Host 'Erro ao setar sua categoria de internet'
