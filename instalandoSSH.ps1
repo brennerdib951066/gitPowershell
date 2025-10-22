@@ -90,6 +90,10 @@ Get-Service -Name sshd -ErrorAction Ignore | Out-Null || & {
                 $resposta = $resposta.ToLower()
                 Switch ($resposta) {
                     's' {
+                        # Verificando se o ssh esta sendo visivel, caso não esteja reiniciar o PC
+                        Get-Command ssh -ErrorAction Ignore | Out-Null || & { Write-Host -ForegroundColor DarkGray 'Para continuar precsimos reniciar o PC'; shutdown.exe /r /t 2   }
+
+
                         $ip = Get-NetIPAddress -AddressFamily IPv4 `
                         | Where-Object {
                                     $_.PrefixOrigin -eq 'Dhcp' -and $_.InterfaceAlias -match 'Wi-Fi|Ethernet'
