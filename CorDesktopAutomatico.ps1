@@ -100,8 +100,8 @@ if ($PSVErsionTable.OS -notMatch 'windows') {
            Write-Host 'CAIU NO DIA'
         } # IGUAL OU MAIOR A ¨6 E MENOR QUE 18 HORAS(DIA)
 
-        {$horaAtual -Ge 18 -And $horaAtual -Lt 6 } {
-            $mundancaCor = 1 # Equivale a noite
+        {$horaAtual -Ge 18 -Or $horaAtual -Lt 6 } {
+            $mundancaCor = 0 # Equivale a noite
             Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLightTheme" -Value $mundancaCor
             Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value $mundancaCor
             # Adiciona o tipo NativeMethods apenas se ainda não foi carregado
