@@ -36,6 +36,13 @@ if ($PSVErsionTable.OS -notMatch 'windows') {
         } # Não ionstalacao do notify-send
     } # GET
 
+    if (($Env:XDG_CURRENT_DESKTOP).ToLower() -Match 'kde') {
+        Get-Command plasma-apply-colorscheme -ErrorAction Ignore | Out-Null || & {
+            notify-send -u normal -a 'Erro' 'Opah' 'Não consegui instalar o plasma-apply-colorscheme' -t 5000
+            Exit
+        } # GET-COMMAND
+    } # IF $Env:XDG_CURRENT_DESKTOP
+
     Switch ($horaAtual) {
         {$horaAtual -Ge 6 -And $horaAtual -Lt 18 } {
            lookandfeeltool  -a org.kde.${mundancaCor}.desktop
@@ -44,6 +51,7 @@ if ($PSVErsionTable.OS -notMatch 'windows') {
         } # IGUAL OU MAIOR A ¨6 E MENOR QUE 18 HORAS(DIA)
 
         {$horaAtual -Ge 18 -And $horaAtual -Lt 6 } {
+
             $mundancaCor = 'breezedark'
             lookandfeeltool  -a org.kde.${mundancaCor}.desktop
             Start-Sleep -Seconds 2
@@ -60,10 +68,27 @@ if ($PSVErsionTable.OS -notMatch 'windows') {
     [int]$horaAtual = (Get-Date -UFormat %H)
     $mundancaCor = 1 # Equivale a dia
 
+    $appsTema = (Get-itemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme").AppsUseLightTheme
+
+    $sistemaTema = (Get-itemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLightTheme").SystemUsesLightTheme
+
+    $arquivoBubble = Join-Path -Path "$areaDeTrabalho/gitPowershell" -ChildPath 'abriBubble.ps1'
+    $arquivoYoutube = Join-Path -Path "$areaDeTrabalho/gitPowershell" -ChildPath 'abriYoutube.ps1'
+
+
+
     Switch ($horaAtual) {
         {$horaAtual -Ge 6 -And $horaAtual -Lt 18 } {
+            # Verificando se ja está no modo dia
+            If ($appsTema -eq $mundancaCor -And $sistemaTema -eq $mundancaCor ) {
+                Write-Host -ForegroundColor DarkGreen 'Voce não precisa alterar nada!'
+                Exit
+            }
+
             Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLightTheme" -Value $mundancaCor
+            Start-Sleep -Seconds 2
             Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value $mundancaCor
+            Start-Sleep -Seconds 2
             # Adiciona o tipo NativeMethods apenas se ainda não foi carregado
             if (-not ([System.Management.Automation.PSTypeName]'NativeMethods').Type) {
                 Add-Type @"
@@ -100,10 +125,19 @@ if ($PSVErsionTable.OS -notMatch 'windows') {
            Write-Host 'CAIU NO DIA'
         } # IGUAL OU MAIOR A ¨6 E MENOR QUE 18 HORAS(DIA)
 
-        {$horaAtual -Ge 18 -Or $horaAtual -Lt 6 } {
+        {$horaAtual -Ge 19 -Or $horaAtual -Lt 6 } {
             $mundancaCor = 0 # Equivale a noite
+
+            # Verificando se ja está no modo dia
+            If ($appsTema -eq $mundancaCor -And $sistemaTema -eq $mundancaCor ) {
+                Write-Host -ForegroundColor DarkGreen 'Voce não precisa alterar nada!'
+                Exit
+            }
+
             Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLightTheme" -Value $mundancaCor
+            Start-Sleep -Seconds 2
             Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value $mundancaCor
+            Start-Sleep -Seconds 2
             # Adiciona o tipo NativeMethods apenas se ainda não foi carregado
             if (-not ([System.Management.Automation.PSTypeName]'NativeMethods').Type) {
                 Add-Type @"
@@ -142,6 +176,15 @@ if ($PSVErsionTable.OS -notMatch 'windows') {
 
     } # SWITCH
 
+    # Finalizando abrindo o bubble ou YOUTUBE
+
+    Get-Process -Name 'chrome' -ErrorAction Ignore | Out-Null && & {
+        Write-Host -ForegroundColor Gray 'Abrindo os arquivos bubble e youtube'
+        Stop-Process -Name 'chrome'
+        Start-Sleep -Seconds 2
+        . $arquivoBubble
+        . $arquivoYoutube
+    } # Se não der erro
 }
 
 
