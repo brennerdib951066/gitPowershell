@@ -37,9 +37,10 @@
 
 #>
 $areaDeTrabalho = "$Env:USERPROFILE/Desktop"
-$arquivoNotificacao = "$areaDeTrabalho/powershell/notificarWhatsApp.ps1"
-$arquivoDeErro = "$areaDeTrabalho/saidaPadraoPowershell/googleError.txt"
-$arquivoDeSaida = "$areaDeTrabalho/saidaPadraoPowershell/googleSaidaPadrao.txt"
+$arquivoNotificacao = "$areaDeTrabalho/gitPowershell/notificarWhatsApp.ps1"
+$diretorioSaida = "$areaDeTrabalho/saidaPadraoPowershell"
+$arquivoDeErro = "$diretorioSaida/googleError.txt"
+$arquivoDeSaida = "$diretorioSaida/googleSaidaPadrao.txt"
 $nomePrograma = 'chrome'
 
 $hora = (Get-Date).Hour
@@ -47,12 +48,15 @@ $hora = (Get-Date).Hour
 if (-not $IsWindows) {
     $areaDeTrabalho = (xdg-user-dir DESKTOP)
     $nomePrograma = 'google-chrome-stable'
-    $arquivoDeErro = "$areaDeTrabalho/saidaPadraoPowershell/googleError.txt"
-    $arquivoDeSaida = "$areaDeTrabalho/saidaPadraoPowershell/googleSaidaPadrao.txt"
+    $diretorioSaida = "$areaDeTrabalho/saidaPadraoPowershell"
+    $arquivoDeErro = "$diretorioSaida/googleError.txt"
+    $arquivoDeSaida = "$diretorioSaida/googleSaidaPadrao.txt"
 
     if (-not(Test-Path ($arquivoNotificacao -replace 'notificarWhatsApp.ps1',''))) {
         $arquivoNotificacao = "$areaDeTrabalho/gitPowershell/notificarWhatsApp.ps1"
     }
+
+
 
     if (-not(Test-Path ($arquivoDeErro -replace 'googleError.txt',''))) {
         New-Item -Type Directory -Path ($arquivoDeErro -replace 'googleError.txt','')
@@ -60,6 +64,10 @@ if (-not $IsWindows) {
     if (-not(Test-Path ($arquivoDeErro -replace 'googleSaidaPadrao.txt',''))) {
         New-Item -Type Directory -Path ($arquivoDeSaida -replace 'googleSaidaPadrao.txt','')
     }
+}
+
+if (-Not(Test-Path "$diretorioSaida")) {
+        New-Item -Type Directory -Path $diretorioSaida -ErrorAction Ignore | Out-Null
 }
 
 if ($psVersionTable.PSVersion.Major -lt 7) {
