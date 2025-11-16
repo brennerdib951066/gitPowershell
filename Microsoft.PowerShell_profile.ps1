@@ -257,7 +257,7 @@ function mpvm {
 	param(
 		$url
 	)
-	Start-Process mpv -ArgumentList '--fs',"$url",'--cookies' -ErrorAction Ignore -NoNewWindow -RedirectStandardError $arquivoError -RedirectStandardOutput $arquivoSaidaPadrao
+	Start-Process mpv -ArgumentList '--fs',"$url",'--cookies' -ErrorAction Ignore -NoNewWindow -RedirectStandardError "errorMpv.txt" -RedirectStandardOutput "saidaPadraoMpv.txt"
 }
 
 function np {
