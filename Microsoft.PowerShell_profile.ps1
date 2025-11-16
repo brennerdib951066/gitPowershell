@@ -257,7 +257,7 @@ function mpvm {
 	param(
 		$url
 	)
-	mpv --fs "$url" --cookies
+	Start-Process mpv --fs "$url" --cookies -ErrorAction Ignore | Out-Null
 }
 
 function np {
