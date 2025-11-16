@@ -257,7 +257,7 @@ function mpvm {
 	param(
 		$url
 	)
-	Start-Process mpv -ArgumentList '--fs',"$url",'--cookies' -ErrorAction Ignore | Out-Null
+	Start-Process mpv -ArgumentList '--fs',"$url",'--cookies' -ErrorAction Ignore -NoNewWindow | Out-Null
 }
 
 function np {
