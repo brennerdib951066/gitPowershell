@@ -1187,3 +1187,38 @@ Function hastag {
 function sshdld() {
 	ssh danieleLinux 'sudo -S systemctl poweroff <<< 652516'
 }
+
+function gitCopy {
+	param(
+		[string]$repositorio,
+		[string]$arquivo
+	)
+
+	if (-not $arquivo) {
+		Write-Host -ForegroundColor "Preciso do arquivo do git para prosseguir"
+		Return
+	}
+
+	Switch ($arquivo) {
+		{"awk"} {
+			Write-Host "Obrigado awk!"
+			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitAwk"
+			#Return
+		}
+# 		{"sh"} {
+# 			Write-Host "Obrigado awk!"
+# 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitShell"
+# 			#Return
+# 		}
+	}
+
+	Try {
+		Invoke-WebRequest -URI "https://raw.githubusercontent.com/brennerdib951066/$repositorio/refs/heads/main/$arquivo" -OutFile "$diretorioRepositorio" -ErrorAction Stop
+		Write-Host -ForegroundColor DarkGreen "Arquivo $arquivo Criado com sucesso!"
+	}
+	Catch {
+		Write-Host -ForegroundColor Red "Erro ao criar o arquivo no diretorio $diretorioRepositorio"
+		Return
+	}
+
+}
