@@ -1195,7 +1195,7 @@ function gitCopy {
 	)
 
 	if (-not $arquivo) {
-		Write-Host -ForegroundColor "Preciso do arquivo do git para prosseguir"
+		Write-Host -ForegroundColor DarkRed "Preciso do arquivo do git para prosseguir"
 		Return
 	}
 
