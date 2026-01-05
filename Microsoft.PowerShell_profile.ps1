@@ -1203,11 +1203,18 @@ function gitCopy {
 		*.awk {
 			Write-Host "Obrigado awk!"
 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitAwk"
+			if (!$ISWINDOWS) {
+				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitShell"
+			}
+			Break
 			#Return
 		}
 		*.sh {
 			Write-Host "Obrigado SHELL!"
 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitShell"
+			if (!$ISWINDOWS) {
+				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitShell"
+			}
 			#Return
 		}
 	}
