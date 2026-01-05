@@ -1199,17 +1199,17 @@ function gitCopy {
 		Return
 	}
 
-	Switch ($arquivo) {
-		{"awk"} {
+	Switch -Wildcard ($arquivo) {
+		*.awk {
 			Write-Host "Obrigado awk!"
 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitAwk"
 			#Return
 		}
-# 		{"sh"} {
-# 			Write-Host "Obrigado awk!"
-# 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitShell"
-# 			#Return
-# 		}
+		*.sh {
+			Write-Host "Obrigado SHELL!"
+			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitShell"
+			#Return
+		}
 	}
 
 	Try {
