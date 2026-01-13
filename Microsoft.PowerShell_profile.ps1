@@ -1233,7 +1233,8 @@ Function task {
 		[string]$nomeTask
 	)
 	if ($args.Count -lt 1) {
-		& { Write-Host -ForegroundColor DarkRed "Por favor envie o nome da tarefa"; Return}
+		Write-Host -ForegroundColor DarkRed "Por favor envie o nome da tarefa"
+		Return
 	}
 	Start-ScheduledTask -TaksName "$nomeTask"
 
