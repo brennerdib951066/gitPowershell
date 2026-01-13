@@ -1195,7 +1195,7 @@ function gitCopy {
 	)
 
 	if (-not $arquivo) {
-		Write-Host -ForegroundColor DarkRed "Preciso do arquivo do git para prosseguir"
+		Write-Host -ForegroundColor "Preciso do arquivo do git para prosseguir"
 		Return
 	}
 
@@ -1203,19 +1203,17 @@ function gitCopy {
 		*.awk {
 			Write-Host "Obrigado awk!"
 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitAwk"
-			if (!$ISWINDOWS) {
-				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitShell"
-			}
-			Break
-			#Return
+			break
 		}
 		*.sh {
-			Write-Host "Obrigado SHELL!"
+			Write-Host "Obrigado shell!"
 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitShell"
-			if (!$ISWINDOWS) {
-				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitShell"
-			}
-			#Return
+			break
+		}
+		*.py {
+			Write-Host "Obrigado python!"
+			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitPy"
+			break
 		}
 	}
 
@@ -1227,5 +1225,16 @@ function gitCopy {
 		Write-Host -ForegroundColor Red "Erro ao criar o arquivo no diretorio $diretorioRepositorio"
 		Return
 	}
+
+}
+
+Function task {
+	param(
+		[string]$nomeTask
+	)
+	if ($args.Count -lt 1) {
+		& { Write-Host -ForegroundColor DarkRed "Por favor envie o nome da tarefa"; Return}
+	}
+	Start-ScheduledTask -TaksName "$nomeTask"
 
 }
