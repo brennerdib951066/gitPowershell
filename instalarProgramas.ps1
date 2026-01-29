@@ -55,6 +55,7 @@ $listaDeProgramasWindows = @(
     'XPFFH613W8V6LV',                   # OBS STUDIO
     'XP8CD3D3Q50MS2',                   # PEEK
     'AnyDeskSoftwareGmbH.AnyDesk',      # ANYDESK
+    '9NW33J738BL0',                     # BRILHO MINITOR
     'libreoffice',
     'Valve.Steam',                      # STEAN
     'KDE.Kate',
