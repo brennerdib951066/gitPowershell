@@ -1203,16 +1203,33 @@ function gitCopy {
 		*.awk {
 			Write-Host "Obrigado awk!"
 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitAwk"
+			if (-Not $diretorioRepositorio) {
+				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitAwk"
+			}
 			break
 		}
 		*.sh {
 			Write-Host "Obrigado shell!"
 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitShell"
+			if (-Not $diretorioRepositorio) {
+				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitShell"
+			}
 			break
 		}
 		*.py {
 			Write-Host "Obrigado python!"
 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitPy"
+			if (-Not $diretorioRepositorio) {
+				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitPy"
+			}
+			break
+		}
+		*.ps1 {
+			Write-Host "Powershell!"
+			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitPowershell"
+			if (-Not $diretorioRepositorio) {
+				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitPowershell"
+			}
 			break
 		}
 	}
