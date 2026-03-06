@@ -1203,33 +1203,16 @@ function gitCopy {
 		*.awk {
 			Write-Host "Obrigado awk!"
 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitAwk"
-			if (-Not $IsWindows) {
-				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitAwk"
-			}
 			break
 		}
 		*.sh {
 			Write-Host "Obrigado shell!"
 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitShell"
-			if (-Not $IsWindows) {
-				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitShell"
-			}
 			break
 		}
 		*.py {
 			Write-Host "Obrigado python!"
 			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitPy"
-			if (-Not $IsWindows) {
-				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitPy"
-			}
-			break
-		}
-		*.ps1 {
-			Write-Host "Powershell!"
-			$diretorioRepositorio = "$env:USERPROFILE/Desktop/gitPowershell"
-			if (-Not $IsWindows) {
-				$diretorioRepositorio = "$(xdg-user-dir DESKTOP)/gitPowershell"
-			}
 			break
 		}
 	}
@@ -1256,3 +1239,6 @@ Function task {
 	Start-ScheduledTask -TaksName "$nomeTask"
 
 }
+
+Start-Sleep -Seconds 5
+sshdld
