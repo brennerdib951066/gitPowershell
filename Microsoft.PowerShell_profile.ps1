@@ -1228,6 +1228,27 @@ function gitCopy {
 
 }
 
+Function jpdates {
+	Get-Command -Name mpv | Out-Null || & { Write-Host -ForegroundColor red "Para proseguir instale o MPV"; return  }
+	if ($args.Count -lt 2) {
+		Write-Host -ForegroundColor Red 'Envie jpdates idUsuario urlDoVideo'
+		return
+	}
+
+	if ($args[0] -notmatch '^[0-9]+$') {
+		Write-Host -ForegroundColor Red "O id do usuario deve ser em formato de numero!"
+		return
+	}
+
+
+	Try {
+		mpv "https://d2e6sqyvgtyy8n.cloudfront.net/$($args[0])/$($args[1])_hd_720p.mp4"
+	} # TRY
+	Catch {
+		Write-Host -ForegroundColor Red "Erro ao produzir seu vídeo!"
+	}
+}
+
 Function task {
 	param(
 		[string]$nomeTask
