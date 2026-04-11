@@ -1,5 +1,5 @@
 <#  IDS Usuarios botConversa
-    Brenner = '385910829'
+    Brenner = '888796665'
     Denner  = '193741501'
     Daniele = '193744989'
 #>
@@ -19,9 +19,9 @@ Function notificarWhatsApp {
     if ($mensagem) {
         Switch ("$idSubcriber".ToLower()) {
             'brenner' {
-                #$args[2] = '385910829'
+                #$args[2] = '888796665'
                 Write-Host -ForegroundColor DarkYellow "digitou $idSubcriber".ToUpper()
-                $idSubcriber = '385910829' # BRENNER
+                $idSubcriber = '890013136' # BRENNER
                 #Exit
             }
             'denner' {
